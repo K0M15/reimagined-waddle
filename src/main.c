@@ -1,0 +1,89 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
+/*   Updated: 2025/06/14 15:13:06 by afelger          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "miniRT.h"
+
+int32_t ft_put_pixel(mlx_image_t *image, int x, int y, uint32_t color)
+{
+	uint8_t *pixel;
+
+	pixel = &image->pixels[(y * image->width + x) * 4];
+	*(pixel++) = (uint8_t)(color >> 24);
+	*(pixel++) = (uint8_t)(color >> 16);
+	*(pixel++) = (uint8_t)(color >> 8);
+	*(pixel++) = (uint8_t)(color & 0xFF);
+	return (0);
+}	
+
+void key_hook(mlx_key_data_t keydata, void *param)
+{
+	t_app *app;
+
+	app = (t_app *) param;
+	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_RELEASE)
+		mlx_close_window(app->mlx);
+}
+
+void draw_loop(void *args)
+{
+	t_app *app;
+
+	app = (t_app *)args;
+	ft_camera_render(app->active_camera, app->image, ft_put_pixel);
+}
+
+int32_t setupWindow(t_app *app)
+{
+	if (!(app->mlx = mlx_init(app->width, app->height, "MLX42", true)))
+	{
+		printf("%s\n", mlx_strerror(mlx_errno));
+		return(EXIT_FAILURE);
+	}
+	if (!(app->image = mlx_new_image(app->mlx, app->width, app->height)))
+	{
+		mlx_close_window(app->mlx);
+		printf("%s\n", mlx_strerror(mlx_errno));
+		return(EXIT_FAILURE);
+	}
+	if (mlx_image_to_window(app->mlx, app->image, 0, 0) == -1)
+	{
+		mlx_close_window(app->mlx);
+		printf("%s\n", mlx_strerror(mlx_errno));
+		return(EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int32_t main(void)
+{
+	t_app app;
+	t_camera camera;
+
+	app.width = 800;
+	app.height = 600;
+	ft_camera_init(
+		&camera,
+		FTVEC3(0),
+		1.0,
+		1.0 * (double)(app.width/app.height),
+		1.0,
+		600, 800);
+	app.active_camera = &camera;
+	if (setupWindow(&app) == EXIT_FAILURE)
+		return (EXIT_FAILURE);	
+	
+	mlx_key_hook(app.mlx, key_hook, (void *) &app);
+	mlx_loop_hook(app.mlx, draw_loop, (void *) &app);
+	mlx_loop(app.mlx);
+	mlx_terminate(app.mlx);
+	return (EXIT_SUCCESS);
+}
