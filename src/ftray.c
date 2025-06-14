@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 14:53:33 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/14 15:30:54 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/14 17:01:51 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,35 +27,41 @@ t_vec3 ftray_at(t_ray ray, float t)
     return ftvec3_plus(ray.origin, ftvec3_multiply(ray.direction, (t_vec3){t, t, t}));
 }
 
-double ftray_hit_sphere(t_vec3 center, float radius, t_ray ray)
+uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *rec)
 {
-    t_vec3 oc;
-    t_vec3 abc;
-    float disciminant;
-    oc = ftvec3_minus(center, ray.origin);
-    abc = (t_vec3) {
-        ftvec3_dot(ray.direction, ray.direction),
-        ftvec3_dot(ray.direction, oc),
-        ftvec3_dot(oc, oc) - radius * radius
-    };
-    disciminant = (abc.y*abc.y - abc.x * abc.z);
-    if (disciminant < 0)
-        return -1.0;
-    return abc.y - sqrtf(disciminant) / abc.x;
+    t_hitrec temp;
+    uint32_t anything = 0;
+    double closest = max;
+    int ctr = 0;
+    while (ctr < world->filled)
+    {
+        t_obj *obj = world->elem + ctr*world->mem_size;
+        uint32_t hit = 0;
+        if (obj->type == SPHERE)
+            hit = ft_sphere_hit(obj, ray, min, max, &temp);
+        if (hit)
+        {
+            anything = 1;
+            closest = temp.t;
+            rec->hit = temp.hit;
+            rec->normal = temp.normal;
+            rec->t = temp.t;
+        }
+        ctr++;
+    }
+    return anything;
 }
 
-uint32_t ftray_color(t_ray ray)
+uint32_t ftray_color(t_ray ray, t_dyn *arr)
 {
     float a;
     t_vec3 unit_dir;
     t_vec3 color;
     float hit;
+    t_hitrec rec;
 
-    hit = ftray_hit_sphere((t_vec3){0,0,-2}, .5, ray);
-    if (hit > 0.0) {
-        color = ftvec3_unit(ftvec3_minus(ftray_at(ray, hit), (t_vec3){0,0,-2}));
-        return ftvec3_tocolor(ftvec3_multiply(ftvec3_plus(color, FTVEC3(1)), (t_vec3){0.5, 1, 1}), 1.0);
-    }
+    if (world_hit(arr, ray, 0, INFINITY, &rec))
+        return ftvec3_tocolor(ftvec3_multiply(FTVEC3(0.5), ftvec3_plus(rec.normal, FTVEC3(1))), 1);
     unit_dir = ftvec3_unit(ray.direction);
     a = 0.5 * (unit_dir.y + 1.0);
     color = ftvec3_plus(ftvec3_multiply(FTVEC3(1.0-a), FTVEC3(1.0)), ftvec3_multiply(FTVEC3(a), (t_vec3){0.5, 0.7, 1.0}));

@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/14 15:13:06 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/14 16:34:17 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,9 @@ int32_t main(void)
 		1.0,
 		600, 800);
 	app.active_camera = &camera;
+	dyn_init(&app.hitable, sizeof(t_obj));
+	t_obj sphere = ft_sphere_create(1,(t_vec3){0,0,2});
+	dyn_add(&app.hitable, &sphere);
 	if (setupWindow(&app) == EXIT_FAILURE)
 		return (EXIT_FAILURE);	
 	

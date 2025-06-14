@@ -6,7 +6,7 @@ FLAGS_MAC= -framework Cocoa -framework OpenGL -framework IOKit -lglfw
 FLAGS_LINUX= -ldl -lglfw -lpthread -lm 
 F_INC=-Iinclude
 MLX=MLX42/build/libmlx42.a
-FILES=src/main.c src/ftray.c src/ftvec3.c src/ftcamera.c
+FILES=src/main.c src/ftray.c src/ftvec3.c src/ftcamera.c src/dyn.c
 
 
 # all: FLAGS+=-ffast-math

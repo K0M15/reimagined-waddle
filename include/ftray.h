@@ -6,15 +6,16 @@
 /*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:07:56 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/14 15:22:42 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/14 17:06:18 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_RAY_H
 # define FT_RAY_H
 
-#include <stdint.h>
-#include "ftvec3.h"
+# include <stdint.h>
+# include "ftvec3.h"
+# include "dyn_arr.h"
 
 typedef struct s_ray{
     t_vec3 origin;  // The starting point of the ray
