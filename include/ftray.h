@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:07:56 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/14 17:06:18 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/15 10:45:02 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,5 @@ typedef struct s_ray{
 
 t_ray ftray_create(t_vec3 origin, t_vec3 direction);
 t_vec3 ftray_at(t_ray ray, float t);
-uint32_t ftray_color(t_ray ray);
 
 #endif /* FT_RAY_H */

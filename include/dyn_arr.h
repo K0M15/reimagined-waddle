@@ -6,12 +6,13 @@
 /*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 14:04:10 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/14 16:32:27 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/15 10:49:59 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DYN_ARR_H
 # define DYN_ARR_H
+# include "stdlib.h"
 # include "stddef.h"
 # include "stdint.h"
 # include "string.h"

@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/14 16:34:17 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/15 11:06:18 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void draw_loop(void *args)
 	t_app *app;
 
 	app = (t_app *)args;
-	ft_camera_render(app->active_camera, app->image, ft_put_pixel);
+	ft_camera_render(app, ft_put_pixel);
 }
 
 int32_t setupWindow(t_app *app)
@@ -68,19 +68,23 @@ int32_t main(void)
 	t_app app;
 	t_camera camera;
 
-	app.width = 800;
-	app.height = 600;
+	app.width = 1600;
+	app.height = 1500;
 	ft_camera_init(
 		&camera,
 		FTVEC3(0),
 		1.0,
 		1.0 * (double)(app.width/app.height),
 		1.0,
-		600, 800);
+		app.width, app.height);
 	app.active_camera = &camera;
 	dyn_init(&app.hitable, sizeof(t_obj));
-	t_obj sphere = ft_sphere_create(1,(t_vec3){0,0,2});
+	t_obj sphere = ft_sphere_create(1,(t_vec3){0,0,-4});
+	t_obj sphere1 = ft_sphere_create(1,(t_vec3){2,2,-10});
+	t_obj sphere2 = ft_sphere_create(.5,(t_vec3){-1,-1,-2});
 	dyn_add(&app.hitable, &sphere);
+	dyn_add(&app.hitable, &sphere1);
+	dyn_add(&app.hitable, &sphere2);
 	if (setupWindow(&app) == EXIT_FAILURE)
 		return (EXIT_FAILURE);	
 	
