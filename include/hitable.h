@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/16 16:32:43 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/16 17:06:17 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_obj
     enum e_obj_type type;
     t_vec3          color;
     void            *props;
+    double          reflectivity;
 }   t_obj;
 
 typedef struct s_sphere_p{
@@ -53,13 +54,14 @@ typedef struct s_plane_p{
 
 typedef struct s_hitrec
 {
+    t_obj   *obj;
     t_vec3 hit;
     t_vec3 normal;
     double t;
     bool front_face;
 }   t_hitrec;
 
-t_obj ft_sphere_create(t_sphere_p params, t_vec3 color);
+t_obj ft_sphere_create(t_sphere_p params, t_vec3 color, float reflectivity);
 uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec *rec);
 t_obj   ft_cylinder_create(t_cylinder_p params, t_vec3 color);
 t_obj   ft_plane_create(t_plane_p params, t_vec3 color);
