@@ -10,7 +10,7 @@ FILES=src/ftray.c src/ftvec3.c src/ftcamera.c src/dyn.c
 FILES+=src/main.c
 
 
-# all: FLAGS+=-ffast-math
+all: FLAGS+=-ffast-math
 all: FLAGS+=-O3
 all: MLX42 $(NAME)
 
@@ -22,7 +22,7 @@ debug: FLAGS+=-g
 debug: re
 
 $(NAME): $(FILES:.c=.o)
-	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(FLAGS_LINUX) -o $(NAME)
+	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(FLAGS_MAC) -o $(NAME)
 
 %.o: %.c
 	$(CC) $(F_INC) $(FLAGS) -c -o $@ $^

@@ -3,67 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   ftcamera.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/15 11:02:54 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/16 16:26:36 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-uint32_t ft_camera_init(
-    t_camera *camera,
-    t_vec3 center,
-    float focal_length,
-    float viewport_width,
-    float viewport_height,
-    int imageHeight,
-    int imageWidth)
+uint32_t ft_camera_init(t_camera *camera, t_camera_p props)
 {
-    camera->center = center;
-    camera->focal_length = focal_length;
-    camera->viewport_width = viewport_width;
-    camera->viewport_height = viewport_height;
+    camera->center = props.center;
+    camera->focal_length = props.focal_length;
+    camera->viewport_width = props.viewport_width;
+    camera->viewport_height = props.viewport_height;
     camera->u = (t_vec3) {camera->viewport_width, 0, 0};
     camera->v = (t_vec3) {0, -camera->viewport_height, 0};
-    camera->delta_u = ftvec3_divide(camera->u, (t_vec3){imageWidth, imageWidth, imageWidth});
-    camera->delta_v = ftvec3_divide(camera->v, (t_vec3){imageHeight, imageHeight, imageHeight});
+    camera->delta_u = ftvec3_divide(camera->u, FTVEC3(props.imageWidth));
+    camera->delta_v = ftvec3_divide(camera->v, FTVEC3(props.imageHeight));
+    camera->samples_per_pixel = props.samples_per_pixel;
     return (0);
 }
 
-
-void ft_sphere_assign(t_obj *sphere, float radius, t_vec3 position)
-{
-    float *sphere_r;
-    t_vec3 *sphere_pos;
-
-    sphere_r = sphere->props;
-    sphere_pos = sphere->props + sizeof(float);
-    *sphere_r = radius;
-    sphere_pos->x = position.x;
-    sphere_pos->y = position.y;
-    sphere_pos->z = position.z;
-}
-
-t_obj ft_sphere_create(float radius, t_vec3 position)
+t_obj ft_sphere_create(t_sphere_p params, t_vec3 color)
 {
     t_obj sphere;
 
+    sphere.type = ERROR;
+    if(!(sphere.props = malloc(sizeof(t_sphere_p))))
+        return sphere;
     sphere.type = SPHERE;
-    sphere.props = malloc(sizeof(float) + sizeof(t_vec3));
-    ft_sphere_assign(&sphere, fmax(radius, 0.0), position);
+    memcpy(sphere.props, &params, sizeof(t_sphere_p));
+    sphere.color = color;
     return sphere;
 }
 
-t_vec3 ft_sphere_getcenter(void *props)
+void ft_hitr_set_face_normal(t_hitrec *rec, t_ray ray, t_vec3 outwar_norm)
 {
-    return *(t_vec3 *)(props + sizeof(float));
-}
-
-float ft_sphere_getradius(void *props)
-{
-    return *(float *)props;
+    rec->front_face = ftvec3_dot(ray.direction, outwar_norm) < 0;
+    if (rec->front_face)
+        rec->normal = outwar_norm;
+    else
+        rec->normal = ftvec3_multiply(outwar_norm, FTVEC3(-1));
 }
 
 uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec *rec)
@@ -73,11 +55,11 @@ uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec
     float disciminant;
     float root;
 
-    oc = ftvec3_minus(ft_sphere_getcenter(sphere.props), ray.origin);
+    oc = ftvec3_minus(((t_sphere_p *)sphere.props)->position, ray.origin);
     abc = (t_vec3) {
         ftvec3_dot(ray.direction, ray.direction),
         ftvec3_dot(ray.direction, oc),
-        ftvec3_dot(oc, oc) - ft_sphere_getradius(sphere.props) * ft_sphere_getradius(sphere.props)
+        ftvec3_dot(oc, oc) - ((t_sphere_p *)sphere.props)->radius * ((t_sphere_p *)sphere.props)->radius
     };
     disciminant = (abc.y*abc.y - abc.x * abc.z);
     if (disciminant < 0)
@@ -92,13 +74,39 @@ uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec
     }
     rec->t = root;
     rec->hit = ftray_at(ray, root);
-    rec->normal = ftvec3_divide(ftvec3_minus(rec->hit, ft_sphere_getcenter(sphere.props)), FTVEC3(ft_sphere_getradius(sphere.props)));
+    ft_hitr_set_face_normal(rec, ray, ftvec3_divide(ftvec3_minus(rec->hit,((t_sphere_p *)sphere.props)->position), FTVEC3(((t_sphere_p *)sphere.props)->radius)));
     return true;
 }
 
-void ft_sphere_dest(t_obj sphere)
+void ft_obj_dest(t_obj sphere)
 {
     free(sphere.props);
+}
+
+t_obj   ft_cylinder_create(t_cylinder_p params, t_vec3 color)
+{
+    t_obj cyl;
+
+    cyl.type = ERROR;
+    if(!(cyl.props = malloc(sizeof(t_cylinder_p))))
+        return cyl;
+    cyl.type = CYLINDER;
+    memcpy(cyl.props, &params, sizeof(t_cylinder_p));
+    cyl.color = color;
+    return (cyl);
+}
+
+t_obj   ft_plane_create(t_plane_p params, t_vec3 color)
+{
+    t_obj plane;
+
+    plane.type = ERROR;
+    if(!(plane.props = malloc(sizeof(t_plane_p))))
+        return plane;
+    plane.type = PLANE;
+    memcpy(plane.props, &params, sizeof(t_plane_p));
+    plane.color = color;
+    return (plane);
 }
 
 uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *rec)
@@ -126,20 +134,45 @@ uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *re
     return anything;
 }
 
-uint32_t ftray_color(t_ray ray, t_dyn *arr)
+t_vec3 ftray_color(t_ray ray, t_dyn *arr)
 {
     float a;
     t_vec3 unit_dir;
-    t_vec3 color;
-    // float hit;
     t_hitrec rec;
 
     if (world_hit(arr, ray, 0, INFINITY, &rec))
-        return ftvec3_tocolor(ftvec3_multiply(FTVEC3(0.5), ftvec3_plus(rec.normal, FTVEC3(1))), 1);
+        return ftvec3_multiply(FTVEC3(0.5), ftvec3_plus(rec.normal, FTVEC3(1)));
     unit_dir = ftvec3_unit(ray.direction);
     a = 0.5 * (unit_dir.y + 1.0);
-    color = ftvec3_plus(ftvec3_multiply(FTVEC3(1.0-a), FTVEC3(1.0)), ftvec3_multiply(FTVEC3(a), (t_vec3){0.5, 0.7, 1.0}));
-    return ftvec3_tocolor(color, 1.0);
+    return ftvec3_plus(ftvec3_multiply(FTVEC3(1.0-a), FTVEC3(1.0)), ftvec3_multiply(FTVEC3(a), (t_vec3){0.5, 0.7, 1.0}));
+}
+
+uint32_t fast_rand() {
+    static uint32_t seed = 123456789; // Or initialize with a different value
+    seed = 1664525 * seed + 1013904223;
+    return seed;
+}
+
+double rand_double()
+{
+    double res = (double)((uint64_t)fast_rand() << 32 | fast_rand());
+    return res / (double) UINT64_MAX;
+}
+
+t_vec3 sample_square()
+{
+    return (t_vec3){rand_double() - .5, rand_double() - .5, 0};
+    // return FTVEC3(0);
+}
+
+t_ray get_rand_ray(t_vec3 pixel_loc, t_vec3 origin, t_camera *cam)
+{
+    t_vec3 offset;
+    t_vec3 sample_pos;
+
+    offset = ftvec3_multiply(sample_square(), ftvec3_plus(cam->delta_u, cam->delta_v));
+    sample_pos = ftvec3_plus(pixel_loc, offset);
+    return ftray_create(origin, ftvec3_minus(sample_pos, origin));
 }
 
 uint32_t ft_camera_render(
@@ -149,7 +182,7 @@ uint32_t ft_camera_render(
     t_vec3 vupper_left;
     t_vec3 pixel00_loc;
     t_vec3 pixel_center;
-    t_ray ray;
+    t_vec3 sample_scale;
     uint32_t y = 0;
     uint32_t x = 0;
     
@@ -157,12 +190,7 @@ uint32_t ft_camera_render(
     vupper_left = ftvec3_minus(vupper_left, ftvec3_divide(app->active_camera->u, FTVEC3(2)));
     vupper_left = ftvec3_minus(vupper_left, ftvec3_divide(app->active_camera->v, FTVEC3(2)));
     pixel00_loc = ftvec3_plus(vupper_left, ftvec3_multiply(ftvec3_plus(app->active_camera->delta_u, app->active_camera->delta_v),(t_vec3){0.5,0.5,0.5}));
-
-    // printf("Camera Stats:\n\tdelta_u: %.3f %.3f%.3f \n\tdelta_v: %.3f %.3f %.3f\n\tpixel_loc: %.3f %.3f %.3f\n",
-    //     app->active_camera->delta_u.x, app->active_camera->delta_u.y, app->active_camera->delta_u.z,
-    //     app->active_camera->delta_v.x, app->active_camera->delta_v.y, app->active_camera->delta_v.z,
-    //     pixel00_loc.x, pixel00_loc.y, pixel00_loc.z);
-    // printf("Image stats: Width %d, Height: %d\n", image->width, image->height);
+    sample_scale = FTVEC3(1.0 / (float) app->active_camera->samples_per_pixel);
     while (y < app->image->height)
     {
         x = 0;
@@ -172,11 +200,15 @@ uint32_t ft_camera_render(
                 ftvec3_plus(
                     ftvec3_multiply(FTVEC3(x), app->active_camera->delta_u),
                     ftvec3_multiply(FTVEC3(y), app->active_camera->delta_v)));
-            ray = ftray_create(app->active_camera->center, ftvec3_minus(pixel_center, app->active_camera->center));
-            uint32_t color = ftray_color(ray, &app->hitable);
-            // if (x == 1 && y % 100 == 0)
-            //     printf("R:%d G:%d B:%d\n", color >> 24, (color & 0x00FF)>> 16, (color & 0x0000FF)>> 8);
-            put_pixel(app->image, x, y, color);
+            t_vec3 color = FTVEC3(0);
+            uint32_t i = 0;
+            while (i < app->active_camera->samples_per_pixel)
+            {
+                t_vec3 new_col = ftray_color(get_rand_ray(pixel_center, app->active_camera->center, app->active_camera), &app->hitable);
+                color = ftvec3_plus(color, new_col);
+                i++;
+            }
+            put_pixel(app->image, x, y, ftvec3_tocolor(ftvec3_multiply(color, sample_scale), 1.0));
             x++;
         }
         y++;

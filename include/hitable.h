@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hitable.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/15 11:02:53 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/16 13:55:44 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,50 @@
 # include "dyn_arr.h"
 
 enum e_obj_type{
-    SPHERE
+    SPHERE,
+    CYLINDER,
+    PLANE,
+    ERROR = 0xFFFF
 };
 
 typedef struct s_obj
 {
     enum e_obj_type type;
-    void           *props;
+    t_vec3          color;
+    void            *props;
 }   t_obj;
+
+typedef struct s_sphere_p{
+    float radius;
+    t_vec3 position;
+}   t_sphere_p;
+
+typedef struct s_cylinder_p{
+    float radius;
+    float height;
+    t_vec3 position;
+    t_vec3 rotation;
+}   t_cylinder_p;
+
+typedef struct s_plane_p{
+    t_vec3  position;
+    t_vec3  rotation;
+}   t_plane_p;
+
 
 typedef struct s_hitrec
 {
     t_vec3 hit;
     t_vec3 normal;
     double t;
+    bool front_face;
 }   t_hitrec;
 
-void ft_sphere_assign(t_obj *sphere, float radius, t_vec3 position);
-t_obj ft_sphere_create(float radius, t_vec3 position);
-t_vec3 ft_sphere_getcenter(void *props);
-float ft_sphere_getradius(void *props);
+t_obj ft_sphere_create(t_sphere_p params, t_vec3 color);
 uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec *rec);
-void ft_sphere_dest(t_obj sphere);
+t_obj   ft_cylinder_create(t_cylinder_p params, t_vec3 color);
+t_obj   ft_plane_create(t_plane_p params, t_vec3 color);
+void ft_obj_dest(t_obj sphere);
 
 
 #endif /* FT_HITABLE_H */

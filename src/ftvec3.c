@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftvec3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 14:51:41 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/14 13:39:25 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/16 15:52:30 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,20 @@ t_vec3 ftvec3_unit(t_vec3 v)
     return ftvec3_divide(v, (t_vec3) {length, length, length});
 }
 
+double clamp(double f, double min, double max)
+{
+    if (f < min)
+        return (min);
+    if (f > max)
+        return (max);
+    return f;
+}
 uint32_t ftvec3_tocolor(t_vec3 v, float alpha)
 {
-    uint32_t r = (uint32_t)(fminf(fmaxf(v.x, 0.0f), 1.0f) * 255.0f);
-    uint32_t g = (uint32_t)(fminf(fmaxf(v.y, 0.0f), 1.0f) * 255.0f);
-    uint32_t b = (uint32_t)(fminf(fmaxf(v.z, 0.0f), 1.0f) * 255.0f);
-    uint32_t a = (uint32_t)(fminf(fmaxf(alpha, 0.0f), 1.0f) * 255.0f);
+    uint32_t r = (uint32_t)(clamp(v.x, 0, 1) * 255.0f);
+    uint32_t g = (uint32_t)(clamp(v.y, 0, 1) * 255.0f);
+    uint32_t b = (uint32_t)(clamp(v.z, 0, 1) * 255.0f);
+    uint32_t a = (uint32_t)(clamp(alpha, 0, 1) * 255.0f);
 
     return (r << 24) | (g << 16) | (b << 8) | a;
 }
