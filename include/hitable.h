@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hitable.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/16 17:06:17 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/16 20:14:30 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,24 @@ t_obj   ft_cylinder_create(t_cylinder_p params, t_vec3 color);
 t_obj   ft_plane_create(t_plane_p params, t_vec3 color);
 void ft_obj_dest(t_obj sphere);
 
+void ft_cylinder_assign(t_obj *cylinder, float r, float l, t_vec3 pos, t_vec3 rot)
+{
+    ((float *)cylinder->props)[0] = r;
+    memcpy(&((float *)cylinder->props)[1], &pos, sizeof(t_vec3));
+    ((float *)cylinder->props)[4] = l;
+    memcpy(&((float *)cylinder->props)[5], &rot, sizeof(t_vec3));
+}
+// craete a a cylinder prop struct
+t_obj ft_cylinder_create(float radius, float length, t_vec3 position, t_vec3 rotation)
+{
+    t_obj   cyl;
+
+    cyl.type = CYLINDER;
+    cyl.props = malloc(sizeof(float)*2 + sizeof(t_vec3)*2);
+    ft_cylinder_assign(&cyl, radius, length, position, rotation);
+    return cyl;
+}
+
+t_obj ft_cylinder_getprops()
 
 #endif /* FT_HITABLE_H */
