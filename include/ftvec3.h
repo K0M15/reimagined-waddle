@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftvec3.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:05:58 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/14 12:35:57 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/16 16:50:54 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <stdint.h>
 #include <math.h>
+#include "pseudo_random.h"
 
 typedef struct s_vec3
 {
@@ -25,6 +26,10 @@ typedef struct s_vec3
 
 # define FTVEC3(x) (t_vec3){x,x,x}
 
+t_vec3 ftvec3_random();
+t_vec3 ftvec3_runit();
+t_vec3 ftvec3_rclamped(double min, double max);
+t_vec3 ftvec3_ronhemi(t_vec3 normal);
 t_vec3 ftvec3_plus(t_vec3 op1, t_vec3 op2);
 t_vec3 ftvec3_minus(t_vec3 op1, t_vec3 op2);
 t_vec3 ftvec3_multiply(t_vec3 op1, t_vec3 op2);

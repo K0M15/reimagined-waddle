@@ -7,7 +7,7 @@ FLAGS_LINUX= -ldl -lglfw -lpthread -lm
 F_INC=-Iinclude
 MLX=MLX42/build/libmlx42.a
 FILES=src/ftray.c src/ftvec3.c src/ftcamera.c src/dyn.c
-FILES+=src/main.c
+FILES+=src/main.c src/pseudo_random.c
 
 
 all: FLAGS+=-ffast-math

@@ -6,11 +6,62 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 14:51:41 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/16 15:52:30 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/16 16:51:01 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftvec3.h"
+
+double clamp(double f, double min, double max)
+{
+    if (f < min)
+        return (min);
+    if (f > max)
+        return (max);
+    return f;
+}
+
+t_vec3 ftvec3_random()
+{
+    return (t_vec3){ rand_double(), rand_double(), rand_double() };
+}
+
+t_vec3 ftvec3_rclamped(double min, double max)
+{
+    double scale;
+
+    scale = max - min;
+    return (t_vec3){
+        clamp((rand_double() - 0.5) * scale, min, max),
+        clamp((rand_double() - 0.5) * scale, min, max),
+        clamp((rand_double() - 0.5) * scale, min, max)
+    };
+}
+
+t_vec3 ftvec3_runit()
+{
+    t_vec3 p;
+    double lensq;
+    
+    p = ftvec3_rclamped(-1, 1);
+    lensq = ftvec3_length(p) * ftvec3_length(p);
+    while (1e160 < lensq && lensq <= 1)
+    {
+        p = ftvec3_rclamped(-1, 1);
+        lensq = ftvec3_length(p) * ftvec3_length(p);
+    }
+    return ftvec3_divide(p, FTVEC3(sqrt(lensq)));
+}
+
+t_vec3 ftvec3_ronhemi(t_vec3 normal)
+{
+    t_vec3 on_hemi;
+
+    on_hemi = ftvec3_runit();
+    if (ftvec3_dot(on_hemi, normal) > 0.0)
+        return on_hemi;
+    return ftvec3_multiply(on_hemi, FTVEC3(-1));
+}
 
 t_vec3 ftvec3_plus(t_vec3 op1, t_vec3 op2)
 {
@@ -111,14 +162,6 @@ t_vec3 ftvec3_unit(t_vec3 v)
     return ftvec3_divide(v, (t_vec3) {length, length, length});
 }
 
-double clamp(double f, double min, double max)
-{
-    if (f < min)
-        return (min);
-    if (f > max)
-        return (max);
-    return f;
-}
 uint32_t ftvec3_tocolor(t_vec3 v, float alpha)
 {
     uint32_t r = (uint32_t)(clamp(v.x, 0, 1) * 255.0f);

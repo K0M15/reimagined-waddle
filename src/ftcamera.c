@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/16 16:26:36 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/16 16:57:28 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,30 +134,25 @@ uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *re
     return anything;
 }
 
-t_vec3 ftray_color(t_ray ray, t_dyn *arr)
+t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
 {
     float a;
     t_vec3 unit_dir;
     t_hitrec rec;
 
-    if (world_hit(arr, ray, 0, INFINITY, &rec))
-        return ftvec3_multiply(FTVEC3(0.5), ftvec3_plus(rec.normal, FTVEC3(1)));
+    if (depth <= 0)
+        return FTVEC3(0);
+    if (world_hit(arr, ray, 0.0001, INFINITY, &rec))
+    {
+        t_vec3 direction = ftvec3_ronhemi(rec.normal);
+        return ftvec3_multiply(FTVEC3(0.5), ftray_color(ftray_create(rec.hit, direction), arr, depth - 1));
+    }
     unit_dir = ftvec3_unit(ray.direction);
     a = 0.5 * (unit_dir.y + 1.0);
     return ftvec3_plus(ftvec3_multiply(FTVEC3(1.0-a), FTVEC3(1.0)), ftvec3_multiply(FTVEC3(a), (t_vec3){0.5, 0.7, 1.0}));
 }
 
-uint32_t fast_rand() {
-    static uint32_t seed = 123456789; // Or initialize with a different value
-    seed = 1664525 * seed + 1013904223;
-    return seed;
-}
 
-double rand_double()
-{
-    double res = (double)((uint64_t)fast_rand() << 32 | fast_rand());
-    return res / (double) UINT64_MAX;
-}
 
 t_vec3 sample_square()
 {
@@ -204,7 +199,7 @@ uint32_t ft_camera_render(
             uint32_t i = 0;
             while (i < app->active_camera->samples_per_pixel)
             {
-                t_vec3 new_col = ftray_color(get_rand_ray(pixel_center, app->active_camera->center, app->active_camera), &app->hitable);
+                t_vec3 new_col = ftray_color(get_rand_ray(pixel_center, app->active_camera->center, app->active_camera), &app->hitable, MAX_DEPTH);
                 color = ftvec3_plus(color, new_col);
                 i++;
             }
