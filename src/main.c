@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/16 17:06:33 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/16 17:16:57 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,14 @@ int32_t main(void)
 		&camera, (t_camera_p){FTVEC3(0), (t_vec3){0,0, -.8}, .5, 1.0 * (double)(app.width/app.height), 1.0, app.width, app.height, STAN_SAMPLES_PER_PIXEL});
 	app.active_camera = &camera;
 	dyn_init(&app.hitable, sizeof(t_obj));
-	t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){0,0,-4}}, FTVEC3(254.0), .7);
-	t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, FTVEC3(254.0), .5);
-	t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, FTVEC3(254.0), .3);
+	t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){0,0,-4}}, (t_vec3){100,0,0}, .007);
+	t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, (t_vec3){0,0,100}, .5);
+	t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, (t_vec3){0,100,0}, .02);
+	t_obj sphere3 = ft_sphere_create((t_sphere_p){50,(t_vec3){0,40,-100}}, (t_vec3){0,100,0}, .8);
 	dyn_add(&app.hitable, &sphere);
 	dyn_add(&app.hitable, &sphere1);
 	dyn_add(&app.hitable, &sphere2);
+	dyn_add(&app.hitable, &sphere3);
 	if (setupWindow(&app) == EXIT_FAILURE)
 		return (EXIT_FAILURE);	
 	

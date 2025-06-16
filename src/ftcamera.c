@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/16 17:05:46 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/16 17:10:48 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,10 @@ t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
     if (world_hit(arr, ray, 0.0001, INFINITY, &rec))
     {
         t_vec3 direction = ftvec3_plus(ftvec3_ronhemi(rec.normal), rec.normal);
-        return ftvec3_multiply(FTVEC3(rec.obj->reflectivity), ftray_color(ftray_create(rec.hit, direction), arr, depth - 1));
+        return ftvec3_plus(
+            ftvec3_multiply(FTVEC3(rec.obj->reflectivity), ftray_color(ftray_create(rec.hit, direction), arr, depth - 1)),
+            ftvec3_multiply(FTVEC3(1.0-rec.obj->reflectivity), rec.obj->color)
+        );
     }
     unit_dir = ftvec3_unit(ray.direction);
     a = 0.5 * (unit_dir.y + 1.0);
