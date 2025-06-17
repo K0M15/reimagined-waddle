@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/17 18:35:11 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/17 18:52:23 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_camera
     t_vec3 delta_v;     // Vertical vector
     uint32_t samples_per_pixel;
     t_vec3 vec_up;
+    t_vec3 ambient;
 }   t_camera;
 
 typedef struct s_camera_p{
@@ -55,6 +56,7 @@ typedef struct s_camera_p{
     int imageHeight;
     int imageWidth;
     uint32_t samples_per_pixel;
+    t_vec3 ambient;
 }   t_camera_p;
 
 typedef struct s_ray_props{

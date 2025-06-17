@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/17 18:34:05 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/17 18:57:19 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ uint32_t ft_camera_init(t_camera *camera, t_camera_p props)
     camera->image_height = props.imageHeight;
     ft_camera_calc(camera);
     camera->samples_per_pixel = props.samples_per_pixel;
+    camera->ambient = props.ambient;
     return (0);
 }
 
@@ -177,6 +178,8 @@ t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
         return FTVEC3(0);
     if (world_hit(arr, ray, 0.0001, INFINITY, &rec))
     {
+        if (rec.mat->is_emitting)
+            return (rec.mat->color);
         return ftvec3_plus(
             ftvec3_multiply(FTVEC3(rec.mat->reflectivity), ftray_color(ft_mat_scatter(ray, &rec), arr, depth - 1)),
             ftvec3_multiply(FTVEC3(1.0-rec.mat->reflectivity), rec.mat->color)
@@ -184,10 +187,8 @@ t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
     }
     unit_dir = ftvec3_unit(ray.direction);
     a = 0.5 * (unit_dir.y + 1.0);
-    return ftvec3_plus(ftvec3_multiply(FTVEC3(1.0-a), FTVEC3(1.0)), ftvec3_multiply(FTVEC3(a), (t_vec3){0.5, 0.7, 1.0}));
+    return ftvec3_plus(ftvec3_multiply(FTVEC3(1.0-a), FTVEC3(1.0)), ftvec3_multiply(FTVEC3(a), ray.ambient));
 }
-
-
 
 t_vec3 sample_square()
 {
@@ -202,7 +203,7 @@ t_ray get_rand_ray(t_vec3 pixel_loc, t_vec3 origin, t_camera *cam)
 
     offset = ftvec3_multiply(sample_square(), ftvec3_plus(cam->delta_u, cam->delta_v));
     sample_pos = ftvec3_plus(pixel_loc, offset);
-    return ftray_create(origin, ftvec3_minus(sample_pos, origin));
+    return ftray_create(cam->ambient, origin, ftvec3_minus(sample_pos, origin));
 }
 
 void ft_camera_apply(t_camera *cam, t_vec3 apply)

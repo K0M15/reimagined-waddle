@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hitable.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/17 12:41:46 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/17 18:46:03 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_material
     double  reflectivity;
     double  scatter;
     t_vec3          color;
+    bool    is_emitting;
 }   t_material;
 
 typedef struct s_obj

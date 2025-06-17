@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/17 18:36:43 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/17 18:58:06 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,20 +113,31 @@ int32_t main(void)
 			90,
 			app.width,
 			app.height,
-			STAN_SAMPLES_PER_PIXEL
+			STAN_SAMPLES_PER_PIXEL,
+			(t_vec3){0,0,0}
 		});
 	app.active_camera = &camera;
 
 	dyn_init(&app.hitable, sizeof(t_obj));
+
 	t_material material;
 	memset(&material, 0, sizeof(t_material));
 	material.color = (t_vec3) {155,255,255};
-	material.reflectivity = 1.0;
-	material.scatter = .1;
+	material.reflectivity = .4;
+	material.is_emitting = 0;
+	material.scatter = .9;
+
+	t_material mat_l;
+	memset(&mat_l, 0, sizeof(t_material));
+	mat_l.color = (t_vec3) {155,255,255};
+	mat_l.reflectivity = 1.0;
+	mat_l.is_emitting = 1;
+	mat_l.scatter = .1;
+	
 	t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){0,0,-4}}, &material);
 	t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
 	t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, &material);
-	t_obj sphere3 = ft_sphere_create((t_sphere_p){50,(t_vec3){0,40,-100}}, &material);
+	t_obj sphere3 = ft_sphere_create((t_sphere_p){20,(t_vec3){0,40,30}}, &mat_l);
 	dyn_add(&app.hitable, &sphere);
 	dyn_add(&app.hitable, &sphere1);
 	dyn_add(&app.hitable, &sphere2);
