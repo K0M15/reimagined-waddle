@@ -3,25 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   ftcamera.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/17 13:15:32 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/17 18:34:05 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
+void ft_camera_calc(t_camera *camera)
+{
+    double h;
+    
+    h = tan(degrees_to_rad(camera->fov) / 2);
+    camera->focal_length = ftvec3_length(ftvec3_minus(camera->center, camera->look_at));
+    camera->viewport_height = 2 * h * camera->focal_length;
+    camera->viewport_width = camera->viewport_height * ((double)camera->image_width / (double)camera->image_height);
+    camera->w = ftvec3_unit(ftvec3_minus(camera->center, camera->look_at));
+    camera->u = ftvec3_unit(ftvec3_cross(camera->w, camera->vec_up));
+    camera->v = ftvec3_cross(camera->w, camera->u);
+    camera->viewport_u = ftvec3_multiply(camera->u, FTVEC3(camera->viewport_width));
+    camera->viewport_v = ftvec3_multiply(camera->v, FTVEC3(camera->viewport_height));
+    camera->delta_u = ftvec3_divide(camera->viewport_u, FTVEC3(camera->image_width));
+    camera->delta_v = ftvec3_divide(camera->viewport_v, FTVEC3(camera->image_height));
+    camera->vupper_left = ftvec3_minus(camera->center, ftvec3_multiply(FTVEC3(camera->focal_length), camera->w));
+    camera->vupper_left = ftvec3_minus(camera->vupper_left, ftvec3_divide(camera->viewport_u, FTVEC3(2)));
+    camera->vupper_left = ftvec3_minus(camera->vupper_left, ftvec3_divide(camera->viewport_v, FTVEC3(2)));
+}
+
 uint32_t ft_camera_init(t_camera *camera, t_camera_p props)
 {
+    camera->vec_up = (t_vec3) {0, 1, 0};
     camera->center = props.center;
-    camera->focal_length = props.focal_length;
-    camera->viewport_width = props.viewport_width;
-    camera->viewport_height = props.viewport_height;
-    camera->u = (t_vec3) {camera->viewport_width, 0, 0};
-    camera->v = (t_vec3) {0, -camera->viewport_height, 0};
-    camera->delta_u = ftvec3_divide(camera->u, FTVEC3(props.imageWidth));
-    camera->delta_v = ftvec3_divide(camera->v, FTVEC3(props.imageHeight));
+    camera->look_at = props.look_at;
+    camera->fov = props.fov;
+    camera->image_width = props.imageWidth;
+    camera->image_height = props.imageHeight;
+    ft_camera_calc(camera);
     camera->samples_per_pixel = props.samples_per_pixel;
     return (0);
 }
@@ -186,28 +205,29 @@ t_ray get_rand_ray(t_vec3 pixel_loc, t_vec3 origin, t_camera *cam)
     return ftray_create(origin, ftvec3_minus(sample_pos, origin));
 }
 
+void ft_camera_apply(t_camera *cam, t_vec3 apply)
+{
+    cam->look_at = ftvec3_plus(cam->look_at, apply);
+    ft_camera_calc(cam);
+}
+
 uint32_t ft_camera_render(
     t_app *app,
-    int32_t (*put_pixel)(mlx_image_t *image, int x, int y, uint32_t color))
+    void (*put_pixel)(mlx_image_t *image, int x, int y, uint32_t color))
 {
-    t_vec3 vupper_left;
     t_vec3 pixel00_loc;
-    t_vec3 pixel_center;
     t_vec3 sample_scale;
     uint32_t y = 0;
     uint32_t x = 0;
-    
-    vupper_left = ftvec3_minus(app->active_camera->center, (t_vec3){0,0,app->active_camera->focal_length});
-    vupper_left = ftvec3_minus(vupper_left, ftvec3_divide(app->active_camera->u, FTVEC3(2)));
-    vupper_left = ftvec3_minus(vupper_left, ftvec3_divide(app->active_camera->v, FTVEC3(2)));
-    pixel00_loc = ftvec3_plus(vupper_left, ftvec3_multiply(ftvec3_plus(app->active_camera->delta_u, app->active_camera->delta_v),(t_vec3){0.5,0.5,0.5}));
+
+    pixel00_loc = ftvec3_plus(app->active_camera->vupper_left, ftvec3_multiply(ftvec3_plus(app->active_camera->delta_u, app->active_camera->delta_v),(t_vec3){0.5,0.5,0.5}));
     sample_scale = FTVEC3(1.0 / (float) app->active_camera->samples_per_pixel);
     while (y < app->image->height)
     {
         x = 0;
         while (x < app->image->width)
         {
-            pixel_center = ftvec3_plus(pixel00_loc, 
+            t_vec3 pixel_center = ftvec3_plus(pixel00_loc, 
                 ftvec3_plus(
                     ftvec3_multiply(FTVEC3(x), app->active_camera->delta_u),
                     ftvec3_multiply(FTVEC3(y), app->active_camera->delta_v)));

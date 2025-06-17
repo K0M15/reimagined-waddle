@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/17 13:18:02 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/17 18:36:43 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-int32_t ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color)
+void ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color)
 {
 	uint8_t *pixel;
 
@@ -24,10 +24,9 @@ int32_t ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color)
 	*(pixel) = ((uint8_t)(color >> 8) + *pixel) / 2;
 	pixel++;
 	*(pixel) = ((uint8_t)(color & 0xFF) + *pixel) / 2;
-	return (0);
 }	
 
-int32_t ft_put_pixel(mlx_image_t *image, int x, int y, uint32_t color)
+void ft_put_pixel(mlx_image_t *image, int x, int y, uint32_t color)
 {
 	uint8_t *pixel;
 
@@ -39,7 +38,6 @@ int32_t ft_put_pixel(mlx_image_t *image, int x, int y, uint32_t color)
 	*(pixel) = (uint8_t)(color >> 8);
 	pixel++;
 	*(pixel) = (uint8_t)(color & 0xFF);
-	return (0);
 }
 
 void key_hook(mlx_key_data_t keydata, void *param)
@@ -49,6 +47,24 @@ void key_hook(mlx_key_data_t keydata, void *param)
 	app = (t_app *) param;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_RELEASE)
 		mlx_close_window(app->mlx);
+	if (keydata.key == MLX_KEY_W)
+		ft_camera_apply(app->active_camera, (t_vec3){0, MOV_SPEED, 0});
+	if (keydata.key == MLX_KEY_S)
+		ft_camera_apply(app->active_camera, (t_vec3){0, -MOV_SPEED, 0});
+	if (keydata.key == MLX_KEY_A)
+		ft_camera_apply(app->active_camera, (t_vec3){MOV_SPEED, 0, 0});
+	if (keydata.key == MLX_KEY_D)
+		ft_camera_apply(app->active_camera, (t_vec3){-MOV_SPEED, 0, 0});
+	if (keydata.key == MLX_KEY_Q)
+	{
+		app->active_camera->fov *= 1.1;
+		ft_camera_calc(app->active_camera);
+	}
+	if (keydata.key == MLX_KEY_E)
+	{
+		app->active_camera->fov *= 0.90909090909090909090;
+		ft_camera_calc(app->active_camera);
+	}
 }
 
 void draw_loop(void *args)
@@ -58,6 +74,7 @@ void draw_loop(void *args)
 	app = (t_app *)args;
 	ft_camera_render(app, ft_put_pixel);
 	// ft_camera_render(app, ft_kumul_pixel);
+	printf("Cam: X%.2f Y%.2f Z%.2f, FOV%.2F\n", app->active_camera->look_at.x, app->active_camera->look_at.y, app->active_camera->look_at.z, app->active_camera->fov);
 }
 
 int32_t setupWindow(t_app *app)
@@ -90,7 +107,14 @@ int32_t main(void)
 	app.width = 1200;
 	app.height = 800;
 	ft_camera_init(
-		&camera, (t_camera_p){FTVEC3(0), (t_vec3){0,0, -.8}, .5, 1.0 * (double)(app.width/app.height), 1.0, app.width, app.height, STAN_SAMPLES_PER_PIXEL});
+		&camera, (t_camera_p){
+			FTVEC3(0),
+			(t_vec3){0,0, -1},
+			90,
+			app.width,
+			app.height,
+			STAN_SAMPLES_PER_PIXEL
+		});
 	app.active_camera = &camera;
 
 	dyn_init(&app.hitable, sizeof(t_obj));

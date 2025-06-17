@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pseudo_random.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:33:51 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/17 12:24:11 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/17 17:51:35 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,14 @@ double linear_to_gamma(double linear_component)
         return (linear_component);
 
     return 0;
+}
+
+double degrees_to_rad(double deg)
+{
+    return (deg * (M_PI / 180));
+}
+
+double rad_to_deg(double rad)
+{
+    return (rad * (180 / M_PI));
 }
