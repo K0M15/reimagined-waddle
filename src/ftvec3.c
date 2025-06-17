@@ -3,14 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ftvec3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 14:51:41 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/16 16:51:01 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/17 13:14:58 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftvec3.h"
+
+t_vec3 ftvec3_reflect(t_vec3 vec, t_vec3 norm)
+{
+    t_vec3 dot;
+
+    dot = FTVEC3(ftvec3_dot(vec, norm));
+    return ftvec3_minus(vec, ftvec3_multiply(FTVEC3(2), ftvec3_multiply(dot, norm)));
+}
+
+bool ftvec3_near_zero(t_vec3 vec)
+{
+    return ((fabs(vec.x) < DOUBLE_NEAR_ZERO) &&
+        (fabs(vec.y) < DOUBLE_NEAR_ZERO) &&
+        (fabs(vec.z) < DOUBLE_NEAR_ZERO));
+}
+
+t_vec3 ftvec3_lin_gamma(t_vec3 vec)
+{
+    return (t_vec3) {
+        linear_to_gamma(vec.x),
+        linear_to_gamma(vec.y),
+        linear_to_gamma(vec.z)
+    };
+}
 
 double clamp(double f, double min, double max)
 {

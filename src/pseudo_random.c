@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pseudo_random.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:33:51 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/16 16:34:21 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/17 12:24:11 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,12 @@ double rand_double()
 {
     double res = (double)((uint64_t)fast_rand() << 32 | fast_rand());
     return res / (double) UINT64_MAX;
+}
+
+double linear_to_gamma(double linear_component)
+{
+    if (linear_component > 0)
+        return (linear_component);
+
+    return 0;
 }

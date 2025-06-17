@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/16 16:58:02 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/17 13:18:35 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <stdio.h>
 
 # define STAN_SAMPLES_PER_PIXEL 10
-# define MAX_DEPTH 50
+# define MAX_DEPTH 8
 
 typedef struct s_camera
 {
@@ -71,6 +71,4 @@ uint32_t ft_camera_init(t_camera *camera, t_camera_p props);
 uint32_t ft_camera_render(
     t_app *app,
     int32_t (*put_pixel)(mlx_image_t *image, int x, int y, uint32_t color));
-
-
 #endif /* MINI_RT_H */

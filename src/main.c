@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/16 17:16:57 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/17 13:18:02 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ void draw_loop(void *args)
 	t_app *app;
 
 	app = (t_app *)args;
-	ft_camera_render(app, ft_kumul_pixel);
+	ft_camera_render(app, ft_put_pixel);
+	// ft_camera_render(app, ft_kumul_pixel);
 }
 
 int32_t setupWindow(t_app *app)
@@ -91,11 +92,17 @@ int32_t main(void)
 	ft_camera_init(
 		&camera, (t_camera_p){FTVEC3(0), (t_vec3){0,0, -.8}, .5, 1.0 * (double)(app.width/app.height), 1.0, app.width, app.height, STAN_SAMPLES_PER_PIXEL});
 	app.active_camera = &camera;
+
 	dyn_init(&app.hitable, sizeof(t_obj));
-	t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){0,0,-4}}, (t_vec3){100,0,0}, .007);
-	t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, (t_vec3){0,0,100}, .5);
-	t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, (t_vec3){0,100,0}, .02);
-	t_obj sphere3 = ft_sphere_create((t_sphere_p){50,(t_vec3){0,40,-100}}, (t_vec3){0,100,0}, .8);
+	t_material material;
+	memset(&material, 0, sizeof(t_material));
+	material.color = (t_vec3) {155,255,255};
+	material.reflectivity = 1.0;
+	material.scatter = .1;
+	t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){0,0,-4}}, &material);
+	t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
+	t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, &material);
+	t_obj sphere3 = ft_sphere_create((t_sphere_p){50,(t_vec3){0,40,-100}}, &material);
 	dyn_add(&app.hitable, &sphere);
 	dyn_add(&app.hitable, &sphere1);
 	dyn_add(&app.hitable, &sphere2);

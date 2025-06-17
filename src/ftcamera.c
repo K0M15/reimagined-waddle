@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftcamera.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/16 17:10:48 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/17 13:15:32 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ uint32_t ft_camera_init(t_camera *camera, t_camera_p props)
     return (0);
 }
 
-t_obj ft_sphere_create(t_sphere_p params, t_vec3 color, float reflectivity)
+t_obj ft_sphere_create(t_sphere_p params, t_material *mat)
 {
     t_obj sphere;
 
@@ -34,9 +34,8 @@ t_obj ft_sphere_create(t_sphere_p params, t_vec3 color, float reflectivity)
     if(!(sphere.props = malloc(sizeof(t_sphere_p))))
         return sphere;
     sphere.type = SPHERE;
+    sphere.mat = mat;
     memcpy(sphere.props, &params, sizeof(t_sphere_p));
-    sphere.color = color;
-    sphere.reflectivity = reflectivity;
     return sphere;
 }
 
@@ -84,7 +83,7 @@ void ft_obj_dest(t_obj sphere)
     free(sphere.props);
 }
 
-t_obj   ft_cylinder_create(t_cylinder_p params, t_vec3 color)
+t_obj   ft_cylinder_create(t_cylinder_p params, t_material *mat)
 {
     t_obj cyl;
 
@@ -92,12 +91,12 @@ t_obj   ft_cylinder_create(t_cylinder_p params, t_vec3 color)
     if(!(cyl.props = malloc(sizeof(t_cylinder_p))))
         return cyl;
     cyl.type = CYLINDER;
+    cyl.mat = mat;
     memcpy(cyl.props, &params, sizeof(t_cylinder_p));
-    cyl.color = color;
     return (cyl);
 }
 
-t_obj   ft_plane_create(t_plane_p params, t_vec3 color)
+t_obj   ft_plane_create(t_plane_p params, t_material *mat)
 {
     t_obj plane;
 
@@ -105,9 +104,22 @@ t_obj   ft_plane_create(t_plane_p params, t_vec3 color)
     if(!(plane.props = malloc(sizeof(t_plane_p))))
         return plane;
     plane.type = PLANE;
+    plane.mat = mat;
     memcpy(plane.props, &params, sizeof(t_plane_p));
-    plane.color = color;
     return (plane);
+}
+
+t_ray ft_mat_scatter(t_ray inc, t_hitrec *rec)
+{
+    (void) inc;
+    t_ray out;
+    out.origin = rec->hit;
+    // inteligente scatter logik einfuegen
+    if (rand_double() < rec->mat->scatter)
+        out.direction = ftvec3_plus(ftvec3_ronhemi(rec->normal), rec->normal);
+    else
+        out.direction = ftvec3_reflect(inc.direction, rec->normal);
+    return out;
 }
 
 uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *rec)
@@ -129,7 +141,7 @@ uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *re
             rec->hit = temp.hit;
             rec->normal = temp.normal;
             rec->t = temp.t;
-            rec->obj = obj;
+            rec->mat = obj->mat;
         }
         ctr++;
     }
@@ -146,10 +158,9 @@ t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
         return FTVEC3(0);
     if (world_hit(arr, ray, 0.0001, INFINITY, &rec))
     {
-        t_vec3 direction = ftvec3_plus(ftvec3_ronhemi(rec.normal), rec.normal);
         return ftvec3_plus(
-            ftvec3_multiply(FTVEC3(rec.obj->reflectivity), ftray_color(ftray_create(rec.hit, direction), arr, depth - 1)),
-            ftvec3_multiply(FTVEC3(1.0-rec.obj->reflectivity), rec.obj->color)
+            ftvec3_multiply(FTVEC3(rec.mat->reflectivity), ftray_color(ft_mat_scatter(ray, &rec), arr, depth - 1)),
+            ftvec3_multiply(FTVEC3(1.0-rec.mat->reflectivity), rec.mat->color)
         );
     }
     unit_dir = ftvec3_unit(ray.direction);
@@ -208,7 +219,7 @@ uint32_t ft_camera_render(
                 color = ftvec3_plus(color, new_col);
                 i++;
             }
-            put_pixel(app->image, x, y, ftvec3_tocolor(ftvec3_multiply(color, sample_scale), 1.0));
+            put_pixel(app->image, x, y, ftvec3_tocolor(ftvec3_lin_gamma(ftvec3_multiply(color, sample_scale)), 1.0));
             x++;
         }
         y++;
