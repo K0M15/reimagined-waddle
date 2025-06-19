@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftvec3.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:05:58 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/17 13:12:56 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/18 16:34:05 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ t_vec3 ftvec3_normalize(t_vec3 vec);
 t_vec3 ftvec3_unit(t_vec3 v);
 uint32_t ftvec3_tocolor(t_vec3 v, float alpha);
 t_vec3 ftvec3_lin_gamma(t_vec3 color);
+double clamp(double f, double min, double max);
 
 #endif /* FT_VEC3_H */

@@ -6,13 +6,13 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/17 18:52:23 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/18 16:28:41 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_RT_H
 # define MINI_RT_H
-#include "pseudo_random.h"
+# include "pseudo_random.h"
 # include "MLX42.h"
 # include "ftray.h"
 # include "ftvec3.h"
@@ -23,7 +23,7 @@
 # include <stdio.h>
 
 # define STAN_SAMPLES_PER_PIXEL 4
-# define MAX_DEPTH 15
+# define MAX_DEPTH 5
 # define MOV_SPEED 0.01
 
 typedef struct s_camera

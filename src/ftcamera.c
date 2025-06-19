@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/17 18:57:19 by afelger          ###   ########.fr       */
+/*   Updated: 2025/06/19 17:05:46 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,24 +170,25 @@ uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *re
 
 t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
 {
-    float a;
-    t_vec3 unit_dir;
+    // float a;
+    // t_vec3 unit_dir;
     t_hitrec rec;
 
     if (depth <= 0)
-        return FTVEC3(0);
-    if (world_hit(arr, ray, 0.0001, INFINITY, &rec))
-    {
-        if (rec.mat->is_emitting)
-            return (rec.mat->color);
-        return ftvec3_plus(
-            ftvec3_multiply(FTVEC3(rec.mat->reflectivity), ftray_color(ft_mat_scatter(ray, &rec), arr, depth - 1)),
-            ftvec3_multiply(FTVEC3(1.0-rec.mat->reflectivity), rec.mat->color)
-        );
-    }
-    unit_dir = ftvec3_unit(ray.direction);
-    a = 0.5 * (unit_dir.y + 1.0);
-    return ftvec3_plus(ftvec3_multiply(FTVEC3(1.0-a), FTVEC3(1.0)), ftvec3_multiply(FTVEC3(a), ray.ambient));
+        return (t_vec3){0, 0, 0};
+
+    if (!world_hit(arr, ray, 0.0001, INFINITY, &rec))
+        return (ray.ambient);
+
+    if (rec.mat->is_emitting)
+        return (rec.mat->color);
+    return ftvec3_plus(
+        ftvec3_multiply(
+            FTVEC3(clamp(rec.mat->reflectivity, 0, 1)), 
+            ftray_color(ft_mat_scatter(ray, &rec), arr, depth - 1) // rework scatter... -> this should return a bool if mat scatters or not. additionaly, the color should be returned in a ptr
+        ),
+        ftvec3_multiply(FTVEC3(1.0-rec.mat->reflectivity), rec.mat->color)
+    );
 }
 
 t_vec3 sample_square()
