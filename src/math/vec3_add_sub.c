@@ -12,6 +12,8 @@ vec3	*vec3_add_r(const vec3 *const addent1, const vec3 *const addent2)
 	vec3	*result;
 
 	result = (vec3 *)malloc(sizeof(vec3));
+	if (!result)
+		return (0);
 	result->x = addent1->x + addent2->x;
 	result->y = addent1->y + addent2->y;
 	result->z = addent1->z + addent2->z;
@@ -30,6 +32,8 @@ vec3	*vec3_subtract_r(const vec3 *const sub1, const vec3 *const sub2)
 	vec3	*result;
 
 	result = (vec3 *)malloc(sizeof(vec3));
+	if (!result)
+		return (0);
 	result->x = sub1->x - sub2->x;
 	result->y = sub1->y - sub2->y;
 	result->z = sub1->z - sub2->z;

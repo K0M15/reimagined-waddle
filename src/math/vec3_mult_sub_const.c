@@ -13,6 +13,8 @@ vec3	*vec3_devide_by_const_r(const vec3 *const divident, const FLOAT divisor)
 	vec3	*result;
 
 	result = (vec3 *)malloc(sizeof(vec3));
+	if (!result)
+		return (0);
 	result->x = divident->x / divisor;
 	result->y = divident->y / divisor;
 	result->z = divident->z / divisor;
@@ -32,6 +34,8 @@ vec3	*vec3_multiply_by_const_r(const vec3 *const multiplier, \
 	vec3	*result;
 
 	result = (vec3 *)malloc(sizeof(vec3));
+	if (!result)
+		return (0);
 	result->x = multiplier->x / multiplicand;
 	result->y = multiplier->y / multiplicand;
 	result->z = multiplier->z / multiplicand;

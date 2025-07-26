@@ -8,6 +8,9 @@ typedef struct s_vec3 {
 	FLOAT z;
 } vec3;
 
+void	vec3_copy(vec3 *const result, const vec3 *const source);
+vec3	*vec3_dup(const vec3 *const);
+
 void	vec3_negate(vec3 *const);
 vec3	*vec3_negate_r(const vec3 *const);
 
@@ -26,6 +29,7 @@ vec3	*vec3_multiply_by_const_r(const vec3 *const, const FLOAT);
 FLOAT	vec3_get_length(const vec3 *const);
 FLOAT	vec3_get_length_squared(const vec3 *const);
 
+//TODO: Discuss if this op's are needed
 void	vec3_multiply_by(vec3 *const, const vec3 *const);
 vec3	*vec3_multiply_by_r(const vec3 *const, const vec3 *const);
 

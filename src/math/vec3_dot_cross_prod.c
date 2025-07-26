@@ -29,6 +29,8 @@ vec3	*vec3_cross_procuct_r(const vec3 *const a, const vec3 *const b)
 	vec3	*result;
 
 	result = (vec3 *)malloc(sizeof(vec3));
+	if (!result)
+		return (0);
 	result->x = a.y * b.z - a.z * b.y;
 	result->y = a.x * b.z - a.z * b.x;
 	result->z = a.x * b.y - a.y * b.x;
