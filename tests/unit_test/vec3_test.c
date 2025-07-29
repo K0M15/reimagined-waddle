@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//TODO: Add more test to test the core functionality of the vec3 functions
 int vec3_test(void)
 {
 	vec3 a = (vec3){.x=1, .y=1, .z=2};
