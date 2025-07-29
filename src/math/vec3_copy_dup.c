@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "vec3.h"
 
 void	vec3_copy(vec3 *const result, const vec3 *const source)

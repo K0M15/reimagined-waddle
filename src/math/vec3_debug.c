@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "vec3.h"
 
 void	vec3_print(const vec3 *const input)

@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "vec3.h"
 #include "settings.h"
 
