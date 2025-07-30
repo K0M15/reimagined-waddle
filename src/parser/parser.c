@@ -1,23 +1,29 @@
 #include <fcntl.h>
 #include <stdio.h>
+#include "parser.h"
 
 static int	extract_line_data(const char *line)
 {
+	int ret;
+
+	ret = 0;
 	if (*line == 'A')
-		extract_ambient_light(line);	
+		ret = extract_ambient_light(line);	
 	else if (*line == 'C')
-		extract_camera(line);
+		ret = extract_camera(line);
 	else if (*line == 'L')
-		extract_light(line);
+		ret = extract_light(line);
 	else if (ft_strncmp(line, 'sp', 2) == 0)
-		extract_sphere(line);
+		ret = extract_sphere(line);
 	else if (ft_strncmp(line, 'pl', 2) == 0)
-		extract_plane(line);
+		ret = extract_plane(line);
 	else if (ft_strncmp(line, 'cy', 2) == 0)
-		extract_cylinder(line);
+		ret = extract_cylinder(line);
+	else if (*line == 0)
+		ret = 0;
 	else
 		return (-1);
-	return (0);
+	return (ret);
 }
 
 int pars(const char *path)

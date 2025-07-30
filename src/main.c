@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "parser.h"
+#include "minirt.h"
 
 static void	print_instructions(void)
 {
