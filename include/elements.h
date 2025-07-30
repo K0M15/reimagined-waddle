@@ -4,7 +4,7 @@
 
 //The rgb: [0-255]
 typedef struct s_rgb {
-	int		r;
+	int	r;
 	int 	g;
 	int 	b;
 } t_rgb;
@@ -56,7 +56,7 @@ typedef struct	s_plane {
 	t_rgb		color;
 } t_plane;
 
-typedef struct	s_plane {
+typedef struct	s_cylinder{
 	t_point		loc;
 	t_normal	normal;
 	FLOAT		diameter;
