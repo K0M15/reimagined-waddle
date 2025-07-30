@@ -1,3 +1,4 @@
+#TODO: Still have to compile libft
 NAME        = miniRT 
 UN_TESTS	= test
 CC          = cc
