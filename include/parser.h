@@ -1,5 +1,6 @@
 #ifndef PARSER_H
 # define PARSER_H
+#include "settings.h"
 
 //parser.c
 int	pars(const char *path);
@@ -18,5 +19,7 @@ t_rgb	extract_color(const char *input);
 
 //free_tokens.c
 void	free_tokens(char **tokens);
+int	token_ammount(char **tokens);
+FLOAT	ft_atof(const char *input);
 
 #endif

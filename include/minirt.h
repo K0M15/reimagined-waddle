@@ -1,5 +1,5 @@
 #ifndef	MINIRT_H
-# ifndef MINIRT_H
+# define MINIRT_H
 #include "elements.h"
 
 typedef struct s_scene {

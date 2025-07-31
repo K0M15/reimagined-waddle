@@ -22,6 +22,7 @@ UN_TEST_SRCS = $(addprefix $(UN_TESTS_DIR)/, $(UN_TEST_FILES))
 
 VEC3_DIR	=	src/math
 PARSER_DIR	=	src/parser
+SCENE_DIR	=	src
 
 VEC3_FILES	=	vec3_add_sub.c \
 				vec3_copy_dup.c \
@@ -33,13 +34,18 @@ VEC3_FILES	=	vec3_add_sub.c \
 
 VEC3_SRCS	+= $(addprefix $(VEC3_DIR)/, $(VEC3_FILES))
 
-PARSER_FILES 	= extract_rgb.c \
-				  free_tokens.c
+PARSER_FILES 	=	extract_rgb.c \
+			token_utils.c \
+			extract_ambient_light.c
 
 PARSER_SRCS	+= $(addprefix $(PARSER_DIR)/, $(PARSER_FILES))
 
-UN_TEST_SRCS += $(VEC3_SRCS) $(PARSER_SRCS)
-SRCS = $(VEC3_SRCS) $(PARSER_SRCS)
+SCENE_FILES	=	scene_utils.c
+
+SCENE_SRCS	+= $(addprefix $(SCENE_DIR)/, $(SCENE_FILES))
+
+UN_TEST_SRCS += $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS)
+SRCS = $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS)
 
 UN_TEST_OBJS = $(UN_TEST_SRCS:.c=.o)
 OBJS        = $(SRCS:.c=.o)
@@ -51,10 +57,12 @@ OBJS        = $(SRCS:.c=.o)
 
 $(NAME): $(OBJS)
 	@$(CC) -g -fsanitize=address $(OBJS) $(LIBRARIES) -o $(NAME) > /dev/null
+#	@$(CC) -g $(OBJS) $(LIBRARIES) -o $(NAME) > /dev/null
 
 $(UN_TESTS): $(UN_TEST_OBJS)
 	@$(MAKE) -C ./lib/libft > /dev/null
 	@$(CC) -g -fsanitize=address $(UN_TEST_OBJS) $(LIBRARIES) -o $(UN_TESTS) > /dev/null
+#	@$(CC) -g $(UN_TEST_OBJS) $(LIBRARIES) -o $(UN_TESTS) > /dev/null
 
 clean:
 	@rm -f $(OBJS) > /dev/null

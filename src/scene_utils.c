@@ -1,9 +1,9 @@
 #include "minirt.h"
-#include "elememts.h"
+#include "elements.h"
 
 t_scene *get_scene(void)
 {
-	static const t_scene scene;
+	static t_scene scene;
 	return (&scene);
 }
 
