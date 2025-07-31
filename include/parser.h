@@ -1,5 +1,5 @@
 #ifndef PARSER_H
-# define PARSER
+# define PARSER_H
 
 //parser.c
 int	pars(const char *path);
@@ -15,5 +15,8 @@ int	extract_cylinder(const char *line);
 //extract_utils.c
 void	cpy_rgb(t_rgb *dst, t_rgb *src);
 t_rgb	extract_color(const char *input);
+
+//free_tokens.c
+void	free_tokens(char **tokens);
 
 #endif

@@ -2,5 +2,9 @@
 
 int main(void)
 {
-	vec3_test();
+	int	ret = 0;
+
+	ret += vec3_test();
+	ret += parser_test();
+	return (ret);
 }
