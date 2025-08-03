@@ -2,7 +2,7 @@
 #include "vec3.h"
 #include "settings.h"
 
-FLOAT	vec3_dot_product(const vec3 *const a, const vec3 *const b)
+FLOAT	vec3_dot_product(const t_vec3 *const a, const t_vec3 *const b)
 {
 	FLOAT	result;
 
@@ -13,9 +13,9 @@ FLOAT	vec3_dot_product(const vec3 *const a, const vec3 *const b)
 	return (result);
 }
 
-void	vec3_cross_procuct(vec3 *const result, const vec3 *const b)
+void	vec3_cross_procuct(t_vec3 *const result, const t_vec3 *const b)
 {
-	vec3	temp;
+	t_vec3	temp;
 
 	temp.x = result->x;
 	temp.y = result->y;
@@ -25,11 +25,11 @@ void	vec3_cross_procuct(vec3 *const result, const vec3 *const b)
 	result->z = temp.x * b->y - temp.y * b->x;
 }
 
-vec3	*vec3_cross_procuct_r(const vec3 *const a, const vec3 *const b)
+t_vec3	*vec3_cross_procuct_r(const t_vec3 *const a, const t_vec3 *const b)
 {
-	vec3	*result;
+	t_vec3	*result;
 
-	result = (vec3 *)malloc(sizeof(vec3));
+	result = (t_vec3 *)malloc(sizeof(t_vec3));
 	if (!result)
 		return (0);
 	result->x = a->y * b->z - a->z * b->y;
