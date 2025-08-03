@@ -72,6 +72,39 @@ int	extract_ambient_light_test(void)
 	return (0);
 }
 
+int	extract_camera_test(void)
+{
+	extract_camera("C -50.0,0,20 0,0,1 70");
+	extract_camera("C -50.0,100,20    1,0,1    80");
+
+	t_node	*temp = get_scene()->camera;
+	if (((t_camera *)temp->value)->loc.x != (FLOAT)-50 || \
+	((t_camera *)temp->value)->loc.y != (FLOAT)0 || \
+	((t_camera *)temp->value)->loc.z != (FLOAT)20)
+		return (-1);
+	if (((t_camera *)temp->value)->normal.x != (FLOAT)0 || \
+	((t_camera *)temp->value)->normal.y != (FLOAT)0 || \
+	((t_camera *)temp->value)->normal.z != (FLOAT)1)
+		return (-1);
+	if (((t_camera *)temp->value)->fov != (int)70)
+		return (-1);
+	temp = temp->next;
+	if (((t_camera *)temp->value)->loc.x != (FLOAT)-50 || \
+	((t_camera *)temp->value)->loc.y != (FLOAT)100 || \
+	((t_camera *)temp->value)->loc.z != (FLOAT)20)
+		return (-1);
+	if (((t_camera *)temp->value)->normal.x != (FLOAT)1 || \
+	((t_camera *)temp->value)->normal.y != (FLOAT)0 || \
+	((t_camera *)temp->value)->normal.z != (FLOAT)1)
+		return (-1);
+	if (((t_camera *)temp->value)->fov != (int)80)
+		return (-1);
+	if (temp->next)
+		return (-1);
+	printf("\033[32mParsing: camera_test passed\n\033[0m");
+	return (0);
+}
+
 int	parser_test(void)
 {
 	init_scene();
@@ -82,6 +115,11 @@ int	parser_test(void)
 	if (extract_ambient_light_test() == -1)
 	{
 		printf("\033[31;40mParsing: ambient_test failed!!!\n\033[0m");
+		return (-1);
+	}
+	if (extract_camera_test() == -1)
+	{
+		printf("\033[31;40mParsing: camera_test failed!!!\n\033[0m");
 		return (-1);
 	}
 	return (0);

@@ -37,8 +37,11 @@ VEC3_FILES	=	vec3_add_sub.c \
 VEC3_SRCS	+= $(addprefix $(VEC3_DIR)/, $(VEC3_FILES))
 
 PARSER_FILES 	=	extract_rgb.c \
+			extract_normal.c \
+			extract_cordinates.c \
 			token_utils.c \
-			extract_ambient_light.c
+			extract_ambient_light.c \
+			extract_camera.c
 
 PARSER_SRCS	+= $(addprefix $(PARSER_DIR)/, $(PARSER_FILES))
 

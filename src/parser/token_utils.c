@@ -36,8 +36,15 @@ FLOAT	ft_atof(const char *input)
 {
 	FLOAT	result;
 	FLOAT	fraction_loc;
+	int	sign;
 
 	result = 0;
+	sign = 1;
+	if (*input == '-')
+	{
+		sign = -1;
+		input++;
+	}
 	if (!ft_isdigit(*input))
 	{
 		errno = EINVAL;
@@ -48,6 +55,8 @@ FLOAT	ft_atof(const char *input)
 		result = result * 10 + (*input - '0');
 		input++;
 	}
+	if (!*input)
+		return (result * sign);
 	if (*input != '.' || !ft_isdigit(*(input + 1)))
 	{
 		errno = EINVAL;
@@ -63,5 +72,5 @@ FLOAT	ft_atof(const char *input)
 	}
 	if (*input)
 		errno = EINVAL;
-	return (result);
+	return (sign * result);
 }

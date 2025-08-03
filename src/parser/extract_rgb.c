@@ -45,8 +45,6 @@ static int	tokens_to_rgb(char **tokens, t_rgb *result)
 	return (0);
 }
 
-//TODO: Still have to implement freeing tokens
-
 void	init_color(t_rgb *color)
 {
 	color->r = 0;
@@ -77,5 +75,5 @@ t_rgb	extract_color(const char *input)
 		errno = EINVAL;
 		return (free_tokens(tokens), color);
 	}
-	return (color);
+	return (free_tokens(tokens), color);
 }
