@@ -105,6 +105,39 @@ int	extract_camera_test(void)
 	return (0);
 }
 
+int	extract_light_test(void)
+{
+	extract_light("L -40.0,50.0,0.0 0.6 10,0,255");
+	extract_light("L -40.0,40.0,-1.0 1   10,20,20");
+
+	t_node	*temp = get_scene()->light;
+	if (((t_light *)temp->value)->loc.x != (FLOAT)-40 || \
+	((t_light *)temp->value)->loc.y != (FLOAT)50 || \
+	((t_light *)temp->value)->loc.z != (FLOAT)0)
+		return (-1);
+	if (((t_light *)temp->value)->brightness != (FLOAT)0.6)
+		return (-1);
+	if (((t_light *)temp->value)->color.r != 10 || \
+	((t_light *)temp->value)->color.g != 0 || \
+	((t_light *)temp->value)->color.b != 255)
+		return (-1);
+	temp = temp->next;
+	if (((t_light *)temp->value)->loc.x != (FLOAT)-40 || \
+	((t_light *)temp->value)->loc.y != (FLOAT)40 || \
+	((t_light *)temp->value)->loc.z != (FLOAT)-1)
+		return (-1);
+	if (((t_light *)temp->value)->brightness != (FLOAT)1)
+		return (-1);
+	if (((t_light *)temp->value)->color.r != 10 || \
+	((t_light *)temp->value)->color.g != 20 || \
+	((t_light *)temp->value)->color.b != 20)
+		return (-1);
+	if (temp->next)
+		return (-1);
+	printf("\033[32mParsing: light_test passed\n\033[0m");
+	return (0);
+}
+
 int	parser_test(void)
 {
 	init_scene();
@@ -120,6 +153,11 @@ int	parser_test(void)
 	if (extract_camera_test() == -1)
 	{
 		printf("\033[31;40mParsing: camera_test failed!!!\n\033[0m");
+		return (-1);
+	}
+	if (extract_light_test() == -1)
+	{
+		printf("\033[31;40mParsing: light_test failed!!!\n\033[0m");
 		return (-1);
 	}
 	return (0);

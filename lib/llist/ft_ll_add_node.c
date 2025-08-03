@@ -26,6 +26,7 @@ t_node	*add_node(void *value)
 	return (new_head);
 }
 
+#include <stdio.h>
 t_node	*add_ll_back_node(t_node **head, void *value)
 {
 	t_node	*temp;
@@ -38,7 +39,7 @@ t_node	*add_ll_back_node(t_node **head, void *value)
 	temp = *head;
 	while (temp->next)
 	{
-		*head = temp->next;
+		temp = temp->next;
 	}
 	temp->next = (t_node *)malloc(sizeof(t_node));
 	if (!temp->next)
@@ -46,7 +47,7 @@ t_node	*add_ll_back_node(t_node **head, void *value)
 	temp = temp->next;
 	temp->value = value;
 	temp->next = NULL;
-	return temp;
+	return (temp);
 }
 
 t_node	*add_ll_node_after(t_node *previous_node, void *value)
