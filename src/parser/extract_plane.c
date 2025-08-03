@@ -51,7 +51,7 @@ int	extract_plane(const char *line)
 	color = extract_color(tokens[3]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (add_plane(&loc, &brightness, &color) == -1)
+	if (add_plane(&loc, &normal, &color) == -1)
 		return (free_tokens(tokens), -1);
 	return (free_tokens(tokens), 0);
 }

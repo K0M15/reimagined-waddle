@@ -17,16 +17,16 @@ static int	add_cylinder(t_cylinder *input)
 		printf("Malloc failed!\n");
 		return (-1);
 	}
-	cpy_loc(&cylinder->loc, input->loc);
-	cpy_normal(&cylinder->normal, input->normal);
+	cpy_loc(&cylinder->loc, &input->loc);
+	cpy_normal(&cylinder->normal, &input->normal);
 	cylinder->diameter = input->diameter;
 	cylinder->height = input->height;
-	cpy_rgb(&cylinder->color, input->color);
+	cpy_rgb(&cylinder->color, &input->color);
 	add_ll_back_node(&(get_scene()->cylinder), cylinder);
 	return (0);
 }
 
-int	extract_plane(const char *line)
+int	extract_cylinder(const char *line)
 {
 	char		**tokens;
 	t_cylinder	temp;
@@ -45,14 +45,14 @@ int	extract_plane(const char *line)
 	temp.loc = extract_loc(tokens[1]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	temp.normal = extract_normal(tokens[2];
+	temp.normal = extract_normal(tokens[2]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	tmp.diameter = atof(tokens[3]);
-	if (errno || tmp.diameter < (FLOAT)0)
+	temp.diameter = atof(tokens[3]);
+	if (errno || temp.diameter < (FLOAT)0)
 		return (free_tokens(tokens), -1);
-	tmp.height = atof(tokens[4]);
-	if (errno || tmp.height < (FLOAT)0)
+	temp.height = atof(tokens[4]);
+	if (errno || temp.height < (FLOAT)0)
 		return (free_tokens(tokens), -1);
 	temp.color = extract_color(tokens[5]);
 	if (errno)

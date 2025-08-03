@@ -73,7 +73,7 @@ static char	*get_line(char **buffer, char *new_line_start)
 		result = (char *)malloc(str_len(*buffer) + NULL_CHAR_LEN);
 		if (!result)
 			return (0);
-		ft_strlcpy(result, *buffer, str_len(*buffer));
+		ft_strlcpygnl(result, *buffer, str_len(*buffer));
 		return (result);
 	}
 	result = (char *)malloc(new_line_start - *buffer + NULL_CHAR_LEN);
@@ -81,7 +81,7 @@ static char	*get_line(char **buffer, char *new_line_start)
 	{
 		return (0);
 	}
-	ft_strlcpy(result, *buffer, \
+	ft_strlcpygnl(result, *buffer, \
 			new_line_start - *buffer);
 	if (!truncate_buffer(buffer, new_line_start))
 	{
@@ -100,7 +100,7 @@ static int	truncate_buffer(char **buffer, char *new_line_start)
 	result = (char *)malloc(len + NULL_CHAR_LEN);
 	if (!result)
 		return (0);
-	ft_strlcpy(result, new_line_start, len);
+	ft_strlcpygnl(result, new_line_start, len);
 	free_buffer(buffer, 0);
 	*buffer = result;
 	return (1);

@@ -14,7 +14,7 @@
 
 int		add_to_buffer(char **buffer, char *current_read, int bytes_read);
 int		str_len(char *str);
-void	ft_strlcpy(char *result, char *buffer, int len);
+void	ft_strlcpygnl(char *result, char *buffer, int len);
 char	*free_buffer(char **buffer, char **buffer2);
 char	*check_for_newline(char *buffer);
 
@@ -62,7 +62,7 @@ int	str_len(char *str)
 	return (len);
 }
 
-void	ft_strlcpy(char *result, char *buffer, int len)
+void	ft_strlcpygnl(char *result, char *buffer, int len)
 {
 	*(result + len) = '\0';
 	len--;

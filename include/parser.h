@@ -1,6 +1,7 @@
 #ifndef PARSER_H
 # define PARSER_H
 #include "settings.h"
+#include "elements.h"
 
 //parser.c
 int	pars(const char *path);
