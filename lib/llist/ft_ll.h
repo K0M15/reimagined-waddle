@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/31 14:03:35 by kzarins           #+#    #+#             */
-/*   Updated: 2025/01/31 14:06:22 by kzarins          ###   ########.fr       */
+/*   Created: 2025/01/31 13:33:21 by kzarins           #+#    #+#             */
+/*   Updated: 2025/01/31 13:48:42 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@
 typedef struct node
 {
 	struct node	*next;
-	int			value;
+	void		*value;
 }				t_node;
 
 /*ft_ll_add_node.c*/
 // Returns a new node
-t_node			*add_node(const int value);
+t_node			*add_node(void *value);
 // Return: the last nodes pointer
-t_node			*add_ll_back_node(t_node *head, const int value);
+t_node			*add_ll_back_node(t_node *head, void *value);
 // Adds node in the middle or middle + 1
 // Return: the node that was inserted
-t_node			*add_ll_middle_node(t_node *head, const int value);
+t_node			*add_ll_middle_node(t_node *head, void *value);
 // Inserts a new head node
 // Return: new head node or the head node if malloc fails!
-t_node			*add_ll_node_head(t_node *head, const int value);
+t_node			*add_ll_node_head(t_node *head, void *value);
 
 /*ft_ll_delete_node.c*/
 void			delete_inbetween_node(t_node *previous_node);

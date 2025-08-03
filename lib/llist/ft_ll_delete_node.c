@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/31 14:03:31 by kzarins           #+#    #+#             */
-/*   Updated: 2025/01/31 14:04:59 by kzarins          ###   ########.fr       */
+/*   Created: 2025/01/31 13:30:45 by kzarins           #+#    #+#             */
+/*   Updated: 2025/01/31 13:45:25 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,20 @@ void	delete_ll_all(t_node **head)
 {
 	t_node	*previous;
 
+	if (!head)
+		return ;
 	while ((*head)->next)
 	{
+		if ((*head)->value)
+		{
+			free((*head)->value);
+		}
 		previous = *head;
 		*head = (*head)->next;
 		free(previous);
 	}
+	if ((*head)->value)
+		free((*head)->value);
 	free(*head);
 	*head = NULL;
 }

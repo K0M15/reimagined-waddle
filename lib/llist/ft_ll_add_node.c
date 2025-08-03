@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/31 14:03:09 by kzarins           #+#    #+#             */
-/*   Updated: 2025/01/31 14:05:33 by kzarins          ###   ########.fr       */
+/*   Created: 2025/01/31 13:29:41 by kzarins           #+#    #+#             */
+/*   Updated: 2025/01/31 13:49:18 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-t_node	*add_node(const int value)
+t_node	*add_node(void *value)
 {
 	t_node	*new_head;
 
@@ -26,7 +26,7 @@ t_node	*add_node(const int value)
 	return (new_head);
 }
 
-t_node	*add_ll_back_node(t_node *head, const int value)
+t_node	*add_ll_back_node(t_node *head, void *value)
 {
 	if (!head)
 		return (0);
@@ -43,7 +43,7 @@ t_node	*add_ll_back_node(t_node *head, const int value)
 	return (head);
 }
 
-t_node	*add_ll_node_after(t_node *previous_node, const int value)
+t_node	*add_ll_node_after(t_node *previous_node, void *value)
 {
 	t_node	*new_node;
 
@@ -55,7 +55,7 @@ t_node	*add_ll_node_after(t_node *previous_node, const int value)
 	return (new_node);
 }
 
-t_node	*add_ll_node_head(t_node *head, const int value)
+t_node	*add_ll_node_head(t_node *head, void *value)
 {
 	t_node	*new_head;
 
@@ -66,7 +66,7 @@ t_node	*add_ll_node_head(t_node *head, const int value)
 	return (new_head);
 }
 
-t_node	*add_ll_middle_node(t_node *head, const int value)
+t_node	*add_ll_middle_node(t_node *head, void *value)
 {
 	t_node	*fast_ptr;
 	t_node	*previous_ptr;

@@ -22,7 +22,6 @@ static int	add_ambient_light(FLOAT *light_ratio, t_rgb *color)
 	return (0);
 }
 
-//TODO: FT_SPLIT should also have a free function!!!!!
 int	extract_ambient_light(const char *line)
 {
 	char	**tokens;
