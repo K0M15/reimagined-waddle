@@ -1,5 +1,6 @@
 NAME        = miniRT 
-UN_TESTS	= test
+UN_TESTS	= untest
+REND_TESTS	= test
 CC          = cc
 CFLAGS = -Wall -Wextra -Werror -Iinclude
 
@@ -13,15 +14,19 @@ LIBLLIST_NAME	= llist
 
 LIBRARIES   = -L$(LIBFT_PATH) -l$(LIBFT_NAME) -L$(LIBGNL_PATH) -l$(LIBGNL_NAME) -L$(LIBLLIST_PATH) -l$(LIBLLIST_NAME)
 
-UN_TESTS_DIR	=	tests/unit_test
+UN_TEST_DIR	=	tests/unit_test
 
 UN_TEST_FILES	=	main.c \
-					vec3_test.c \
-					parser_test.c \
-					whole_parser_test.c
+			vec3_test.c \
+			parser_test.c \
+			whole_parser_test.c
 
+REND_TEST_DIR	=	tests
 
-UN_TEST_SRCS = $(addprefix $(UN_TESTS_DIR)/, $(UN_TEST_FILES))
+REND_TEST_FILES=	render_tests.c
+
+UN_TEST_SRCS = $(addprefix $(UN_TEST_DIR)/, $(UN_TEST_FILES))
+REND_TEST_SRCS	= $(addprefix $(REND_TEST_DIR)/, $(REND_TEST_FILES))
 
 VEC3_DIR	=	src/math
 PARSER_DIR	=	src/parser
@@ -58,9 +63,11 @@ SCENE_SRCS	+= $(addprefix $(SCENE_DIR)/, $(SCENE_FILES))
 
 UN_TEST_SRCS += $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS)
 SRCS = $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS)
+REND_TEST_SRCS	+= $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS)
 
 UN_TEST_OBJS = $(UN_TEST_SRCS:.c=.o)
 OBJS        = $(SRCS:.c=.o)
+REND_TEST_OBJS = $(REND_TEST_SRCS:.c=.o)
 
 compile_libs:
 	@$(MAKE) -C $(LIBFT_PATH) > /dev/null
@@ -74,7 +81,6 @@ remote_libs:
 	@$(MAKE) -C $(LIBLLIST_PATH) fclean > /dev/null
 	@echo "\033[1;33m✔ Removed: LIBS\033[0m"
 	
-
 %.o: %.c
 	@$(CC) -g $(CFLAGS) -c $< -o $@ $(INCLUDES) > /dev/null
 	@echo "\033[1;32m✔ Compiled: $<\033[0m"
