@@ -50,6 +50,25 @@ int	ft_atof_test(void)
 int	extract_ambient_light_test(void)
 {
 	extract_ambient_light("A     0.2    255,255,255");
+	extract_ambient_light("A     0.5    0,125,255");
+
+	t_node	*temp = get_scene()->ambient_light;
+	if (((t_ambient_light *)temp->value)->lighting_ratio != (FLOAT)0.2)
+		return (-1);
+	if (((t_ambient_light *)temp->value)->color.r != (int)255 || \
+	((t_ambient_light *)temp->value)->color.g != (int)255 || \
+	((t_ambient_light *)temp->value)->color.b != (int)255)
+		return (-1);
+	temp = temp->next;
+	if (((t_ambient_light *)temp->value)->lighting_ratio != (FLOAT)0.5)
+		return (-1);
+	if (((t_ambient_light *)temp->value)->color.r != (int)0 || \
+	((t_ambient_light *)temp->value)->color.g != (int)125 || \
+	((t_ambient_light *)temp->value)->color.b != (int)255)
+		return (-1);
+	if (temp->next)
+		return (-1);
+	printf("\033[32mParsing: ambient_test passed\n\033[0m");
 	return (0);
 }
 
@@ -61,6 +80,9 @@ int	parser_test(void)
 	if (ft_atof_test() == -1)
 		return (-1);
 	if (extract_ambient_light_test() == -1)
+	{
+		printf("\033[31;40mParsing: ambient_test failed!!!\n\033[0m");
 		return (-1);
+	}
 	return (0);
 }

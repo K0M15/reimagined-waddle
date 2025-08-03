@@ -5,6 +5,7 @@
 #include "settings.h"
 #include "elements.h"
 #include "parser.h"
+#include "ft_ll.h"
 
 static int	add_ambient_light(FLOAT *light_ratio, t_rgb *color)
 {
@@ -19,6 +20,7 @@ static int	add_ambient_light(FLOAT *light_ratio, t_rgb *color)
 	a_light->lighting_ratio = *light_ratio;
 	cpy_rgb(&a_light->color, color);
 	//TODO: Add linked list to this addable lights
+	add_ll_back_node(&(get_scene()->ambient_light), a_light);
 	return (0);
 }
 
