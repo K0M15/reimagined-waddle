@@ -6,43 +6,46 @@ typedef struct s_vec3 {
 	FLOAT x;
 	FLOAT y;
 	FLOAT z;
-} vec3;
+} t_vec3;
 
-void	vec3_copy(vec3 *const result, const vec3 *const source);
-vec3	*vec3_dup(const vec3 *const);
+void	vec3_copy(t_vec3 *const result, const t_vec3 *const source);
+t_vec3	*vec3_dup(const t_vec3 *const);
 
-void	vec3_negate(vec3 *const);
-vec3	*vec3_negate_r(const vec3 *const);
+void	vec3_negate(t_vec3 *const);
+t_vec3	*vec3_negate_r(const t_vec3 *const);
 
-void	vec3_add(vec3 *const result, const vec3 *const addent);
-vec3	*vec3_add_r(const vec3 *const addent1, const vec3 *const addent2);
+void	vec3_add(t_vec3 *const result, const t_vec3 *const addent);
+t_vec3	*vec3_add_r(const t_vec3 *const addent1, const t_vec3 *const addent2);
 
-void	vec3_subtract(vec3 *const, const vec3 *const);
-vec3	*vec3_subtract_r(const vec3 *const, const vec3 *const);
+void	vec3_subtract(t_vec3 *const, const t_vec3 *const);
+t_vec3	*vec3_subtract_r(const t_vec3 *const, const t_vec3 *const);
 
-void	vec3_devide_by_const(vec3 *const, const FLOAT);
-vec3	*vec3_devide_by_const_r(const vec3 *const, const FLOAT);
+void	vec3_devide_by_const(t_vec3 *const, const FLOAT);
+t_vec3	*vec3_devide_by_const_r(const t_vec3 *const, const FLOAT);
 
-void	vec3_multiply_by_const(vec3 *const, const FLOAT);
-vec3	*vec3_multiply_by_const_r(const vec3 *const, const FLOAT);
+void	vec3_multiply_by_const(t_vec3 *const, const FLOAT);
+t_vec3	*vec3_multiply_by_const_r(const t_vec3 *const, const FLOAT);
 
-FLOAT	vec3_get_length(const vec3 *const);
-FLOAT	vec3_get_length_squared(const vec3 *const);
+FLOAT	vec3_get_length(const t_vec3 *const);
+FLOAT	vec3_get_length_squared(const t_vec3 *const);
 
 //TODO: Discuss if this op's are needed
-void	vec3_multiply_by(vec3 *const, const vec3 *const);
-vec3	*vec3_multiply_by_r(const vec3 *const, const vec3 *const);
+void	vec3_multiply_by(t_vec3 *const, const t_vec3 *const);
+t_vec3	*vec3_multiply_by_r(const t_vec3 *const, const t_vec3 *const);
 
-void	vec3_unit_vec(vec3 *const);
-vec3	*vec3_unit_vec_r(const vec3 *const);
+void	vec3_unit_vec(t_vec3 *const);
+t_vec3	*vec3_unit_vec_r(const t_vec3 *const);
 
-FLOAT	vec3_dot_product(const vec3 *const, const vec3 *const);
+FLOAT	vec3_dot_product(const t_vec3 *const, const t_vec3 *const);
 
-void	vec3_cross_procuct(vec3 *const, const vec3 *const);
-vec3	*vec3_cross_procuct_r(const vec3 *const, const vec3 *const);
+void	vec3_cross_procuct(t_vec3 *const, const t_vec3 *const);
+t_vec3	*vec3_cross_procuct_r(const t_vec3 *const, const t_vec3 *const);
+
+void	vec3_normalize(t_vec3 *const input);
+t_vec3	*vec3_normalize_r(const t_vec3 *const input);
 
 //For debuging
-void	vec3_print(const vec3 *const);
+void	vec3_print(const t_vec3 *const);
 
 #endif
 
