@@ -13,6 +13,8 @@
 #ifndef FT_LL_H
 # define FT_LL_H
 
+//TODO: Redo the whole lib so that the first node changes
+//	the value of the head node argument.
 typedef struct node
 {
 	struct node	*next;

@@ -26,21 +26,27 @@ t_node	*add_node(void *value)
 	return (new_head);
 }
 
-t_node	*add_ll_back_node(t_node *head, void *value)
+t_node	*add_ll_back_node(t_node **head, void *value)
 {
-	if (!head)
-		return (0);
-	while (head->next)
+	t_node	*temp;
+
+	if (!(*head))
 	{
-		head = head->next;
+		*head = add_node(value);
+		return (*head);
 	}
-	head->next = (t_node *)malloc(sizeof(t_node));
-	if (!head->next)
+	temp = *head;
+	while (temp->next)
+	{
+		*head = temp->next;
+	}
+	temp->next = (t_node *)malloc(sizeof(t_node));
+	if (!temp->next)
 		return (NULL);
-	head = head->next;
-	head->value = value;
-	head->next = NULL;
-	return (head);
+	temp = temp->next;
+	temp->value = value;
+	temp->next = NULL;
+	return temp;
 }
 
 t_node	*add_ll_node_after(t_node *previous_node, void *value)
