@@ -1,6 +1,7 @@
 #ifndef ELEMENTS_H
 # define ELEMENTS_H
 # include "settings.h"
+# include "vec3.h"
 
 //The rgb: [0-255]
 typedef struct s_rgb {
@@ -10,18 +11,10 @@ typedef struct s_rgb {
 } t_rgb;
 
 //Values [-inf, inf]
-typedef struct s_point {
-	FLOAT 	x;
-	FLOAT	y;
-	FLOAT	z;
-} t_point;
+typedef t_vec3 t_point;
 
 //Values [-1.0, 1.0]
-typedef struct	s_normal {
-	FLOAT 	x;
-	FLOAT	y;
-	FLOAT	z;
-}	t_normal;
+typedef t_vec3 t_normal;
 
 //The lighting ration: [0.0, 1.0]
 typedef struct s_ambient_light {

@@ -62,7 +62,8 @@ SCENE_FILES	=	scene_utils.c
 
 SCENE_SRCS	+= $(addprefix $(SCENE_DIR)/, $(SCENE_FILES))
 
-REND_FILES	=	 render.c
+REND_FILES	=	 render.c \
+			ray_calc.c
 
 REND_SRCS	+= $(addprefix $(REND_DIR)/, $(REND_FILES))
 

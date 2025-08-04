@@ -12,6 +12,12 @@
 //	t_cylinder	*cylinder;
 //} t_scene;
 
+//The global settings for the viewport
+typedef struct	s_settings {
+	FLOAT	viewport_width;
+	FLOAT	viewport_height;
+} t_settings;
+
 //Because C compiles in row major order the order is pixel[y][x]
 //Pixels should be stored with values from 0 - 255
 typedef struct s_scene {
@@ -22,6 +28,7 @@ typedef struct s_scene {
 	t_node	*sphere;
 	t_node	*plane;
 	t_node	*cylinder;
+	t_settings	settings;
 } t_scene;
 
 t_scene *get_scene(void);

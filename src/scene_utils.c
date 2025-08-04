@@ -27,6 +27,11 @@ void	init_scene(void)
 		x = 0;
 		y++;
 	} 
+	get_scene()->settings.viewport_height = (FLOAT)2.0;
+	get_scene()->settings.viewport_width = \
+	get_scene()->settings.viewport_width * ((double)IMAGE_WIDTH / IMAGE_HEIGHT);
+	get_scene()->settings.pixel_delta_h = get_scene()->settings.viewport_height / IMAGE_HEIGHT;
+	get_scene()->settings.pixel_delta_w = get_scene()->settings.viewport_width / IMAGE_WIDTH;
 	get_scene()->ambient_light = 0;
 	get_scene()->camera = 0;
 	get_scene()->light = 0;
