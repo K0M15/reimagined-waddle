@@ -26,6 +26,6 @@ typedef struct s_scene {
 
 t_scene *get_scene(void);
 void	init_scene(void);
-void	render(const char * input);
+int	render(const char * input);
 
 #endif

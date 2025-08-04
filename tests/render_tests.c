@@ -2,28 +2,40 @@
 #include <stdlib.h>
 #include "settings.h"
 #include "minirt.h"
-
-#define IMAGE_WIDTH_S "200"
-#define IMAGE_HEIGHT_S "200"
+#include "libft.h"
 
 //TODO: Add function that converts the height and widht from int to string
 void output_header(FILE *fptr)
 {
+	char	*temp;
+
 	fputs("P3\n", fptr);
-	fputs(IMAGE_WIDTH_S, fptr);
+	temp = ft_itoa(IMAGE_WIDTH);
+	fputs(temp, fptr);
+	free(temp);
 	fputs(" ", fptr);
-	fputs(IMAGE_HEIGHT_S, fptr);
+	temp = ft_itoa(IMAGE_HEIGHT);
+	fputs(temp, fptr);
+	free(temp);
 	fputs("\n255\n", fptr);
 }
 
 void	put_pixel(FILE *fptr, t_rgb pixel)
 {
-	fputs(itoa(pixel.r), fptr);
+	char	*temp;
+
+	temp = ft_itoa(pixel.r);
+	fputs(temp, fptr);
 	fputs(" ", fptr);
-	fputs(itoa(pixel.g), fptr);
+	free(temp);
+	temp = ft_itoa(pixel.g);
+	fputs(temp, fptr);
 	fputs(" ", fptr);
-	fputs(itoa(pixel.b), fptr);
+	free(temp);
+	temp = ft_itoa(pixel.r);
+	fputs(temp, fptr);
 	fputs(" ", fptr);
+	free(temp);
 }
 
 int	write_pixels_to_file(FILE *fptr)
@@ -52,7 +64,7 @@ int	write_pixels_to_file(FILE *fptr)
 int main(void)
 {
 	FILE *fptr;
-	const char *input_f = "./tests/maps/example.rt"
+	const char *input_f = "./tests/maps/example.rt";
 
 	fptr = fopen("image.ppm", "w");
 	if (!fptr)

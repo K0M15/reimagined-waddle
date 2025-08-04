@@ -22,6 +22,7 @@ void	init_scene(void)
 			get_scene()->pixels[y][x].r = 0;
 			get_scene()->pixels[y][x].g = 0;
 			get_scene()->pixels[y][x].b = 0;
+			x++;
 		}
 		x = 0;
 		y++;

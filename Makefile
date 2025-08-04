@@ -31,6 +31,7 @@ REND_TEST_SRCS	= $(addprefix $(REND_TEST_DIR)/, $(REND_TEST_FILES))
 VEC3_DIR	=	src/math
 PARSER_DIR	=	src/parser
 SCENE_DIR	=	src
+REND_DIR	=	src/renderer
 
 VEC3_FILES	=	vec3_add_sub.c \
 				vec3_copy_dup.c \
@@ -61,9 +62,13 @@ SCENE_FILES	=	scene_utils.c
 
 SCENE_SRCS	+= $(addprefix $(SCENE_DIR)/, $(SCENE_FILES))
 
+REND_FILES	=	 render.c
+
+REND_SRCS	+= $(addprefix $(REND_DIR)/, $(REND_FILES))
+
 UN_TEST_SRCS += $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS)
-SRCS = $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS)
-REND_TEST_SRCS	+= $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS)
+SRCS = $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS) $(REND_SRCS)
+REND_TEST_SRCS	+= $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS) $(REND_SRCS)
 
 UN_TEST_OBJS = $(UN_TEST_SRCS:.c=.o)
 OBJS        = $(SRCS:.c=.o)

@@ -3,7 +3,7 @@
 
 //Cofing of the output picture properties
 #define IMAGE_WIDTH 200
-#define IMAGE_HEIGHT 200
+#define IMAGE_HEIGHT 600
 
 //Configures all calculations to FLOAT
 #define FLOAT float
