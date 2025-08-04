@@ -93,12 +93,20 @@ $(UN_TESTS): $(UN_TEST_OBJS) compile_libs
 	@$(CC) -g -fsanitize=address $(UN_TEST_OBJS) $(LIBRARIES) -o $(UN_TESTS) > /dev/null
 #	@$(CC) -g $(UN_TEST_OBJS) $(LIBRARIES) -o $(UN_TESTS) > /dev/null
 
+$(REND_TESTS): $(REND_TEST_OBJS) compile_libs
+	@$(CC) -g -fsanitize=address $(REND_TEST_OBJS) $(LIBRARIES) -o $(REND_TESTS) > /dev/null
+#	@$(CC) -g $(REND_TEST_OBJS) $(LIBRARIES) -o $(REND_TESTS) > /dev/null
+
 clean: remote_libs
 	@rm -f $(OBJS) > /dev/null
 
 unclean: remote_libs
 	@$(MAKE) -C ./lib/libft fclean > /dev/null
 	@rm -f $(UN_TEST_OBJS) > /dev/null
+
+rdclean: remote_libs
+	@$(MAKE) -C ./lib/libft fclean > /dev/null
+	@rm -f $(REND_TEST_OBJS) > /dev/null
 
 fclean: clean
 	@rm -f $(NAME) > /dev/null
@@ -109,10 +117,17 @@ unfclean: unclean
 	@rm -f $(UN_TESTS) > /dev/null
 	@echo "\033[1;33m Fully cleaned $(UN_TESTS)!\033[0m"
 
+rdfclean: rdclean
+	@$(MAKE) -C ./lib/libft fclean > /dev/null
+	@rm -f $(REND_TESTS) > /dev/null
+	@echo "\033[1;33m Fully cleaned $(REND_TESTS)!\033[0m"
+
 re: fclean all
 
 unre: unfclean $(UN_TESTS)
 
+rdre: rdfclean $(REND_TESTS)
+
 all: $(NAME)
 
-.PHONY: all clean fclean re unclean unfclean unre
+.PHONY: all clean fclean re unclean unfclean unre rdclean rdfclean rdre

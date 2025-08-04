@@ -1,5 +1,5 @@
 Add Compilation of Render make in the Makefile
 Add Tester that outputs to ppm
-Add Check if only-once components are not defined may times
+Add Check if only-once components are not defined may times (Parsing)
 Add Explicit error messages defined by subject
 Add more test scenes
