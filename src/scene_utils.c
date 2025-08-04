@@ -8,6 +8,28 @@ t_scene *get_scene(void)
 	return (&scene);
 }
 
+static void	init_scene_settings(void)
+{
+	t_point		*temp;
+	t_settings	*settings;
+
+	settings = &(get_scene()->settings);
+	settings->viewport_height = (FLOAT)2.0;
+	settings->viewport_width = \
+	settings->viewport_width * ((double)IMAGE_WIDTH / IMAGE_HEIGHT);
+	settings->pixel_delta_h = settings->viewport_height / IMAGE_HEIGHT;
+	settings->pixel_delta_w = settings->viewport_width / IMAGE_WIDTH;
+	temp = &(settings->viewport_left);
+	//TODO: The value will change based on camera position
+	vec3_copy(temp, (t_point[]){{.x = 0, .y = 0, .z = 0}});
+	vec3_subtract(temp, (t_point[]){{.x = get_scene()->settings.viewport_width, \
+		.y = get_scene()->settings.viewport_height, .z = FOCAL_LENGTH}});
+	temp = &(get_scene()->settings.first_pixel);
+	vec3_copy(temp, &(get_scene()->settings.viewport_left));
+	vec3_add(temp, (t_point[]){{.x = settings->pixel_delta_w * 0.5, \
+		.y = settings->pixel_delta_h * 0.5, .z = 0}});
+}
+
 void	init_scene(void)
 {
 	int	x;
@@ -27,11 +49,7 @@ void	init_scene(void)
 		x = 0;
 		y++;
 	} 
-	get_scene()->settings.viewport_height = (FLOAT)2.0;
-	get_scene()->settings.viewport_width = \
-	get_scene()->settings.viewport_width * ((double)IMAGE_WIDTH / IMAGE_HEIGHT);
-	get_scene()->settings.pixel_delta_h = get_scene()->settings.viewport_height / IMAGE_HEIGHT;
-	get_scene()->settings.pixel_delta_w = get_scene()->settings.viewport_width / IMAGE_WIDTH;
+	init_scene_settings();
 	get_scene()->ambient_light = 0;
 	get_scene()->camera = 0;
 	get_scene()->light = 0;

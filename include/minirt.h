@@ -14,8 +14,12 @@
 
 //The global settings for the viewport
 typedef struct	s_settings {
-	FLOAT	viewport_width;
 	FLOAT	viewport_height;
+	FLOAT	viewport_width;
+	FLOAT	pixel_delta_h;
+	FLOAT	pixel_delta_w;
+	t_point	viewport_left;
+	t_point	first_pixel;
 } t_settings;
 
 //Because C compiles in row major order the order is pixel[y][x]
