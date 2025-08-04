@@ -30,3 +30,12 @@ t_vec3	*vec3_unit_vec_r(const t_vec3 *const input)
 	result = vec3_devide_by_const_r(input, vec3_get_length(input));
 	return (result);
 }
+
+t_vec3	vec3_unit_vec_v(const t_vec3 *const input)
+{
+	t_vec3	result;
+
+	vec3_copy(&result, input);
+	vec3_devide_by_const(&result, vec3_get_length(&result));
+	return (result);
+}

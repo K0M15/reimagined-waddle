@@ -40,7 +40,8 @@ VEC3_FILES	=	vec3_add_sub.c \
 				vec3_length_multiply.c \
 				vec3_mult_sub_const.c \
 				vec3_negate_unitv.c \
-				vec3_normalize.c
+				vec3_normalize.c \
+        			vec3_dev_sub_neg_v.c
 
 VEC3_SRCS	+= $(addprefix $(VEC3_DIR)/, $(VEC3_FILES))
 

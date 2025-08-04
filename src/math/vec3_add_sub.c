@@ -40,3 +40,14 @@ t_vec3	*vec3_subtract_r(const t_vec3 *const sub1, const t_vec3 *const sub2)
 	result->z = sub1->z - sub2->z;
 	return (result);
 }
+
+t_vec3	vec3_subtract_v(const t_vec3 *const input, const t_vec3 *const sub)
+{
+	t_vec3	result;
+	
+	vec3_copy(&result, input);
+	result.x -= sub->x;
+	result.y -= sub->y;
+	result.z -= sub->z;
+	return (result);
+}

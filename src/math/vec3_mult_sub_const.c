@@ -42,3 +42,14 @@ t_vec3	*vec3_multiply_by_const_r(const t_vec3 *const multiplier, \
 	result->z = multiplier->z / multiplicand;
 	return (result);
 }
+
+t_vec3	vec3_multiply_by_const_v(const t_vec3 *const input, const FLOAT multiplicand)
+{
+	t_vec3	result;
+
+	vec3_copy(&result, input);
+	result.x *= multiplicand;
+	result.y *= multiplicand;
+	result.z *= multiplicand;
+	return (result);
+}

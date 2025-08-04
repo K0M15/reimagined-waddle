@@ -16,8 +16,8 @@
 typedef struct	s_settings {
 	FLOAT	viewport_height;
 	FLOAT	viewport_width;
-	FLOAT	pixel_delta_h;
-	FLOAT	pixel_delta_w;
+	t_vec3	pixel_delta_h;
+	t_vec3	pixel_delta_w;
 	t_point	viewport_left;
 	t_point	first_pixel;
 } t_settings;

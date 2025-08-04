@@ -37,3 +37,12 @@ t_vec3	*vec3_cross_procuct_r(const t_vec3 *const a, const t_vec3 *const b)
 	result->z = a->x * b->y - a->y * b->x;
 	return (result);
 }
+
+t_vec3	vec3_cross_procuct_v(const t_vec3 *const input, const t_vec3 *const b)
+{
+	t_vec3	result;
+
+	vec3_copy(&result, input);
+	vec3_cross_procuct(&result, b);
+	return (result);
+}
