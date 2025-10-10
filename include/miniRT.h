@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/10 09:29:52 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/10 12:14:13 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 # define STAN_SAMPLES_PER_PIXEL 1
 # define MAX_DEPTH 3
-# define MOV_SPEED 0.01
+# define MOV_SPEED 0.1
 
 typedef struct s_camera
 {

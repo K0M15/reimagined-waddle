@@ -6,11 +6,12 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/09/05 14:53:18 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/10 14:48:00 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+#include "assert.h"
 
 void ft_camera_calc(t_camera *camera)
 {
@@ -98,6 +99,74 @@ uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec
     return true;
 }
 
+uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec *rec)
+{
+    /*
+        Find position (half of height) and normal of planes (should be rotation and inverse)
+
+        calculate positon of middle of cylindercaps
+    */
+   (void) min;
+   (void) max;
+    t_cylinder_p *props;
+
+    props = cyl.props;
+    t_vec3 a = ftray_at((t_ray){props->position, props->rotation, FTVEC3(255)}, props->height/2);
+    t_vec3 b = ftray_at((t_ray){props->position, props->rotation, FTVEC3(255)}, (props->height/2)*-1);
+
+    t_vec3 ba = ftvec3_minus(b, a);
+    t_vec3 offset = ftvec3_minus(ray.origin, a);
+
+    float cyl_axis_sq = ftvec3_dot(ba, ba);
+    float project_ray = ftvec3_dot(ba, ray.direction);
+    float project_off = ftvec3_dot(ba, offset);
+
+    float k2 = cyl_axis_sq - project_ray * project_ray;
+    float k1 = cyl_axis_sq * ftvec3_dot(offset, ray.direction) - project_off * project_ray;
+    float k0 = cyl_axis_sq * ftvec3_dot(offset, offset) - project_off * project_off - props->radius * props->radius * cyl_axis_sq;
+
+    float h = k1*k1 - k2*k0;
+    if (h < DOUBLE_NEAR_ZERO)
+        return (false);
+    h = sqrt(h);
+    float t = (-k1 - h) / k2;
+    
+    float y = project_off + t * project_ray;
+    if( y>0.0 && y<cyl_axis_sq)
+    {
+        //calc all other components
+        rec->mat = cyl.mat;
+        rec->hit = ftvec3_divide(ftvec3_minus(ftvec3_plus(offset, ftvec3_multiply(FTVEC3(t), ray.direction)), ftvec3_multiply(ba, FTVEC3(y/cyl_axis_sq))), FTVEC3(props->height));
+        return true;
+    }
+    t = ( ((y<0.0) ? 0.0 : cyl_axis_sq) - project_off)/project_ray;
+    if( abs(k1+k2*t)<h )
+        return (true);
+    return false;
+}
+
+
+uint32_t ft_plane_hit(t_obj plane, t_ray ray, double min, double max, t_hitrec *rec)
+{
+    t_plane_p *props;
+    double denom;
+    double D;
+    
+    props = (t_plane_p *)plane.props;
+    denom = ftvec3_dot(ftvec3_unit(props->rotation), ray.direction);
+    if (fabs(denom) < DOUBLE_NEAR_ZERO)
+        return (false);
+    D = ftvec3_dot(ftvec3_unit(props->rotation), props->position);
+    denom = (D - ftvec3_dot(ftvec3_unit(props->rotation), ray.origin)) / denom; //saving space here, overwriting denom with distance
+    if (denom < min || denom > max)
+        return (false);
+    rec->t = denom;
+    rec->hit = ftray_at(ray, denom);
+    rec->mat = plane.mat;
+    ft_hitr_set_face_normal(rec, ray, ftvec3_unit(props->rotation));
+    return (true);
+}
+
 void ft_obj_dest(t_obj sphere)
 {
     free(sphere.props);
@@ -135,6 +204,7 @@ t_ray ft_mat_scatter(t_ray inc, t_hitrec *rec)
     t_ray out;
     out.origin = rec->hit;
     //TODO:  insert inteligent scatter logic OR delete it since only specular reflections are needed
+    // THIS WORKS ONLY FOR SPHERES! Maybe add object to hitrecord
     if (rand_double() < rec->mat->scatter)
         out.direction = ftvec3_plus(ftvec3_ronhemi(rec->normal), rec->normal);
     else
@@ -156,9 +226,13 @@ uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *re
         if (obj->type == SPHERE)
             hit = ft_sphere_hit(*obj, ray, min, max, &temp);
         else if (obj->type == PLANE)
-        { /*pass */ }
+        { 
+            hit = ft_plane_hit(*obj, ray, min, max, &temp);
+        }
         else if (obj->type == CYLINDER)
-        { /*pass */ }
+        {
+            hit = ft_cylinder_hit(*obj, ray, min, max, &temp);
+        }
         if (hit && temp.t < closest)
         {
             anything = 1;
@@ -187,9 +261,10 @@ t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
 
     if (rec.mat->is_emitting)
         return (rec.mat->color);
+    assert(rec.mat != NULL && "Material should not be null!");
     return ftvec3_plus(
         ftvec3_multiply(
-            FTVEC3(clamp(rec.mat->reflectivity, 0, 1)), 
+            FTVEC3(clamp(rec.mat->reflectivity, 0, 1)), // with -03 the material is null
             ftray_color(ft_mat_scatter(ray, &rec), arr, depth - 1) // rework scatter... -> this should return a bool if mat scatters or not. additionaly, the color should be returned in a ptr
         ),
         ftvec3_multiply(FTVEC3(1.0-rec.mat->reflectivity), rec.mat->color)

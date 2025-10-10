@@ -11,18 +11,17 @@ FILES=src/ftray.c src/ftvec3.c src/ftcamera.c src/dyn.c
 FILES+=src/main.c src/pseudo_random.c 
 
 
-all: FLAGS+=-ffast-math
-all: FLAGS+=-O3
-all: mylibft $(NAME)
-
-MLX42: MLX42/include/MLX42/MLX42.h
-	# if [ ! -d "MLX42" ]; then git clone https://github.com/codam-coding-college/MLX42.git; fi
+# all: FLAGS+=-ffast-math
+# all: FLAGS+=-O3
+all: $(MLX42) mylibft $(NAME)
 
 debug: FLAGS+=-g
 debug: re
 
-$(NAME): $(FILES:.c=.o)
+MLX42:
 	cd MLX42 && cmake -B build && cmake --build build -j4
+
+$(NAME): $(FILES:.c=.o)
 	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBFT) $(FLAGS_MAC) -o $(NAME)
 
 %.o: %.c
