@@ -11,13 +11,15 @@ t_scene *get_scene(void)
 /*TODO: Have to add more indepentend init for camera*/
 static void	init_scene_settings(void)
 {
-	t_point		*temp;
 	t_settings	*settings;
 
 	settings = &(get_scene()->settings);
 	settings->viewport_height = (FLOAT)2.0;
 	settings->viewport_width = \
 	settings->viewport_width * ((double)IMAGE_WIDTH / IMAGE_HEIGHT);
+	//TODO: Rework this section
+	/*
+		t_point		*temp;
 	vec3_copy(&settings->pixel_delta_h, (t_point[]){{.x = 0, .y = settings->viewport_height / IMAGE_HEIGHT, .z = 0}});
 	vec3_copy(&settings->pixel_delta_w, (t_point[]){{.x = settings->viewport_width / IMAGE_WIDTH, .y = 0, .z = 0}});
 	temp = &(settings->viewport_left);
@@ -29,6 +31,7 @@ static void	init_scene_settings(void)
 	vec3_copy(temp, &(get_scene()->settings.viewport_left));
 	vec3_add(temp, (t_point[]){{.x = settings->pixel_delta_w.x * 0.5, \
 		.y = settings->pixel_delta_h.y * 0.5, .z = 0}});
+		*/
 }
 
 void	init_scene(void)

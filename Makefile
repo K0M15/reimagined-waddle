@@ -10,6 +10,11 @@ LIBFT=libft/libft.a
 FILES=src/ftray.c src/ftvec3.c src/ftcamera.c src/dyn.c
 FILES+=src/main.c src/pseudo_random.c
 PARSER_DIR	=	src/parser
+SCENE_DIR	=	src
+LIBLLIST_PATH  = ./lib/llist
+LIBLLIST_NAME	= llist
+LIBGNL_PATH    = ./lib/gnl
+LIBGNL_NAME	= gnl 
 PARSER_FILES 	=	extract_ambient_light.c \
 			extract_camera.c \
 			extract_cordinates.c \
@@ -22,9 +27,15 @@ PARSER_FILES 	=	extract_ambient_light.c \
 			parser.c \
 			token_utils.c
 
-PARSER_SRCS	+= $(addprefix $(PARSER_DIR)/, $(PARSER_FILES))
-FILES+=$(PARSER_SRCS)
 
+SCENE_FILES	=	scene_utils.c
+
+SCENE_SRCS	+= $(addprefix $(SCENE_DIR)/, $(SCENE_FILES))
+
+PARSER_SRCS	+= $(addprefix $(PARSER_DIR)/, $(PARSER_FILES))
+FILES+=$(PARSER_SRCS) $(SCENE_SRCS)
+#LIBRARIES   = -L$(LIBFT_PATH) -l$(LIBFT_NAME) -L$(LIBGNL_PATH) -l$(LIBGNL_NAME) -L$(LIBLLIST_PATH) -l$(LIBLLIST_NAME)
+LIBRARIES   = -L$(LIBGNL_PATH) -l$(LIBGNL_NAME) -L$(LIBLLIST_PATH) -l$(LIBLLIST_NAME)
 
 all: FLAGS+=-ffast-math
 all: FLAGS+=-O3
@@ -38,13 +49,15 @@ debug: re
 
 $(NAME): $(FILES:.c=.o)
 	cd MLX42 && cmake -B build && cmake --build build -j4
-	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBFT) $(FLAGS_MAC) -o $(NAME)
+	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBFT) $(LIBRARIES) $(FLAGS_MAC) -o $(NAME)
 
 %.o: %.c
 	$(CC) $(F_INC) $(FLAGS) -c -o $@ $^
 
 mylibft:
 	cd ./libft && make 
+	@$(MAKE) -C $(LIBLLIST_PATH) > /dev/null
+	@$(MAKE) -C $(LIBGNL_PATH) > /dev/null
 
 fclean: clean
 	rm -f $(NAME)
@@ -62,12 +75,11 @@ REND_TESTS	= test
 #
 #LIBFT_PATH  = ./lib/libft
 #LIBFT_NAME	= ft
-#LIBGNL_PATH    = ./lib/gnl
-#LIBGNL_NAME	= gnl 
-#LIBLLIST_PATH  = ./lib/llist
-#LIBLLIST_NAME	= llist
 #
-#LIBRARIES   = -L$(LIBFT_PATH) -l$(LIBFT_NAME) -L$(LIBGNL_PATH) -l$(LIBGNL_NAME) -L$(LIBLLIST_PATH) -l$(LIBLLIST_NAME)
+#REND_DIR	=	src/renderer
+#
+#
+#
 #
 #UN_TEST_DIR	=	tests/unit_test
 #
@@ -83,14 +95,7 @@ REND_TESTS	= test
 #UN_TEST_SRCS = $(addprefix $(UN_TEST_DIR)/, $(UN_TEST_FILES))
 #REND_TEST_SRCS	= $(addprefix $(REND_TEST_DIR)/, $(REND_TEST_FILES))
 #
-#SCENE_DIR	=	src
-#REND_DIR	=	src/renderer
-#
-#
-#SCENE_FILES	=	scene_utils.c
-#
-#SCENE_SRCS	+= $(addprefix $(SCENE_DIR)/, $(SCENE_FILES))
-#
+
 #REND_FILES	=	 render.c \
 #			ray_calc.c
 #
@@ -106,8 +111,7 @@ REND_TESTS	= test
 #
 #compile_libs:
 #	@$(MAKE) -C $(LIBFT_PATH) > /dev/null
-#	@$(MAKE) -C $(LIBGNL_PATH) > /dev/null
-#	@$(MAKE) -C $(LIBLLIST_PATH) > /dev/null
+
 #	@echo "\033[1;32m✔ Compiled: LIBS\033[0m"
 #
 #remote_libs:
