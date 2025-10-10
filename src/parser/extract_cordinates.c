@@ -13,13 +13,13 @@ void	cpy_loc(t_point *dst, t_point *src)
 
 static int	tokens_to_loc(char **tokens, t_point *result)
 {
-	result->x = atof(*tokens);
+	result->x = ft_atof(*tokens);
 	if (errno)
 		return (-1);
-	result->y = atof(*(tokens + 1));
+	result->y = ft_atof(*(tokens + 1));
 	if (errno)
 		return (-1);
-	result->z = atof(*(tokens + 2));
+	result->z = ft_atof(*(tokens + 2));
 	if (errno)
 		return (-1);
 	return (0);

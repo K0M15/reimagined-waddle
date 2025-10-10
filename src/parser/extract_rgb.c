@@ -37,9 +37,9 @@ static int	validate_rgb_tokens(char **tokens)
 
 static int	tokens_to_rgb(char **tokens, t_rgb *result)
 {
-	result->r = atoi(*tokens);
-	result->g = atoi(*(tokens + 1));
-	result->b = atoi(*(tokens + 2));
+	result->r = ft_atoi(*tokens);
+	result->g = ft_atoi(*(tokens + 1));
+	result->b = ft_atoi(*(tokens + 2));
 	if (result->r > 255 || result->g > 255 || result->b > 255)
 		return (-1);
 	return (0);

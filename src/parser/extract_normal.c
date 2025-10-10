@@ -14,13 +14,13 @@ void	cpy_normal(t_normal *dst, t_normal *src)
 //TODO: make atof take negative numbers!!!
 static int	tokens_to_normal(char **tokens, t_normal *result)
 {
-	result->x = atof(*tokens);
+	result->x = ft_atof(*tokens);
 	if (errno || result->x > (FLOAT)1 || result->x < (FLOAT)-1)
 		return (-1);
-	result->y = atof(*(tokens + 1));
+	result->y = ft_atof(*(tokens + 1));
 	if (errno || result->y > (FLOAT)1 || result->y < (FLOAT)-1)
 		return (-1);
-	result->z = atof(*(tokens + 2));
+	result->z = ft_atof(*(tokens + 2));
 	if (errno || result->z > (FLOAT)1 || result->z < (FLOAT)-1)
 		return (-1);
 	return (0);

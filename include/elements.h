@@ -1,7 +1,7 @@
 #ifndef ELEMENTS_H
 # define ELEMENTS_H
 # include "settings.h"
-# include "vec3.h"
+# include "ftvec3.h"
 
 //The rgb: [0-255]
 typedef struct s_rgb {
@@ -23,11 +23,11 @@ typedef struct s_ambient_light {
 } t_ambient_light;
 
 //FOV: [0, 180]
-typedef struct s_camera {
+typedef struct s_camera_o {
 	t_point		loc;
 	t_normal	normal;
 	int			fov;
-} t_camera;
+} t_camera_o;
 
 //Brightness: [0.0, 1.0]
 //RBG not used in mandatory part

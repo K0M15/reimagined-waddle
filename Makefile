@@ -8,7 +8,22 @@ F_INC=-Iinclude
 MLX=MLX42/build/libmlx42.a
 LIBFT=libft/libft.a
 FILES=src/ftray.c src/ftvec3.c src/ftcamera.c src/dyn.c
-FILES+=src/main.c src/pseudo_random.c 
+FILES+=src/main.c src/pseudo_random.c
+PARSER_DIR	=	src/parser
+PARSER_FILES 	=	extract_ambient_light.c \
+			extract_camera.c \
+			extract_cordinates.c \
+			extract_cylinder.c \
+			extract_light.c \
+			extract_normal.c \
+			extract_plane.c \
+			extract_rgb.c \
+			extract_sphere.c \
+			parser.c \
+			token_utils.c
+
+PARSER_SRCS	+= $(addprefix $(PARSER_DIR)/, $(PARSER_FILES))
+FILES+=$(PARSER_SRCS)
 
 
 all: FLAGS+=-ffast-math
@@ -39,8 +54,8 @@ clean:
 
 re: fclean all
 #NAME        = miniRT 
-#UN_TESTS	= untest
-#REND_TESTS	= test
+UN_TESTS	= untest
+REND_TESTS	= test
 #CC          = cc
 #CFLAGS = -Wall -Wextra -Werror -Iinclude
 #
@@ -68,36 +83,9 @@ re: fclean all
 #UN_TEST_SRCS = $(addprefix $(UN_TEST_DIR)/, $(UN_TEST_FILES))
 #REND_TEST_SRCS	= $(addprefix $(REND_TEST_DIR)/, $(REND_TEST_FILES))
 #
-#VEC3_DIR	=	src/math
-#PARSER_DIR	=	src/parser
 #SCENE_DIR	=	src
 #REND_DIR	=	src/renderer
 #
-#VEC3_FILES	=	vec3_add_sub.c \
-#				vec3_copy_dup.c \
-#				vec3_debug.c \
-#				vec3_dot_cross_prod.c \
-#				vec3_length_multiply.c \
-#				vec3_mult_sub_const.c \
-#				vec3_negate_unitv.c \
-#				vec3_normalize.c \
-#        			vec3_dev_sub_neg_v.c
-#
-#VEC3_SRCS	+= $(addprefix $(VEC3_DIR)/, $(VEC3_FILES))
-#
-#PARSER_FILES 	=	extract_ambient_light.c \
-#			extract_camera.c \
-#			extract_cordinates.c \
-#			extract_cylinder.c \
-#			extract_light.c \
-#			extract_normal.c \
-#			extract_plane.c \
-#			extract_rgb.c \
-#			extract_sphere.c \
-#			parser.c \
-#			token_utils.c
-#
-#PARSER_SRCS	+= $(addprefix $(PARSER_DIR)/, $(PARSER_FILES))
 #
 #SCENE_FILES	=	scene_utils.c
 #
@@ -108,9 +96,9 @@ re: fclean all
 #
 #REND_SRCS	+= $(addprefix $(REND_DIR)/, $(REND_FILES))
 #
-#UN_TEST_SRCS += $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS)
-#SRCS = $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS) $(REND_SRCS)
-#REND_TEST_SRCS	+= $(VEC3_SRCS) $(PARSER_SRCS) $(SCENE_SRCS) $(REND_SRCS)
+#UN_TEST_SRCS += $(PARSER_SRCS) $(SCENE_SRCS)
+#SRCS = $(PARSER_SRCS) $(SCENE_SRCS) $(REND_SRCS)
+#REND_TEST_SRCS	+= $(PARSER_SRCS) $(SCENE_SRCS) $(REND_SRCS)
 #
 #UN_TEST_OBJS = $(UN_TEST_SRCS:.c=.o)
 #OBJS        = $(SRCS:.c=.o)

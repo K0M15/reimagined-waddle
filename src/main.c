@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/10 11:24:24 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/10 13:19:34 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 void ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color)
 {
@@ -108,11 +108,13 @@ int32_t setupWindow(t_app *app)
 	return (EXIT_SUCCESS);
 }
 
-int32_t main(void)
+int32_t	main(int argc, char *argv[])
 {
 	t_app app;
 	t_camera camera;
 
+	pars_init(argc, argv);
+	// Pars terminal and file inputs
 	app.width = 1200;
 	app.height = 800;
 	ft_camera_init(
@@ -164,15 +166,32 @@ int32_t main(void)
 	mlx_terminate(app.mlx);
 	return (EXIT_SUCCESS);
 }
-/*
+
 #include <stdio.h>
 #include "parser.h"
-#include "minirt.h"
+//#include "minirt.h"
 
 static void	print_instructions(void)
 {
 	printf("The program usage: ./miniRT [scene file]\n");
 }
+
+int32_t pars_init(int argc, char **argv)
+{
+	if (argc != 2)
+	{
+		print_instructions();
+		return (-1);
+	}
+	if (pars(argv[1]) == -1)
+		return (-1);
+	return (0);
+}
+/*
+#include <stdio.h>
+#include "parser.h"
+#include "minirt.h"
+
 
 int	main(int argc, char *argv[])
 {

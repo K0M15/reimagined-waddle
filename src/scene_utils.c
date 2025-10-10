@@ -8,6 +8,7 @@ t_scene *get_scene(void)
 	return (&scene);
 }
 
+/*TODO: Have to add more indepentend init for camera*/
 static void	init_scene_settings(void)
 {
 	t_point		*temp;

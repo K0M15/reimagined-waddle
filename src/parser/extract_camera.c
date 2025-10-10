@@ -7,11 +7,12 @@
 #include "parser.h"
 #include "ft_ll.h"
 
-static int	add_camera(t_point *loc, t_normal *normal, int *fov)
+//TODO: change the t_camera_o to more meaningfull name
+int	add_camera(t_point *loc, t_normal *normal, int *fov)
 {
-	t_camera	*a_camera;
+	t_camera_o	*a_camera;
 	
-	a_camera = (t_camera *)malloc(sizeof(t_camera));
+	a_camera = (t_camera_o *)malloc(sizeof(t_camera));
 	if (!a_camera)
 	{
 		printf("Malloc failed!\n");

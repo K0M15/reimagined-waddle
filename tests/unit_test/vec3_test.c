@@ -1,5 +1,5 @@
 #include "settings.h"
-#include "vec3.h"
+#include "ftvec3.h"
 #include <stdlib.h>
 #include <stdio.h>
 
