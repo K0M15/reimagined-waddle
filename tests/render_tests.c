@@ -32,7 +32,7 @@ void	put_pixel(FILE *fptr, t_rgb pixel)
 	fputs(temp, fptr);
 	fputs(" ", fptr);
 	free(temp);
-	temp = ft_itoa(pixel.r);
+	temp = ft_itoa(pixel.b);
 	fputs(temp, fptr);
 	fputs(" ", fptr);
 	free(temp);
