@@ -1,2 +1,5 @@
 MLX42/
-*/**.o
+**/*.o
+libft/libft.a
+.DS_Store
+miniRT

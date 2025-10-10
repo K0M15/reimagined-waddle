@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/19 17:05:46 by afelger          ###   ########.fr       */
+/*   Updated: 2025/09/05 14:53:18 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ t_ray ft_mat_scatter(t_ray inc, t_hitrec *rec)
     (void) inc;
     t_ray out;
     out.origin = rec->hit;
-    // inteligente scatter logik einfuegen
+    //TODO:  insert inteligent scatter logic OR delete it since only specular reflections are needed
     if (rand_double() < rec->mat->scatter)
         out.direction = ftvec3_plus(ftvec3_ronhemi(rec->normal), rec->normal);
     else
@@ -142,6 +142,7 @@ t_ray ft_mat_scatter(t_ray inc, t_hitrec *rec)
     return out;
 }
 
+// TODO: work on nudge -> https://stackoverflow.com/questions/41211892/ray-tracer-artifacts-with-reflection
 uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *rec)
 {
     t_hitrec temp;
@@ -154,6 +155,10 @@ uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *re
         uint32_t hit = 0;
         if (obj->type == SPHERE)
             hit = ft_sphere_hit(*obj, ray, min, max, &temp);
+        else if (obj->type == PLANE)
+        { /*pass */ }
+        else if (obj->type == CYLINDER)
+        { /*pass */ }
         if (hit && temp.t < closest)
         {
             anything = 1;
@@ -193,6 +198,7 @@ t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
 
 t_vec3 sample_square()
 {
+    //maybe bake array into code with offset vars
     return (t_vec3){rand_double() - .5, rand_double() - .5, 0};
     // return FTVEC3(0);
 }
@@ -239,8 +245,10 @@ uint32_t ft_camera_render(
             {
                 t_vec3 new_col = ftray_color(get_rand_ray(pixel_center, app->active_camera->center, app->active_camera), &app->hitable, MAX_DEPTH);
                 color = ftvec3_plus(color, new_col);
+                // color = ftvec3_plus(color, ftvec3_divide(new_col, FTVEC3(app->active_camera->samples_per_pixel)));
                 i++;
             }
+            put_pixel(app->image, x, y, ftvec3_tocolor(ftvec3_multiply(color, sample_scale), 1.0));
             put_pixel(app->image, x, y, ftvec3_tocolor(ftvec3_lin_gamma(ftvec3_multiply(color, sample_scale)), 1.0));
             x++;
         }

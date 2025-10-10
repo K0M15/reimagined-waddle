@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/17 18:46:03 by afelger          ###   ########.fr       */
+/*   Updated: 2025/09/05 15:32:41 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_obj
 {
     enum e_obj_type type;
     void            *props;
-    t_material      *mat;
+    t_material      *mat;   //Maybe change object to have 
 }   t_obj;
 
 typedef struct s_sphere_p{

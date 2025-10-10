@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/19 16:58:47 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/10 10:10:04 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color)
 	uint8_t *pixel;
 
 	pixel = &image->pixels[(y * image->width + x) * 4];
-	*(pixel) = ((uint8_t)(color >> 24) + *pixel) / 2;
+	*(pixel) = ((uint8_t)(color >> 24) + *pixel);
 	pixel++;
-	*(pixel) = ((uint8_t)(color >> 16) + *pixel) / 2;
+	*(pixel) = ((uint8_t)(color >> 16) + *pixel);
 	pixel++;
-	*(pixel) = ((uint8_t)(color >> 8) + *pixel) / 2;
+	*(pixel) = ((uint8_t)(color >> 8) + *pixel);
 	pixel++;
-	*(pixel) = ((uint8_t)(color & 0xFF) + *pixel) / 2;
+	*(pixel) = ((uint8_t)(color & 0xFF) + *pixel);
 }	
 
 void ft_put_pixel(mlx_image_t *image, int x, int y, uint32_t color)
@@ -81,8 +81,8 @@ void draw_loop(void *args)
 	t_app *app;
 
 	app = (t_app *)args;
-	ft_camera_render(app, ft_put_pixel);
-	// ft_camera_render(app, ft_kumul_pixel);
+	// ft_camera_render(app, ft_put_pixel);
+	ft_camera_render(app, ft_kumul_pixel);
 	printf("Cam: X%.2f Y%.2f Z%.2f, FOV%.2F\n", app->active_camera->look_at.x, app->active_camera->look_at.y, app->active_camera->look_at.z, app->active_camera->fov);
 }
 
@@ -125,7 +125,7 @@ int32_t main(void)
 			STAN_SAMPLES_PER_PIXEL,
 			// (t_vec3){0.5,0.9,1}
 			// (t_vec3){66.0/255.0,245.0/255.0,135.0/255.0}
-			(t_vec3){0.0/255.0,0.0/255.0,0.0/255.0}
+			(t_vec3){1.0*255.0/255.0,1.0*255.0/255.0,1.0*255.0/255.0}
 		});
 	app.active_camera = &camera;
 
@@ -133,26 +133,28 @@ int32_t main(void)
 
 	t_material material;
 	memset(&material, 0, sizeof(t_material));
-	material.color = (t_vec3) {0, 1, 0};
+	material.color = (t_vec3) {1, 1, 0};
 	material.reflectivity = .1;
 	material.is_emitting = 0;
 	material.scatter = .7;
 
-	// t_material mat_l;
-	// memset(&mat_l, 0, sizeof(t_material));
-	// mat_l.color = (t_vec3) {1,1,1};
-	// mat_l.reflectivity = 1.0;
-	// mat_l.is_emitting = 1;
-	// mat_l.scatter = .5;
+	t_material mat_l;
+	memset(&mat_l, 0, sizeof(t_material));
+	mat_l.color = (t_vec3) {1,1,1};
+	mat_l.reflectivity = 0.0;
+	mat_l.is_emitting = 1;
+	mat_l.scatter = .5;
 	
 	t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){0,0,-4}}, &material);
 	t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
 	t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, &material);
-	// t_obj sphere3 = ft_sphere_create((t_sphere_p){20,(t_vec3){0,40,30}}, &mat_l);
+	t_obj sphere3 = ft_sphere_create((t_sphere_p){.1,(t_vec3){0,40,30}}, &mat_l);
+	// t_obj sphere4 = ft_sphere_create((t_sphere_p){20,(t_vec3){0,10,30}}, &mat_l);
 	dyn_add(&app.hitable, &sphere);
 	dyn_add(&app.hitable, &sphere1);
 	dyn_add(&app.hitable, &sphere2);
-	// dyn_add(&app.hitable, &sphere3);
+	dyn_add(&app.hitable, &sphere3);
+	// dyn_add(&app.hitable, &sphere4);
 	if (setupWindow(&app) == EXIT_FAILURE)
 		return (EXIT_FAILURE);	
 	
