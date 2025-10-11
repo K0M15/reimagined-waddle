@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/11 10:09:18 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/11 10:13:05 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,8 +326,7 @@ t_ray ft_mat_scatter(t_ray inc, t_hitrec *rec)
     out.origin = rec->hit;
     //TODO:  insert inteligent scatter logic OR delete it since only specular reflections are needed
     // THIS WORKS ONLY FOR SPHERES! Maybe add object to hitrecord
-    // preserve ambient from incoming ray
-    out.ambient = inc.ambient;
+    out.ambient = FTVEC3(0);
     if (rand_double() < rec->mat->scatter)
         out.direction = ftvec3_unit(ftvec3_plus(ftvec3_ronhemi(rec->normal), rec->normal));
     else
@@ -380,7 +379,7 @@ t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
         return (t_vec3){0, 0, 0};
 
     if (!world_hit(arr, ray, 0.0001, INFINITY, &rec))
-        return (ray.ambient);
+        return ftvec3_multiply(ray.ambient, FTVEC3(0.1));
 
     if (rec.mat->is_emitting)
         return (rec.mat->color);
