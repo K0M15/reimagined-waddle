@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hitable.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/09/05 15:32:41 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/11 08:22:27 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,9 @@ typedef struct s_hitrec
 t_obj ft_sphere_create(t_sphere_p params, t_material *mat);
 uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec *rec);
 t_obj   ft_cylinder_create(t_cylinder_p params, t_material *mat);
+uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec *rec);
 t_obj   ft_plane_create(t_plane_p params, t_material *mat);
+uint32_t ft_plane_hit(t_obj plane, t_ray ray, double min, double max, t_hitrec *rec);
 void ft_obj_dest(t_obj sphere);
 
 #endif /* FT_HITABLE_H */
