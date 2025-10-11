@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/11 08:41:47 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/11 08:56:59 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec 
     t_vec3 cylinder_axis;
     t_vec3 oc;
     t_vec3 ray_cross_axis, oc_cross_axis;
-    float a, b, c;
+    t_vec3 abc;
     float discriminant;
     float root1, root2;
     float projection1, projection2;
@@ -113,46 +113,33 @@ uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec 
     
     // Get cylinder axis from rotation (assume rotation is the axis direction)
     cylinder_axis = ftvec3_unit(cylinder->rotation);
-    
     // Vector from ray origin to cylinder base
     oc = ftvec3_minus(ray.origin, cylinder->position);
-    
-    // Check if ray origin is inside cylinder (both radially and within height)
-    t_vec3 oc_proj_on_axis = ftvec3_multiply(cylinder_axis, FTVEC3(ftvec3_dot(oc, cylinder_axis)));
-    t_vec3 oc_perp_to_axis = ftvec3_minus(oc, oc_proj_on_axis);
-    float radial_dist_sq = ftvec3_length(oc_perp_to_axis) * ftvec3_length(oc_perp_to_axis);
-    float height_projection = ftvec3_dot(oc, cylinder_axis);
-    inside_cylinder = (radial_dist_sq < cylinder->radius * cylinder->radius) &&
-                     (height_projection >= 0) &&
-                     (height_projection <= cylinder->height);
-    
     // Calculate quadratic equation coefficients for infinite cylinder
     // We project ray direction and oc onto the plane perpendicular to cylinder axis
     ray_cross_axis = ftvec3_cross(ray.direction, cylinder_axis);
     oc_cross_axis = ftvec3_cross(oc, cylinder_axis);
     
-    a = ftvec3_dot(ray_cross_axis, ray_cross_axis);
-    b = 2.0 * ftvec3_dot(ray_cross_axis, oc_cross_axis);
-    c = ftvec3_dot(oc_cross_axis, oc_cross_axis) - cylinder->radius * cylinder->radius;
+    abc.x = ftvec3_dot(ray_cross_axis, ray_cross_axis);
+    abc.y = 2.0 * ftvec3_dot(ray_cross_axis, oc_cross_axis);
+    abc.z = ftvec3_dot(oc_cross_axis, oc_cross_axis) - cylinder->radius * cylinder->radius;
     
+    float radial_dist_sq = ftvec3_length(ftvec3_minus(oc, ftvec3_multiply(cylinder_axis, FTVEC3(ftvec3_dot(oc, cylinder_axis))))) * ftvec3_length(ftvec3_minus(oc, ftvec3_multiply(cylinder_axis, FTVEC3(ftvec3_dot(oc, cylinder_axis)))));
     // Handle case where ray is parallel to cylinder axis
-    if (fabs(a) < 1e-6)
+    if (fabs(abc.x) < 1e-6)
     {
         // Ray is parallel to cylinder axis - either always inside or always outside radially
         if (radial_dist_sq > cylinder->radius * cylinder->radius)
-            return false; // Outside cylinder radially, no intersection
+            return (false); // Outside cylinder radially, no intersection
         // If inside radially, we'd need to check cap intersections, but for now skip
-        return false;
+        return (false);
     }
-    
-    discriminant = b * b - 4.0 * a * c;
+    discriminant = abc.y * abc.y - 4.0 * abc.x * abc.z;
     if (discriminant < 0)
-        return false; // No intersection with infinite cylinder
-        
+        return (false); // No intersection with infinite cylinder   
     discriminant = sqrtf(discriminant);
-    root1 = (-b - discriminant) / (2.0 * a); // Near intersection
-    root2 = (-b + discriminant) / (2.0 * a); // Far intersection
-    
+    root1 = (-abc.y - discriminant) / (2.0 * abc.x); // Near intersection
+    root2 = (-abc.y + discriminant) / (2.0 * abc.x); // Far intersection
     // Calculate projections along cylinder axis for both intersection points
     t_vec3 hit1 = ftray_at(ray, root1);
     t_vec3 hit2 = ftray_at(ray, root2);
@@ -161,10 +148,12 @@ uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec 
     
     float final_root = -1;
     t_vec3 final_hit;
-    
+    inside_cylinder = (radial_dist_sq < cylinder->radius * cylinder->radius) &&
+                     (ftvec3_dot(oc, cylinder_axis) >= 0) &&
+                     (ftvec3_dot(oc, cylinder_axis) <= cylinder->height);
     if (inside_cylinder)
     {
-        // When inside, we want the exit point (first valid intersection in forward direction)
+        // first valid intersection in forward direction
         if (root2 > min && root2 < max && projection2 >= 0 && projection2 <= cylinder->height)
         {
             final_root = root2;
@@ -178,7 +167,7 @@ uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec 
     }
     else
     {
-        // When outside, we want the entry point (nearest valid intersection)
+        // nearest valid intersection
         if (root1 > min && root1 < max && projection1 >= 0 && projection1 <= cylinder->height)
         {
             final_root = root1;
@@ -190,20 +179,13 @@ uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec 
             final_hit = hit2;
         }
     }
-    
     if (final_root < 0)
-        return false; // No valid intersection found
-    
+        return (false); // No valid intersection found
     rec->t = final_root;
     rec->hit = final_hit;
-    
     // Calculate normal vector (pointing outward from cylinder axis)
-    t_vec3 hit_to_base = ftvec3_minus(rec->hit, cylinder->position);
-    t_vec3 proj_on_axis = ftvec3_multiply(cylinder_axis, FTVEC3(ftvec3_dot(hit_to_base, cylinder_axis)));
-    t_vec3 outward_normal = ftvec3_unit(ftvec3_minus(hit_to_base, proj_on_axis));
-    ft_hitr_set_face_normal(rec, ray, outward_normal);
-    
-    return true;
+    ft_hitr_set_face_normal(rec, ray, ftvec3_unit(ftvec3_minus(ftvec3_minus(rec->hit, cylinder->position), ftvec3_multiply(cylinder_axis, FTVEC3(ftvec3_dot(ftvec3_minus(rec->hit, cylinder->position), cylinder_axis))))));    
+    return (true);
 }
 
 
@@ -243,6 +225,7 @@ t_obj   ft_cylinder_create(t_cylinder_p params, t_material *mat)
     cyl.type = CYLINDER;
     cyl.mat = mat;
     memcpy(cyl.props, &params, sizeof(t_cylinder_p));
+    ((t_cylinder_p*) cyl.props)->position = ftvec3_unit(((t_cylinder_p*) cyl.props)->position);
     return (cyl);
 }
 
