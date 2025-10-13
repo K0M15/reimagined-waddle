@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/10 13:19:34 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/13 14:31:25 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,10 @@ int32_t	main(int argc, char *argv[])
 	t_app app;
 	t_camera camera;
 
+	//This the location of the parsing
 	pars_init(argc, argv);
 	// Pars terminal and file inputs
+	//TODO: convert to the different structures for the exec
 	app.width = 1200;
 	app.height = 800;
 	ft_camera_init(

@@ -49,7 +49,7 @@ debug: re
 
 $(NAME): $(FILES:.c=.o)
 	cd MLX42 && cmake -B build && cmake --build build -j4
-	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBFT) $(LIBRARIES) $(FLAGS_MAC) -o $(NAME)
+	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBFT) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
 
 %.o: %.c
 	$(CC) $(F_INC) $(FLAGS) -c -o $@ $^
