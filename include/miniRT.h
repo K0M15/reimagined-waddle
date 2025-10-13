@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/10 12:14:13 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/11 11:16:53 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_camera
     uint32_t samples_per_pixel;
     t_vec3 vec_up;
     t_vec3 ambient;
+    float ambient_intensity;
 }   t_camera;
 
 typedef struct s_camera_p{
@@ -57,6 +58,7 @@ typedef struct s_camera_p{
     int imageWidth;
     uint32_t samples_per_pixel;
     t_vec3 ambient;
+    float ambient_intensity;
 }   t_camera_p;
 
 typedef struct s_ray_props{

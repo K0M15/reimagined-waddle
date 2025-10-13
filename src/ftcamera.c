@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/11 10:13:05 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/11 14:25:09 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ uint32_t ft_camera_init(t_camera *camera, t_camera_p props)
     ft_camera_calc(camera);
     camera->samples_per_pixel = props.samples_per_pixel;
     camera->ambient = props.ambient;
+    camera->ambient_intensity = props.ambient_intensity;
     return (0);
 }
 
@@ -319,6 +320,19 @@ t_obj   ft_plane_create(t_plane_p params, t_material *mat)
     return (plane);
 }
 
+t_obj	ft_light_create(t_point_light_p props)
+{
+    t_obj light;
+
+    light.type = ERROR;
+    if (!(light.props = malloc(sizeof(t_point_light_p))))
+        return light;
+    light.type = POINT_LIGHT;
+    light.mat = NULL;
+    memcpy(light.props, &props, sizeof(t_point_light_p)); //test, dont know if that is valid...
+    return (light);
+}
+
 t_ray ft_mat_scatter(t_ray inc, t_hitrec *rec)
 {
     (void) inc;
@@ -369,6 +383,31 @@ uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *re
     return anything;
 }
 
+uint32_t hit_pointls(t_dyn *world, t_ray ray, double min, double max, t_hitrec *rec)
+{
+    // cast ray from hit to all pls, when not intersecting other objects, add color to rec
+    t_ray temp;
+    uint32_t i;
+
+    temp.origin = ftray_at(ray, rec->t);
+    i = 0;
+    while (i < world->filled)
+    {
+        t_obj *obj = world->elem + i * world->mem_size;
+        if (obj->type == POINT_LIGHT)
+        {
+            t_hitrec temp_rec;
+            if (!world_hit(world, temp, min, max, &temp_rec))
+            {
+                // decide, how to work with this stuff...
+                return (false);
+            }
+        }
+        i++;
+    }
+    return (true);
+}
+
 t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
 {
     // float a;
@@ -379,7 +418,13 @@ t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
         return (t_vec3){0, 0, 0};
 
     if (!world_hit(arr, ray, 0.0001, INFINITY, &rec))
-        return ftvec3_multiply(ray.ambient, FTVEC3(0.1));
+        return ftvec3_multiply(ray.ambient, FTVEC3(ray.ambient_intensity));
+
+    if (depth == MAX_DEPTH)
+    {
+        // if first iteration and world_hit, find all point_light_sources
+        hit_pointls(arr, ray, 0.0001, INFINITY, &rec);
+    }
 
     if (rec.mat->is_emitting)
         return (rec.mat->color);
@@ -396,8 +441,8 @@ t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
 t_vec3 sample_square()
 {
     //maybe bake array into code with offset vars
-    return (t_vec3){rand_double() - .5, rand_double() - .5, 0};
-    // return FTVEC3(0);
+    // return (t_vec3){rand_double() - .5, rand_double() - .5, 0};
+    return FTVEC3(0);
 }
 
 t_ray get_rand_ray(t_vec3 pixel_loc, t_vec3 origin, t_camera *cam)
@@ -407,7 +452,7 @@ t_ray get_rand_ray(t_vec3 pixel_loc, t_vec3 origin, t_camera *cam)
 
     offset = ftvec3_multiply(sample_square(), ftvec3_plus(cam->delta_u, cam->delta_v));
     sample_pos = ftvec3_plus(pixel_loc, offset);
-    return ftray_create(cam->ambient, origin, ftvec3_minus(sample_pos, origin));
+    return ftray_create(cam->ambient, cam->ambient_intensity, origin, ftvec3_minus(sample_pos, origin));
 }
 
 void ft_camera_apply(t_camera *cam, t_vec3 apply)
