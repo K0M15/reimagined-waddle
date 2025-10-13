@@ -21,15 +21,16 @@ static int	add_cylinder(t_cylinder *input)
 	cpy_normal(&cylinder->normal, &input->normal);
 	cylinder->diameter = input->diameter;
 	cylinder->height = input->height;
-	cpy_rgb(&cylinder->color, &input->color);
+	//cpy_rgb(&cylinder->color, &input->color);
 	add_ll_back_node(&(get_scene()->cylinder), cylinder);
 	return (0);
 }
 
-int	extract_cylinder(const char *line)
+int	extract_cylinder(const char *line, t_app *app)
 {
 	char		**tokens;
 	t_cylinder	temp;
+	(void) app;
 
 	tokens = ft_split(line, ' ');
 	if (!tokens)

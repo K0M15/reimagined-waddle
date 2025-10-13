@@ -7,7 +7,7 @@
 #include "parser.h"
 #include "ft_ll.h"
 
-static int	add_light(t_point *loc, FLOAT *brightness, t_rgb *color)
+static int	add_light(t_vec3 *loc, FLOAT *brightness, t_vec3 *color)
 {
 	t_light	*light;
 	
@@ -24,13 +24,14 @@ static int	add_light(t_point *loc, FLOAT *brightness, t_rgb *color)
 	return (0);
 }
 
-int	extract_light(const char *line)
+int	extract_light(const char *line, t_app *app)
 {
 	char	**tokens;
-	t_point	loc;
+	t_vec3	loc;
 	FLOAT	brightness;
-	t_rgb	color;
+	t_vec3	color;
 
+	(void) app;
 	tokens = ft_split(line, ' ');
 	if (!tokens)
 	{

@@ -8,10 +8,12 @@
 #include "ft_ll.h"
 
 //TODO: change the t_camera_o to more meaningfull name
-int	add_camera(t_point *loc, t_normal *normal, int *fov)
+//TODO: Add the direct addition to app object
+int	add_camera(t_vec3 *loc, t_vec3 *normal, int *fov, t_app *app)
 {
 	t_camera_o	*a_camera;
 	
+	(void) app;
 	a_camera = (t_camera_o *)malloc(sizeof(t_camera));
 	if (!a_camera)
 	{
@@ -42,11 +44,11 @@ static int	extract_fov(char *input)
 	return (ft_atoi(input));
 }
 
-int	extract_camera(const char *line)
+int	extract_camera(const char *line, t_app *app)
 {
 	char		**tokens;
-	t_point		loc;
-	t_normal	normal;
+	t_vec3		loc;
+	t_vec3	normal;
 	int		fov;
 
 	tokens = ft_split(line, ' ');
@@ -69,7 +71,7 @@ int	extract_camera(const char *line)
 		return (free_tokens(tokens), -1);
 	if (fov > (int)180 && fov < (int)0)
 		return (free_tokens(tokens), -1);
-	if (add_camera(&loc, &normal, &fov) == -1)
+	if (add_camera(&loc, &normal, &fov, app) == -1)
 		return (free_tokens(tokens), -1);
 	return (free_tokens(tokens), 0);
 }

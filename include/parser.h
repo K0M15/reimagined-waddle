@@ -2,21 +2,22 @@
 # define PARSER_H
 #include "settings.h"
 #include "elements.h"
+#include "minirt.h"
 
 //parser.c
-int	pars(const char *path);
+int	pars(const char *path, t_app *app);
 
 //*.c
-int	extract_ambient_light(const char *line);	
-int	extract_camera(const char *line);
-int	extract_light(const char *line);
-int	extract_sphere(const char *line);
-int	extract_plane(const char *line);
-int	extract_cylinder(const char *line);
+int	extract_ambient_light(const char *line, t_app *app);	
+int	extract_camera(const char *line, t_app *app);
+int	extract_light(const char *line, t_app *app);
+int	extract_sphere(const char *line, t_app *app);
+int	extract_plane(const char *line, t_app *app);
+int	extract_cylinder(const char *line, t_app *app);
 
 //extract_rgb.c
-void	cpy_rgb(t_rgb *dst, t_rgb *src);
-t_rgb	extract_color(const char *input);
+void	cpy_rgb(t_vec3 *dst, t_vec3 *src);
+t_vec3	extract_color(const char *input);
 
 //extract_cordinates.c
 void	cpy_loc(t_point *dst, t_point *src);

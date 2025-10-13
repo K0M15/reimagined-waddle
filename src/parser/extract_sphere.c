@@ -6,30 +6,30 @@
 #include "elements.h"
 #include "parser.h"
 #include "ft_ll.h"
+#include "hitable.h"
 
-static int	add_sphere(t_point *loc, FLOAT *diameter, t_rgb *color)
+/*TODO: have the possibility to add more materials to the sphere*/
+static int	add_sphere(t_vec3 *loc, FLOAT *diameter, t_vec3 *color, t_app *app)
 {
-	t_sphere	*sphere;
-	
-	sphere = (t_sphere *)malloc(sizeof(t_sphere));
-	if (!sphere)
-	{
-		printf("Malloc failed!\n");
-		return (-1);
-	}
-	sphere->diameter = *diameter;
-	cpy_loc(&sphere->loc, loc);
-	cpy_rgb(&sphere->color, color);
-	add_ll_back_node(&(get_scene()->sphere), sphere);
+	t_obj	sphere;
+
+	sphere.props.radius = *diameter / 2.0;
+	//sphere->diameter = *diameter;
+	cpy_loc(&(sphere.props.position), loc);
+	cpy_rgb(&sphere.props.color, color);
+	sphere.type = SPHERE;
+	sphere.mat = NULL;
+	//add_ll_back_node(&(get_scene()->sphere), sphere);
+	dyn_add(&app->hitable, &sphere);
 	return (0);
 }
 
-int	extract_sphere(const char *line)
+int	extract_sphere(const char *line, t_app *app)
 {
 	char	**tokens;
-	t_point	loc;
+	t_vec3	loc;
 	FLOAT	diameter;
-	t_rgb	color;
+	t_vec3	color;
 
 	tokens = ft_split(line, ' ');
 	if (!tokens)
@@ -53,7 +53,7 @@ int	extract_sphere(const char *line)
 	color = extract_color(tokens[3]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (add_sphere(&loc, &diameter, &color) == -1)
+	if (add_sphere(&loc, &diameter, &color, app) == -1)
 		return (free_tokens(tokens), -1);
 	return (free_tokens(tokens), 0);
 }

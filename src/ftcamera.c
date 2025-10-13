@@ -46,18 +46,18 @@ uint32_t ft_camera_init(t_camera *camera, t_camera_p props)
     return (0);
 }
 
-t_obj ft_sphere_create(t_sphere_p params, t_material *mat)
-{
-    t_obj sphere;
+// t_obj ft_sphere_create(t_sphere_p params, t_material *mat)
+// {
+//     t_obj sphere;
 
-    sphere.type = ERROR;
-    if(!(sphere.props = malloc(sizeof(t_sphere_p))))
-        return sphere;
-    sphere.type = SPHERE;
-    sphere.mat = mat;
-    memcpy(sphere.props, &params, sizeof(t_sphere_p));
-    return sphere;
-}
+//     sphere.type = ERROR;
+//     if(!(sphere.props = malloc(sizeof(t_sphere_p))))
+//         return sphere;
+//     sphere.type = SPHERE;
+//     sphere.mat = mat;
+//     memcpy(sphere.props, &params, sizeof(t_sphere_p));
+//     return sphere;
+// }
 
 void ft_hitr_set_face_normal(t_hitrec *rec, t_ray ray, t_vec3 outwar_norm)
 {
@@ -75,11 +75,11 @@ uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec
     float disciminant;
     float root;
 
-    oc = ftvec3_minus(((t_sphere_p *)sphere.props)->position, ray.origin);
+    oc = ftvec3_minus(sphere.props.position, ray.origin);
     abc = (t_vec3) {
         ftvec3_dot(ray.direction, ray.direction),
         ftvec3_dot(ray.direction, oc),
-        ftvec3_dot(oc, oc) - ((t_sphere_p *)sphere.props)->radius * ((t_sphere_p *)sphere.props)->radius
+        ftvec3_dot(oc, oc) - (sphere.props.radius * sphere.props.radius)
     };
     disciminant = (abc.y*abc.y - abc.x * abc.z);
     if (disciminant < 0)
@@ -94,40 +94,42 @@ uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec
     }
     rec->t = root;
     rec->hit = ftray_at(ray, root);
-    ft_hitr_set_face_normal(rec, ray, ftvec3_divide(ftvec3_minus(rec->hit,((t_sphere_p *)sphere.props)->position), FTVEC3(((t_sphere_p *)sphere.props)->radius)));
+    ft_hitr_set_face_normal(rec, ray, ftvec3_divide(ftvec3_minus(rec->hit,sphere.props.position), FTVEC3(sphere.props.radius)));
     return true;
 }
 
+//TODO: Remove this function
 void ft_obj_dest(t_obj sphere)
 {
-    free(sphere.props);
+    //free(&sphere.props);
+    (void) sphere;
 }
 
-t_obj   ft_cylinder_create(t_cylinder_p params, t_material *mat)
-{
-    t_obj cyl;
+// t_obj   ft_cylinder_create(t_cylinder_p params, t_material *mat)
+// {
+    // t_obj cyl;
+// 
+    // cyl.type = ERROR;
+    // if(!(cyl.props = malloc(sizeof(t_cylinder_p))))
+        // return cyl;
+    // cyl.type = CYLINDER;
+    // cyl.mat = mat;
+    // memcpy(cyl.props, &params, sizeof(t_cylinder_p));
+    // return (cyl);
+// }
 
-    cyl.type = ERROR;
-    if(!(cyl.props = malloc(sizeof(t_cylinder_p))))
-        return cyl;
-    cyl.type = CYLINDER;
-    cyl.mat = mat;
-    memcpy(cyl.props, &params, sizeof(t_cylinder_p));
-    return (cyl);
-}
+// t_obj   ft_plane_create(t_plane_p params, t_material *mat)
+// {
+//     t_obj plane;
 
-t_obj   ft_plane_create(t_plane_p params, t_material *mat)
-{
-    t_obj plane;
-
-    plane.type = ERROR;
-    if(!(plane.props = malloc(sizeof(t_plane_p))))
-        return plane;
-    plane.type = PLANE;
-    plane.mat = mat;
-    memcpy(plane.props, &params, sizeof(t_plane_p));
-    return (plane);
-}
+//     plane.type = ERROR;
+//     if(!(plane.props = malloc(sizeof(t_plane_p))))
+//         return plane;
+//     plane.type = PLANE;
+//     plane.mat = mat;
+//     memcpy(plane.props, &params, sizeof(t_plane_p));
+//     return (plane);
+// }
 
 t_ray ft_mat_scatter(t_ray inc, t_hitrec *rec)
 {

@@ -4,7 +4,7 @@
 #include "libft.h"
 #include "parser.h"
 
-void	cpy_normal(t_normal *dst, t_normal *src)
+void	cpy_normal(t_vec3 *dst, t_vec3 *src)
 {
 	dst->x = src->x;
 	dst->y = src->y;
@@ -12,7 +12,7 @@ void	cpy_normal(t_normal *dst, t_normal *src)
 }
 
 //TODO: make atof take negative numbers!!!
-static int	tokens_to_normal(char **tokens, t_normal *result)
+static int	tokens_to_normal(char **tokens, t_vec3 *result)
 {
 	result->x = ft_atof(*tokens);
 	if (errno || result->x > (FLOAT)1 || result->x < (FLOAT)-1)
@@ -26,17 +26,18 @@ static int	tokens_to_normal(char **tokens, t_normal *result)
 	return (0);
 }
 
-static void	init_normal(t_normal *normal)
+static void	init_normal(t_vec3 *normal)
 {
 	normal->x = 0;
 	normal->y = 0;
 	normal->z = 0;
 }
 
-t_normal	extract_normal(const char *input)
+t_vec3	extract_normal(const char *input, t_app *app)
 {
 	char		**tokens;
-	t_normal	normal;
+	t_vec3	normal;
+	(void) app;
 
 	init_normal(&normal);
 	tokens = ft_split(input, ',');

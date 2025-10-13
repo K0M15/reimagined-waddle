@@ -7,7 +7,7 @@
 #include "parser.h"
 #include "ft_ll.h"
 
-static int	add_plane(t_point *loc, t_normal *normal, t_rgb *color)
+static int	add_plane(t_vec3 *loc, t_vec3 *normal, t_vec3 *color)
 {
 	t_plane	*plane;
 	
@@ -24,12 +24,13 @@ static int	add_plane(t_point *loc, t_normal *normal, t_rgb *color)
 	return (0);
 }
 
-int	extract_plane(const char *line)
+int	extract_plane(const char *line, t_app *app)
 {
 	char	**tokens;
-	t_point		loc;
-	t_normal	normal;
-	t_rgb		color;
+	t_vec3		loc;
+	t_vec3	normal;
+	t_vec3		color;
+	(void) app;
 
 	tokens = ft_split(line, ' ');
 	if (!tokens)

@@ -16,17 +16,18 @@
 # include "stddef.h"
 # include "stdint.h"
 # include "string.h"
+# include "hitable.h"
 # define DYN_INIT_S 300
 
 typedef struct s_dyn
 {
-	void	    *elem;
+	t_obj	    *elem;
 	uint32_t	filled;
 	uint32_t	alloc;
     uint8_t     mem_size;
 }	t_dyn;
 
-int32_t dyn_add(t_dyn *array, void *element);
+int32_t dyn_add(t_dyn *array, t_obj *element);
 void    dyn_dest(t_dyn *arr);
 int32_t dyn_init(t_dyn *array, uint8_t mem_size);
 int32_t	dyn_enhance(t_dyn *array);

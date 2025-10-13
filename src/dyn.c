@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 13:35:49 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/15 10:52:26 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/13 15:54:52 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int32_t dyn_init(t_dyn *array, uint8_t mem_size)
 	return (0);
 }
 
-int32_t dyn_add(t_dyn *array, void *element)
+int32_t dyn_add(t_dyn *array, t_obj *element)
 {
 	if (array->filled + 1 >= array->alloc)
 	{
@@ -37,7 +37,7 @@ int32_t dyn_add(t_dyn *array, void *element)
 
 int32_t dyn_enhance(t_dyn *array)
 {
-	void			**replace;
+	t_obj			*replace;
 
 	replace = malloc(array->alloc * 2 * array->mem_size);
 	if (replace == NULL)
@@ -47,9 +47,4 @@ int32_t dyn_enhance(t_dyn *array)
 	array->elem = replace;
 	array->alloc = array->alloc * 2;
 	return (0);
-}
-
-void dyn_dest(t_dyn *arr)
-{
-    free(arr->elem);
 }

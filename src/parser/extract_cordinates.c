@@ -4,14 +4,14 @@
 #include "libft.h"
 #include "parser.h"
 
-void	cpy_loc(t_point *dst, t_point *src)
+void	cpy_loc(t_vec3 *dst, t_vec3 *src)
 {
 	dst->x = src->x;
 	dst->y = src->y;
 	dst->z = src->z;
 }
 
-static int	tokens_to_loc(char **tokens, t_point *result)
+static int	tokens_to_loc(char **tokens, t_vec3 *result)
 {
 	result->x = ft_atof(*tokens);
 	if (errno)
@@ -25,17 +25,17 @@ static int	tokens_to_loc(char **tokens, t_point *result)
 	return (0);
 }
 
-static void	init_loc(t_point *loc)
+static void	init_loc(t_vec3 *loc)
 {
 	loc->x = 0;
 	loc->y = 0;
 	loc->z = 0;
 }
 
-t_point	extract_loc(const char *input)
+t_vec3	extract_loc(const char *input)
 {
 	char	**tokens;
-	t_point	location;
+	t_vec3	location;
 
 	init_loc(&location);
 	tokens = ft_split(input, ',');

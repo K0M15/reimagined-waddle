@@ -4,7 +4,7 @@
 #include "parser.h"
 #include "get_next_line.h"
 
-static int	extract_line_data(const char *line)
+static int	extract_line_data(const char *line, t_app *app)
 {
 	int ret;
 
@@ -12,17 +12,17 @@ static int	extract_line_data(const char *line)
 //	TODO: remove the debug line under
 //	printf("The line is: %s\n", line);
 	if (*line == 'A')
-		ret = extract_ambient_light(line);	
+		ret = extract_ambient_light(line, app);	
 	else if (*line == 'C')
-		ret = extract_camera(line);
+		ret = extract_camera(line, app);
 	else if (*line == 'L')
-		ret = extract_light(line);
+		ret = extract_light(line, app);
 	else if (ft_strncmp(line, "sp", 2) == 0)
-		ret = extract_sphere(line);
+		ret = extract_sphere(line, app);
 	else if (ft_strncmp(line, "pl", 2) == 0)
-		ret = extract_plane(line);
+		ret = extract_plane(line, app);
 	else if (ft_strncmp(line, "cy", 2) == 0)
-		ret = extract_cylinder(line);
+		ret = extract_cylinder(line, app);
 	else if (*line == '\n')
 		ret = 0;
 	else
@@ -40,7 +40,7 @@ void	hide_newline(char *line)
 		*line = 0;
 }
 
-int pars(const char *path)
+int pars(const char *path, t_app *app)
 {
 	int	fd;
 	char	*line;
@@ -57,7 +57,7 @@ int pars(const char *path)
 	ret = 0;
 	while(line)
 	{
-		ret = extract_line_data(line);
+		ret = extract_line_data(line, app);
 		if (ret == -1)
 		{
 			while(line) 

@@ -7,10 +7,11 @@
 #include "parser.h"
 #include "ft_ll.h"
 
-static int	add_ambient_light(FLOAT *light_ratio, t_rgb *color)
+static int	add_ambient_light(FLOAT *light_ratio, t_vec3 *color, t_app *app)
 {
 	t_ambient_light	*a_light;
 	
+	(void) app;
 	a_light = (t_ambient_light *)malloc(sizeof(t_ambient_light));
 	if (!a_light)
 	{
@@ -23,11 +24,11 @@ static int	add_ambient_light(FLOAT *light_ratio, t_rgb *color)
 	return (0);
 }
 
-int	extract_ambient_light(const char *line)
+int	extract_ambient_light(const char *line, t_app *app)
 {
 	char	**tokens;
 	FLOAT	light_ratio;
-	t_rgb	color;
+	t_vec3	color;
 
 	tokens = ft_split(line, ' ');
 	if (!tokens)
@@ -48,7 +49,7 @@ int	extract_ambient_light(const char *line)
 	color = extract_color(tokens[2]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (add_ambient_light(&light_ratio, &color) == -1)
+	if (add_ambient_light(&light_ratio, &color, app) == -1)
 		return (free_tokens(tokens), -1);
 	return (free_tokens(tokens), 0);
 }

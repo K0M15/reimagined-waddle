@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/13 14:31:25 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/13 15:23:32 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int32_t	main(int argc, char *argv[])
 	t_camera camera;
 
 	//This the location of the parsing
-	pars_init(argc, argv);
+	pars_init(argc, argv, &app);
 	// Pars terminal and file inputs
 	//TODO: convert to the different structures for the exec
 	app.width = 1200;
@@ -149,15 +149,16 @@ int32_t	main(int argc, char *argv[])
 	mat_l.is_emitting = 1;
 	mat_l.scatter = .5;
 	
-	t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){0,0,-4}}, &material);
-	t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
-	t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, &material);
-	t_obj sphere3 = ft_sphere_create((t_sphere_p){.1,(t_vec3){0,40,30}}, &mat_l);
+	//TODO: Free the parser internal storage
+	//t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){0,0,-4}}, &material);
+	//t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
+	//t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, &material);
+	//t_obj sphere3 = ft_sphere_create((t_sphere_p){.1,(t_vec3){0,40,30}}, &mat_l);
 	// t_obj sphere4 = ft_sphere_create((t_sphere_p){20,(t_vec3){0,10,30}}, &mat_l);
-	dyn_add(&app.hitable, &sphere);
-	dyn_add(&app.hitable, &sphere1);
-	dyn_add(&app.hitable, &sphere2);
-	dyn_add(&app.hitable, &sphere3);
+	//dyn_add(&app.hitable, &sphere);
+	//dyn_add(&app.hitable, &sphere1);
+	//dyn_add(&app.hitable, &sphere2);
+	//dyn_add(&app.hitable, &sphere3);
 	// dyn_add(&app.hitable, &sphere4);
 	if (setupWindow(&app) == EXIT_FAILURE)
 		return (EXIT_FAILURE);	
@@ -178,14 +179,14 @@ static void	print_instructions(void)
 	printf("The program usage: ./miniRT [scene file]\n");
 }
 
-int32_t pars_init(int argc, char **argv)
+int32_t pars_init(int argc, char **argv, t_app *app)
 {
 	if (argc != 2)
 	{
 		print_instructions();
 		return (-1);
 	}
-	if (pars(argv[1]) == -1)
+	if (pars(argv[1], app) == -1)
 		return (-1);
 	return (0);
 }

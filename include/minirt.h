@@ -74,7 +74,7 @@ typedef struct s_app
     t_dyn   hitable;
 }	t_app;
 
-int32_t pars_init(int argc, char **argv);
+int32_t pars_init(int argc, char **argv, t_app *app);
 
 t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth);
 uint32_t ft_camera_init(t_camera *camera, t_camera_p props);
