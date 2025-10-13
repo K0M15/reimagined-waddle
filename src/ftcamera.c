@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ftcamera.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/11 14:25:09 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/13 17:18:11 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-#include "assert.h"
 
 void ft_camera_calc(t_camera *camera)
 {
@@ -24,13 +23,13 @@ void ft_camera_calc(t_camera *camera)
     camera->w = ftvec3_unit(ftvec3_minus(camera->center, camera->look_at));
     camera->u = ftvec3_unit(ftvec3_cross(camera->w, camera->vec_up));
     camera->v = ftvec3_cross(camera->w, camera->u);
-    camera->viewport_u = ftvec3_multiply(camera->u, FTVEC3(camera->viewport_width));
-    camera->viewport_v = ftvec3_multiply(camera->v, FTVEC3(camera->viewport_height));
-    camera->delta_u = ftvec3_divide(camera->viewport_u, FTVEC3(camera->image_width));
-    camera->delta_v = ftvec3_divide(camera->viewport_v, FTVEC3(camera->image_height));
-    camera->vupper_left = ftvec3_minus(camera->center, ftvec3_multiply(FTVEC3(camera->focal_length), camera->w));
-    camera->vupper_left = ftvec3_minus(camera->vupper_left, ftvec3_divide(camera->viewport_u, FTVEC3(2)));
-    camera->vupper_left = ftvec3_minus(camera->vupper_left, ftvec3_divide(camera->viewport_v, FTVEC3(2)));
+    camera->viewport_u = ftvec3_multiply(camera->u, ftvec3(camera->viewport_width));
+    camera->viewport_v = ftvec3_multiply(camera->v, ftvec3(camera->viewport_height));
+    camera->delta_u = ftvec3_divide(camera->viewport_u, ftvec3(camera->image_width));
+    camera->delta_v = ftvec3_divide(camera->viewport_v, ftvec3(camera->image_height));
+    camera->vupper_left = ftvec3_minus(camera->center, ftvec3_multiply(ftvec3(camera->focal_length), camera->w));
+    camera->vupper_left = ftvec3_minus(camera->vupper_left, ftvec3_divide(camera->viewport_u, ftvec3(2)));
+    camera->vupper_left = ftvec3_minus(camera->vupper_left, ftvec3_divide(camera->viewport_v, ftvec3(2)));
 }
 
 uint32_t ft_camera_init(t_camera *camera, t_camera_p props)
@@ -67,7 +66,7 @@ void ft_hitr_set_face_normal(t_hitrec *rec, t_ray ray, t_vec3 outwar_norm)
     if (rec->front_face)
         rec->normal = outwar_norm;
     else
-        rec->normal = ftvec3_multiply(outwar_norm, FTVEC3(-1));
+        rec->normal = ftvec3_multiply(outwar_norm, ftvec3(-1));
 }
 
 uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec *rec)
@@ -96,7 +95,7 @@ uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec
     }
     rec->t = root;
     rec->hit = ftray_at(ray, root);
-    ft_hitr_set_face_normal(rec, ray, ftvec3_divide(ftvec3_minus(rec->hit,((t_sphere_p *)sphere.props)->position), FTVEC3(((t_sphere_p *)sphere.props)->radius)));
+    ft_hitr_set_face_normal(rec, ray, ftvec3_divide(ftvec3_minus(rec->hit,((t_sphere_p *)sphere.props)->position), ftvec3(((t_sphere_p *)sphere.props)->radius)));
     return true;
 }
 
@@ -125,7 +124,7 @@ uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec 
     abc.y = 2.0 * ftvec3_dot(ray_cross_axis, oc_cross_axis);
     abc.z = ftvec3_dot(oc_cross_axis, oc_cross_axis) - cylinder->radius * cylinder->radius;
     
-    float radial_dist_sq = ftvec3_length(ftvec3_minus(oc, ftvec3_multiply(cylinder_axis, FTVEC3(ftvec3_dot(oc, cylinder_axis))))) * ftvec3_length(ftvec3_minus(oc, ftvec3_multiply(cylinder_axis, FTVEC3(ftvec3_dot(oc, cylinder_axis)))));
+    float radial_dist_sq = ftvec3_length(ftvec3_minus(oc, ftvec3_multiply(cylinder_axis, ftvec3(ftvec3_dot(oc, cylinder_axis))))) * ftvec3_length(ftvec3_minus(oc, ftvec3_multiply(cylinder_axis, ftvec3(ftvec3_dot(oc, cylinder_axis)))));
     // Handle case where ray is parallel to cylinder axis
     if (fabs(abc.x) < DOUBLE_NEAR_ZERO)
     {
@@ -185,7 +184,7 @@ uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec 
     {
         // check caps: plane intersections at position (bottom) and position + axis*height (top)
         t_vec3 cap0_pos = cylinder->position;
-        t_vec3 cap1_pos = ftvec3_plus(cylinder->position, ftvec3_multiply(cylinder_axis, FTVEC3(cylinder->height)));
+        t_vec3 cap1_pos = ftvec3_plus(cylinder->position, ftvec3_multiply(cylinder_axis, ftvec3(cylinder->height)));
         float tcap0 = 0;
         float tcap1 = 0;
         bool hit_cap0 = false;
@@ -219,15 +218,15 @@ uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec 
 
         // choose nearest cap hit if any
         float chosen_t = -1;
-        t_vec3 chosen_p = FTVEC3(0);
-        t_vec3 chosen_normal = FTVEC3(0);
+        t_vec3 chosen_p = ftvec3(0);
+        t_vec3 chosen_normal = ftvec3(0);
         if (hit_cap0 && hit_cap1)
         {
             if (tcap0 < tcap1)
             {
                 chosen_t = tcap0;
                 chosen_p = ftray_at(ray, tcap0);
-                chosen_normal = ftvec3_multiply(cylinder_axis, FTVEC3(-1));
+                chosen_normal = ftvec3_multiply(cylinder_axis, ftvec3(-1));
             }
             else
             {
@@ -240,7 +239,7 @@ uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec 
         {
             chosen_t = tcap0;
             chosen_p = ftray_at(ray, tcap0);
-            chosen_normal = ftvec3_multiply(cylinder_axis, FTVEC3(-1));
+            chosen_normal = ftvec3_multiply(cylinder_axis, ftvec3(-1));
         }
         else if (hit_cap1)
         {
@@ -262,7 +261,7 @@ uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec 
     rec->t = final_root;
     rec->hit = final_hit;
     // Calculate normal vector (pointing outward from cylinder axis)
-    ft_hitr_set_face_normal(rec, ray, ftvec3_unit(ftvec3_minus(ftvec3_minus(rec->hit, cylinder->position), ftvec3_multiply(cylinder_axis, FTVEC3(ftvec3_dot(ftvec3_minus(rec->hit, cylinder->position), cylinder_axis))))));
+    ft_hitr_set_face_normal(rec, ray, ftvec3_unit(ftvec3_minus(ftvec3_minus(rec->hit, cylinder->position), ftvec3_multiply(cylinder_axis, ftvec3(ftvec3_dot(ftvec3_minus(rec->hit, cylinder->position), cylinder_axis))))));
     return (true);
 }
 
@@ -340,7 +339,7 @@ t_ray ft_mat_scatter(t_ray inc, t_hitrec *rec)
     out.origin = rec->hit;
     //TODO:  insert inteligent scatter logic OR delete it since only specular reflections are needed
     // THIS WORKS ONLY FOR SPHERES! Maybe add object to hitrecord
-    out.ambient = FTVEC3(0);
+    out.ambient = ftvec3(0);
     if (rand_double() < rec->mat->scatter)
         out.direction = ftvec3_unit(ftvec3_plus(ftvec3_ronhemi(rec->normal), rec->normal));
     else
@@ -383,66 +382,74 @@ uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *re
     return anything;
 }
 
-uint32_t hit_pointls(t_dyn *world, t_ray ray, double min, double max, t_hitrec *rec)
+float distance_col_scale(float distance)
 {
-    // cast ray from hit to all pls, when not intersecting other objects, add color to rec
-    t_ray temp;
-    uint32_t i;
+    float dsq2; 
 
-    temp.origin = ftray_at(ray, rec->t);
+    dsq2= distance*distance;
+    if (dsq2 < 1e-6)
+        dsq2 = 1e-6;
+    return 1 / dsq2;
+}
+
+/*
+    World are all objects (maybe filter => only pls)
+    Ray should be semi filled, only origin
+*/
+uint32_t hit_pointls(t_dyn *world, t_ray ray, double min, double max, t_vec3 *color)
+{
+    (void) min;
+    // cast ray from hit to all pls, when not intersecting other objects, add color to rec
+    uint32_t i;
+    uint32_t has_hit;
+
     i = 0;
+    has_hit = 0;
     while (i < world->filled)
     {
         t_obj *obj = world->elem + i * world->mem_size;
         if (obj->type == POINT_LIGHT)
         {
             t_hitrec temp_rec;
-            if (!world_hit(world, temp, min, max, &temp_rec))
+            // ray.direction = ((t_point_light_p *)obj->props)->position;
+            ray.direction = ftvec3_normalize(ftvec3_minus(((t_point_light_p *)obj->props)->position, ray.origin));
+            // if (!world_hit(world, ray, 0.001, max, &temp_rec))
+            if (!world_hit(world, ray, ftvec3_length(ftvec3_minus(((t_point_light_p *)obj->props)->position, ray.origin)), max, &temp_rec))
             {
-                // decide, how to work with this stuff...
-                return (false);
+                has_hit++;
+                // *color = ftcol_add(*color, ftcol_scale(((t_point_light_p *)obj->props)->color, ((t_point_light_p *)obj->props)->brightness * distance_col_scale(temp_rec.t) ));
+                *color = ftcol_add(*color, ftcol_scale(((t_point_light_p *)obj->props)->color, ((t_point_light_p *)obj->props)->brightness * 1));
             }
         }
         i++;
     }
-    return (true);
+    if (has_hit)
+        *color = ftcol_scale(*color, 1 / has_hit);
+    return (has_hit);
 }
 
-t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth)
+t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect)
 {
-    // float a;
-    // t_vec3 unit_dir;
     t_hitrec rec;
+    t_vec3  next_color;
 
-    if (depth <= 0)
-        return (t_vec3){0, 0, 0};
-
-    if (!world_hit(arr, ray, 0.0001, INFINITY, &rec))
-        return ftvec3_multiply(ray.ambient, FTVEC3(ray.ambient_intensity));
-
-    if (depth == MAX_DEPTH)
-    {
-        // if first iteration and world_hit, find all point_light_sources
-        hit_pointls(arr, ray, 0.0001, INFINITY, &rec);
-    }
-
+    if (depth <= 0 || left_reflect < .1 || !world_hit(arr, ray, 0.0001, INFINITY, &rec))
+        return ftcol_scale(ray.ambient, ray.ambient_intensity);
     if (rec.mat->is_emitting)
-        return (rec.mat->color);
-    assert(rec.mat != NULL && "Material should not be null!");
-    return ftvec3_plus(
-        ftvec3_multiply(
-            FTVEC3(clamp(rec.mat->reflectivity, 0, 1)), // with -03 the material is null
-            ftray_color(ft_mat_scatter(ray, &rec), arr, depth - 1) // rework scatter... -> this should return a bool if mat scatters or not. additionaly, the color should be returned in a ptr
-        ),
-        ftvec3_multiply(FTVEC3(1.0-rec.mat->reflectivity), rec.mat->color)
-    );
+        return (rec.mat->color); //todo: scale
+    t_vec3 lightcolor = ftcol_scale(ray.ambient, ray.ambient_intensity);
+    next_color = ftray_color(ft_mat_scatter(ray, &rec), arr, depth - 1, left_reflect * rec.mat->reflectivity); 
+    hit_pointls(arr, (t_ray){ftray_at(ray, rec.t), ftvec3(0), ray.ambient, ray.ambient_intensity}, 0.0001, INFINITY, &lightcolor);
+    return ftcol_add(
+        ftcol_scale(next_color, rec.mat->reflectivity),
+        ftcol_mult(ftcol_scale(lightcolor, rec.mat->reflectivity), rec.mat->color));
 }
 
 t_vec3 sample_square()
 {
     //maybe bake array into code with offset vars
-    // return (t_vec3){rand_double() - .5, rand_double() - .5, 0};
-    return FTVEC3(0);
+    return (t_vec3){rand_double() - .5, rand_double() - .5, 0};
+    // return ftvec3(0);
 }
 
 t_ray get_rand_ray(t_vec3 pixel_loc, t_vec3 origin, t_camera *cam)
@@ -471,7 +478,7 @@ uint32_t ft_camera_render(
     uint32_t x = 0;
 
     pixel00_loc = ftvec3_plus(app->active_camera->vupper_left, ftvec3_multiply(ftvec3_plus(app->active_camera->delta_u, app->active_camera->delta_v),(t_vec3){0.5,0.5,0.5}));
-    sample_scale = FTVEC3(1.0 / (float) app->active_camera->samples_per_pixel);
+    sample_scale = ftvec3(1.0 / (float) app->active_camera->samples_per_pixel);
     while (y < app->image->height)
     {
         x = 0;
@@ -479,18 +486,19 @@ uint32_t ft_camera_render(
         {
             t_vec3 pixel_center = ftvec3_plus(pixel00_loc, 
                 ftvec3_plus(
-                    ftvec3_multiply(FTVEC3(x), app->active_camera->delta_u),
-                    ftvec3_multiply(FTVEC3(y), app->active_camera->delta_v)));
-            t_vec3 color = FTVEC3(0);
+                    ftcol_scale(app->active_camera->delta_u, x),
+                    ftcol_scale(app->active_camera->delta_v, y)));
+            t_vec3 color = ftvec3(0);
             uint32_t i = 0;
             while (i < app->active_camera->samples_per_pixel)
             {
-                t_vec3 new_col = ftray_color(get_rand_ray(pixel_center, app->active_camera->center, app->active_camera), &app->hitable, MAX_DEPTH);
-                color = ftvec3_plus(color, new_col);
-                // color = ftvec3_plus(color, ftvec3_divide(new_col, FTVEC3(app->active_camera->samples_per_pixel)));
+                t_vec3 new_col = ftray_color(get_rand_ray(pixel_center, app->active_camera->center, app->active_camera), &app->hitable, MAX_DEPTH, 1);
+                // color = ftvec3_plus(color, new_col);
+                color = ftvec3_plus(color, ftvec3_multiply(new_col, ftvec3(1.0f / (float) app->active_camera->samples_per_pixel)));
                 i++;
             }
-            put_pixel(app->image, x, y, ftvec3_tocolor(ftvec3_lin_gamma(ftvec3_multiply(color, sample_scale)), 1.0));
+            // put_pixel(app->image, x, y, ftvec3_tocolor(ftvec3_lin_gamma(ftvec3_multiply(color, sample_scale)), 1.0));
+            (void) sample_scale; put_pixel(app->image, x, y, ftvec3_tocolor(color, 1.0));
             x++;
         }
         y++;

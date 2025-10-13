@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/10 14:05:35 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/13 17:29:28 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ void draw_loop(void *args)
 	t_app *app;
 
 	app = (t_app *)args;
-	// ft_camera_render(app, ft_put_pixel);
-	ft_camera_render(app, ft_kumul_pixel);
+	ft_camera_render(app, ft_put_pixel);
+	// ft_camera_render(app, ft_kumul_pixel);
 	printf("Cam: X%.2f Y%.2f Z%.2f, FOV%.2F\n", app->active_camera->look_at.x, app->active_camera->look_at.y, app->active_camera->look_at.z, app->active_camera->fov);
 }
 
@@ -117,7 +117,7 @@ int32_t main(void)
 	app.height = 800;
 	ft_camera_init(
 		&camera, (t_camera_p){
-			FTVEC3(0),
+			ftvec3(0),
 			(t_vec3){0,0, -1},
 			90,
 			app.width,
@@ -126,8 +126,9 @@ int32_t main(void)
 			// (t_vec3){0.5,0.9,1}
 			// (t_vec3){66.0/255.0,245.0/255.0,135.0/255.0}
 			(t_vec3){
-				0, 0, 0
-			}
+				1, 1, 1
+			},
+			.2
 		});
 	app.active_camera = &camera;
 
@@ -136,14 +137,14 @@ int32_t main(void)
 	t_material material;
 	memset(&material, 0, sizeof(t_material));
 	material.color = (t_vec3) {1, 1, 0};
-	material.reflectivity = .1;
+	material.reflectivity = .4;
 	material.is_emitting = 0;
 	material.scatter = .2;
 
 	t_material material2;
 	memset(&material2, 0, sizeof(t_material));
 	material2.color = (t_vec3) {0, 1, 0};
-	material2.reflectivity = .2;
+	material2.reflectivity = .3;
 	material2.is_emitting = 0;
 	material2.scatter = .2;
 
@@ -154,20 +155,25 @@ int32_t main(void)
 	mat_l.is_emitting = 1;
 	mat_l.scatter = .5;
 	
-	t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){0,0,-4}}, &material);
-	t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
-	t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, &material);
+	t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-4}}, &material);
+	t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){-3,5,-5}}, &material);
+	// t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
+	// t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, &material);
 	// t_obj sphere3 = ft_sphere_create((t_sphere_p){.1,(t_vec3){0,40,30}}, &mat_l);
 	// t_obj sphere4 = ft_sphere_create((t_sphere_p){20,(t_vec3){0,10,30}}, &mat_l);
 	t_obj plane1 = ft_plane_create((t_plane_p){(t_vec3){0,-3,-10}, (t_vec3){0,1,0}}, &material2);
-	t_obj plane2 = ft_plane_create((t_plane_p){(t_vec3){0,-3,-10}, (t_vec3){0,0,1}}, &material2);
+	// t_obj plane2 = ft_plane_create((t_plane_p){(t_vec3){0,-3,-10}, (t_vec3){0,0,1}}, &material2);
 	// t_obj cyl1 = ft_cylinder_create((t_cylinder_p){10.0, 100.0, {0, 10, 10}, (t_vec3){1,0,0}}, &material);
+	t_obj lightsource = ft_light_create((t_point_light_p){(t_vec3){-3,8,-2}, .7f, (t_vec3){1, 1, 1}});
+	// t_obj lightsource2 = ft_light_create((t_point_light_p){(t_vec3){1,0,-2}, 1.0f, (t_vec3){1, 1, 1}});
 	dyn_add(&app.hitable, &sphere);
 	dyn_add(&app.hitable, &sphere1);
-	dyn_add(&app.hitable, &sphere2);
+	// dyn_add(&app.hitable, &sphere2);
 	// dyn_add(&app.hitable, &sphere3);
 	dyn_add(&app.hitable, &plane1);
-	dyn_add(&app.hitable, &plane2);
+	dyn_add(&app.hitable, &lightsource);
+	// dyn_add(&app.hitable, &lightsource2);
+	// dyn_add(&app.hitable, &plane2);
 	// dyn_add(&app.hitable, &sphere4);
 	// dyn_add(&app.hitable, &cyl1);
 	if (setupWindow(&app) == EXIT_FAILURE)

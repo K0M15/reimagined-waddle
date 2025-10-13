@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/11 11:16:53 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/13 16:36:27 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "pseudo_random.h"
 # include "MLX42.h"
 # include "ftray.h"
+# include "ftcolor.h"
 # include "ftvec3.h"
 # include "dyn_arr.h"
 # include "hitable.h"
@@ -22,7 +23,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-# define STAN_SAMPLES_PER_PIXEL 1
+# define STAN_SAMPLES_PER_PIXEL 5
 # define MAX_DEPTH 3
 # define MOV_SPEED 0.1
 
@@ -76,7 +77,7 @@ typedef struct s_app
     t_dyn   hitable;
 }	t_app;
 
-t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth);
+t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect);
 uint32_t ft_camera_init(t_camera *camera, t_camera_p props);
 void ft_camera_calc(t_camera *camera);
 void ft_camera_apply(t_camera *cam, t_vec3 apply);

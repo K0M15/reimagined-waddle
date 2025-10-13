@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 14:51:41 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/18 16:33:54 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/13 14:40:17 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ t_vec3 ftvec3_reflect(t_vec3 vec, t_vec3 norm)
 {
     t_vec3 dot;
 
-    dot = FTVEC3(ftvec3_dot(vec, norm));
-    return ftvec3_minus(vec, ftvec3_multiply(FTVEC3(2), ftvec3_multiply(dot, norm)));
+    dot = ftvec3(ftvec3_dot(vec, norm));
+    return ftvec3_minus(vec, ftvec3_multiply(ftvec3(2), ftvec3_multiply(dot, norm)));
 }
 
 bool ftvec3_near_zero(t_vec3 vec)
@@ -74,7 +74,7 @@ t_vec3 ftvec3_runit()
         p = ftvec3_rclamped(-1, 1);
         lensq = ftvec3_length(p) * ftvec3_length(p);
     }
-    return ftvec3_divide(p, FTVEC3(sqrt(lensq)));
+    return ftvec3_divide(p, ftvec3(sqrt(lensq)));
 }
 
 t_vec3 ftvec3_ronhemi(t_vec3 normal)
@@ -84,7 +84,7 @@ t_vec3 ftvec3_ronhemi(t_vec3 normal)
     on_hemi = ftvec3_runit();
     if (ftvec3_dot(on_hemi, normal) > 0.0)
         return on_hemi;
-    return ftvec3_multiply(on_hemi, FTVEC3(-1));
+    return ftvec3_multiply(on_hemi, ftvec3(-1));
 }
 
 t_vec3 ftvec3_plus(t_vec3 op1, t_vec3 op2)
@@ -194,4 +194,9 @@ uint32_t ftvec3_tocolor(t_vec3 v, float alpha)
     uint32_t a = (uint32_t)(clamp(alpha, 0, 1) * 255.0f);
 
     return (r << 24) | (g << 16) | (b << 8) | a;
+}
+/* Returns a (t_vec3){f,f,f} */
+t_vec3 ftvec3(float f)
+{
+    return ((t_vec3){f,f,f});
 }

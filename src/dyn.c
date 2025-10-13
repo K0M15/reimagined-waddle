@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dyn.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 13:35:49 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/15 10:52:26 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/13 17:25:28 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int32_t dyn_add(t_dyn *array, void *element)
 
 int32_t dyn_enhance(t_dyn *array)
 {
-	void			**replace;
+	void			*replace;
 
 	replace = malloc(array->alloc * 2 * array->mem_size);
 	if (replace == NULL)
