@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/13 16:36:27 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/14 14:08:09 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-# define STAN_SAMPLES_PER_PIXEL 5
-# define MAX_DEPTH 3
+# define STAN_SAMPLES_PER_PIXEL 20
+# define MAX_DEPTH 5
 # define MOV_SPEED 0.1
+# define PHONG_SHININESS 32.0f
 
 typedef struct s_camera
 {

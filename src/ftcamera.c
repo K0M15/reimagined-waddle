@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftcamera.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/13 17:18:11 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/14 14:07:26 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec
 {
     t_vec3 oc;
     t_vec3 abc;
-    float disciminant;
+    float discriminant;
     float root;
 
     oc = ftvec3_minus(((t_sphere_p *)sphere.props)->position, ray.origin);
@@ -82,14 +82,14 @@ uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec
         ftvec3_dot(ray.direction, oc),
         ftvec3_dot(oc, oc) - ((t_sphere_p *)sphere.props)->radius * ((t_sphere_p *)sphere.props)->radius
     };
-    disciminant = (abc.y*abc.y - abc.x * abc.z);
-    if (disciminant < 0)
+    discriminant = (abc.y*abc.y - abc.x * abc.z);
+    if (discriminant < 0)
         return 0;
-    disciminant = sqrtf(disciminant);
-    root = (abc.y - disciminant) / abc.x;
+    discriminant = sqrtf(discriminant);
+    root = (abc.y - discriminant) / abc.x;
     if (root <= min || max <= root)
     {
-        root = (abc.y + disciminant) / abc.x;
+        root = (abc.y + discriminant) / abc.x;
         if (root <= min || max <= root)
             return false;
     }
@@ -101,167 +101,95 @@ uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec
 
 uint32_t ft_cylinder_hit(t_obj cyl, t_ray ray, double min, double max, t_hitrec *rec)
 {
-    t_cylinder_p *cylinder = (t_cylinder_p *)cyl.props;
-    t_vec3 cylinder_axis;
-    t_vec3 oc;
-    t_vec3 ray_cross_axis, oc_cross_axis;
-    t_vec3 abc;
-    float discriminant;
-    float root1, root2;
-    float projection1, projection2;
-    bool inside_cylinder;
-    
-    // Get cylinder axis from rotation (assume rotation is the axis direction)
-    cylinder_axis = ftvec3_unit(cylinder->rotation);
-    // Vector from ray origin to cylinder base
-    oc = ftvec3_minus(ray.origin, cylinder->position);
-    // Calculate quadratic equation coefficients for infinite cylinder
-    // We project ray direction and oc onto the plane perpendicular to cylinder axis
-    ray_cross_axis = ftvec3_cross(ray.direction, cylinder_axis);
-    oc_cross_axis = ftvec3_cross(oc, cylinder_axis);
-    
-    abc.x = ftvec3_dot(ray_cross_axis, ray_cross_axis);
-    abc.y = 2.0 * ftvec3_dot(ray_cross_axis, oc_cross_axis);
-    abc.z = ftvec3_dot(oc_cross_axis, oc_cross_axis) - cylinder->radius * cylinder->radius;
-    
-    float radial_dist_sq = ftvec3_length(ftvec3_minus(oc, ftvec3_multiply(cylinder_axis, ftvec3(ftvec3_dot(oc, cylinder_axis))))) * ftvec3_length(ftvec3_minus(oc, ftvec3_multiply(cylinder_axis, ftvec3(ftvec3_dot(oc, cylinder_axis)))));
-    // Handle case where ray is parallel to cylinder axis
-    if (fabs(abc.x) < DOUBLE_NEAR_ZERO)
+    // TODO: Rework the cylinder
+    t_cylinder_p *c = (t_cylinder_p *)cyl.props;
+    t_vec3 axis = ftvec3_unit(c->rotation);
+    t_vec3 base = c->position;
+    float radius = c->radius;
+    float height = c->height;
+    t_vec3 ro_base = ftvec3_minus(ray.origin, base);
+    float dv = ftvec3_dot(ray.direction, axis);
+    t_vec3 v = ftvec3_minus(ray.direction, ftvec3_multiply(axis, ftvec3(dv)));
+    float ow = ftvec3_dot(ro_base, axis);
+    t_vec3 w = ftvec3_minus(ro_base, ftvec3_multiply(axis, ftvec3(ow)));
+
+    float a = ftvec3_dot(v, v);
+    float b = 2.0f * ftvec3_dot(v, w);
+    float c_term = ftvec3_dot(w, w) - radius * radius;
+
+    double best_t = INFINITY;
+    t_vec3 best_hit = ftvec3(0);
+    t_vec3 best_normal = ftvec3(0);
+
+    if (fabs(a) > FLOAT_NEAR_ZERO)
     {
-        // Ray is parallel to cylinder axis - either always inside or always outside radially
-        if (radial_dist_sq > cylinder->radius * cylinder->radius)
-            return (false); // Outside cylinder radially, no intersection
-        // If inside radially, we'd need to check cap intersections, but for now skip
+        float disc = b * b - 4.0f * a * c_term;
+        if (disc >= 0.0f)
+        {
+            float sd = sqrtf(disc);
+            float t0 = (-b - sd) / (2.0f * a);
+            float t1 = (-b + sd) / (2.0f * a);
+            float roots[2] = { t0, t1 };
+            for (int ri = 0; ri < 2; ++ri)
+            {
+                double t = roots[ri];
+                if (!(t > min && t < max))
+                    continue;
+                t_vec3 p = ftray_at(ray, t);
+                float proj = ftvec3_dot(ftvec3_minus(p, base), axis);
+                if (proj >= 0.0f - FLOAT_NEAR_ZERO && proj <= height + FLOAT_NEAR_ZERO)
+                {
+                    if (t < best_t)
+                    {
+                        best_t = t;
+                        best_hit = p;
+                        t_vec3 out = ftvec3_minus(ftvec3_minus(p, base), ftvec3_multiply(axis, ftvec3(proj)));
+                        best_normal = ftvec3_unit(out);
+                    }
+                }
+            }
+        }
+    }
+    t_vec3 cap_centers[2] = { base, ftvec3_plus(base, ftvec3_multiply(axis, ftvec3(height))) };
+    t_vec3 cap_normals[2] = { ftvec3_multiply(axis, ftvec3(-1.0f)), axis };
+    int ci = 0;
+    while (ci < 2)
+    {
+        t_vec3 cc = cap_centers[ci];
+        t_vec3 cn = cap_normals[ci];
+        float denom = ftvec3_dot(axis, ray.direction);
+        if (fabs(denom) < FLOAT_NEAR_ZERO)
+        {
+            ci++;
+            continue;
+        }
+        double tcap = ftvec3_dot(axis, ftvec3_minus(cc, ray.origin)) / denom;
+        if (!(tcap > min && tcap < max))
+        {
+            ci++;
+            continue;
+        }
+        t_vec3 pcap = ftray_at(ray, tcap);
+        t_vec3 vrad = ftvec3_minus(ftvec3_minus(pcap, cc), ftvec3_multiply(axis, ftvec3(ftvec3_dot(ftvec3_minus(pcap, cc), axis))));
+        float dist2 = ftvec3_dot(vrad, vrad);
+        if (dist2 <= radius * radius + 1e-6f)
+        {
+            if (tcap < best_t)
+            {
+                best_t = tcap;
+                best_hit = pcap;
+                best_normal = cn;
+            }
+        }
+        ci++;
+    }
+
+    if (best_t == INFINITY)
         return (false);
-    }
-    discriminant = abc.y * abc.y - 4.0 * abc.x * abc.z;
-    if (discriminant < 0)
-        return (false); // No intersection with infinite cylinder   
-    discriminant = sqrtf(discriminant);
-    root1 = (-abc.y - discriminant) / (2.0 * abc.x); // Near intersection
-    root2 = (-abc.y + discriminant) / (2.0 * abc.x); // Far intersection
-    // Calculate projections along cylinder axis for both intersection points
-    t_vec3 hit1 = ftray_at(ray, root1);
-    t_vec3 hit2 = ftray_at(ray, root2);
-    projection1 = ftvec3_dot(ftvec3_minus(hit1, cylinder->position), cylinder_axis);
-    projection2 = ftvec3_dot(ftvec3_minus(hit2, cylinder->position), cylinder_axis);
-    
-    float final_root = -1;
-    t_vec3 final_hit;
-    inside_cylinder = (radial_dist_sq < cylinder->radius * cylinder->radius) &&
-                     (ftvec3_dot(oc, cylinder_axis) >= 0) &&
-                     (ftvec3_dot(oc, cylinder_axis) <= cylinder->height);
-    if (inside_cylinder)
-    {
-        // first valid intersection in forward direction
-        if (root2 > min && root2 < max && projection2 >= 0 && projection2 <= cylinder->height)
-        {
-            final_root = root2;
-            final_hit = hit2;
-        }
-        else if (root1 > min && root1 < max && projection1 >= 0 && projection1 <= cylinder->height)
-        {
-            final_root = root1;
-            final_hit = hit1;
-        }
-    }
-    else
-    {
-        // nearest valid intersection
-        if (root1 > min && root1 < max && projection1 >= 0 && projection1 <= cylinder->height)
-        {
-            final_root = root1;
-            final_hit = hit1;
-        }
-        else if (root2 > min && root2 < max && projection2 >= 0 && projection2 <= cylinder->height)
-        {
-            final_root = root2;
-            final_hit = hit2;
-        }
-    }
-    if (final_root < 0)
-        // no side hit within caps; try cap intersections
-    {
-        // check caps: plane intersections at position (bottom) and position + axis*height (top)
-        t_vec3 cap0_pos = cylinder->position;
-        t_vec3 cap1_pos = ftvec3_plus(cylinder->position, ftvec3_multiply(cylinder_axis, ftvec3(cylinder->height)));
-        float tcap0 = 0;
-        float tcap1 = 0;
-        bool hit_cap0 = false;
-        bool hit_cap1 = false;
-        // intersect ray with plane of cap0
-        float denom0 = ftvec3_dot(cylinder_axis, ray.direction);
-        if (fabs(denom0) > 1e-6)
-        {
-            tcap0 = ftvec3_dot(ftvec3_minus(cap0_pos, ray.origin), cylinder_axis) / denom0;
-            if (tcap0 > min && tcap0 < max)
-            {
-                t_vec3 p = ftray_at(ray, tcap0);
-                t_vec3 d = ftvec3_minus(p, cap0_pos);
-                if (ftvec3_dot(d, d) <= cylinder->radius * cylinder->radius)
-                    hit_cap0 = true;
-            }
-        }
-        // intersect ray with plane of cap1
-        float denom1 = ftvec3_dot(cylinder_axis, ray.direction);
-        if (fabs(denom1) > 1e-6)
-        {
-            tcap1 = ftvec3_dot(ftvec3_minus(cap1_pos, ray.origin), cylinder_axis) / denom1;
-            if (tcap1 > min && tcap1 < max)
-            {
-                t_vec3 p = ftray_at(ray, tcap1);
-                t_vec3 d = ftvec3_minus(p, cap1_pos);
-                if (ftvec3_dot(d, d) <= cylinder->radius * cylinder->radius)
-                    hit_cap1 = true;
-            }
-        }
-
-        // choose nearest cap hit if any
-        float chosen_t = -1;
-        t_vec3 chosen_p = ftvec3(0);
-        t_vec3 chosen_normal = ftvec3(0);
-        if (hit_cap0 && hit_cap1)
-        {
-            if (tcap0 < tcap1)
-            {
-                chosen_t = tcap0;
-                chosen_p = ftray_at(ray, tcap0);
-                chosen_normal = ftvec3_multiply(cylinder_axis, ftvec3(-1));
-            }
-            else
-            {
-                chosen_t = tcap1;
-                chosen_p = ftray_at(ray, tcap1);
-                chosen_normal = cylinder_axis;
-            }
-        }
-        else if (hit_cap0)
-        {
-            chosen_t = tcap0;
-            chosen_p = ftray_at(ray, tcap0);
-            chosen_normal = ftvec3_multiply(cylinder_axis, ftvec3(-1));
-        }
-        else if (hit_cap1)
-        {
-            chosen_t = tcap1;
-            chosen_p = ftray_at(ray, tcap1);
-            chosen_normal = cylinder_axis;
-        }
-
-        if (chosen_t > 0)
-        {
-            rec->t = chosen_t;
-            rec->hit = chosen_p;
-            ft_hitr_set_face_normal(rec, ray, chosen_normal);
-            return (true);
-        }
-
-        return (false);
-    }
-    rec->t = final_root;
-    rec->hit = final_hit;
-    // Calculate normal vector (pointing outward from cylinder axis)
-    ft_hitr_set_face_normal(rec, ray, ftvec3_unit(ftvec3_minus(ftvec3_minus(rec->hit, cylinder->position), ftvec3_multiply(cylinder_axis, ftvec3(ftvec3_dot(ftvec3_minus(rec->hit, cylinder->position), cylinder_axis))))));
+    rec->t = best_t;
+    rec->hit = best_hit;
+    rec->mat = cyl.mat;
+    ft_hitr_set_face_normal(rec, ray, ftvec3_unit(best_normal));
     return (true);
 }
 
@@ -382,14 +310,15 @@ uint32_t world_hit(t_dyn *world, t_ray ray, double min, double max, t_hitrec *re
     return anything;
 }
 
+// source: https://p5js.org/reference/p5/lightFalloff/#:~:text=Reference%20lightFalloff()-,lightFalloff(),when%20the%20user%20double%2Dclicks.
 float distance_col_scale(float distance)
 {
-    float dsq2; 
-
-    dsq2= distance*distance;
-    if (dsq2 < 1e-6)
-        dsq2 = 1e-6;
-    return 1 / dsq2;
+    float att;
+    if (distance < 1e-6f)
+        distance = 1e-6f;
+    att = 1.0f / (1.0f + 0.1f * distance + 0.032f * distance * distance );
+    att *= 6.0f;
+    return att;
 }
 
 /*
@@ -411,13 +340,10 @@ uint32_t hit_pointls(t_dyn *world, t_ray ray, double min, double max, t_vec3 *co
         if (obj->type == POINT_LIGHT)
         {
             t_hitrec temp_rec;
-            // ray.direction = ((t_point_light_p *)obj->props)->position;
             ray.direction = ftvec3_normalize(ftvec3_minus(((t_point_light_p *)obj->props)->position, ray.origin));
-            // if (!world_hit(world, ray, 0.001, max, &temp_rec))
             if (!world_hit(world, ray, ftvec3_length(ftvec3_minus(((t_point_light_p *)obj->props)->position, ray.origin)), max, &temp_rec))
             {
                 has_hit++;
-                // *color = ftcol_add(*color, ftcol_scale(((t_point_light_p *)obj->props)->color, ((t_point_light_p *)obj->props)->brightness * distance_col_scale(temp_rec.t) ));
                 *color = ftcol_add(*color, ftcol_scale(((t_point_light_p *)obj->props)->color, ((t_point_light_p *)obj->props)->brightness * 1));
             }
         }
@@ -428,6 +354,7 @@ uint32_t hit_pointls(t_dyn *world, t_ray ray, double min, double max, t_vec3 *co
     return (has_hit);
 }
 
+
 t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect)
 {
     t_hitrec rec;
@@ -437,12 +364,44 @@ t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect)
         return ftcol_scale(ray.ambient, ray.ambient_intensity);
     if (rec.mat->is_emitting)
         return (rec.mat->color); //todo: scale
-    t_vec3 lightcolor = ftcol_scale(ray.ambient, ray.ambient_intensity);
+    t_vec3 view_dir = ftvec3_unit(ftvec3_multiply(ray.direction, ftvec3(-1)));
     next_color = ftray_color(ft_mat_scatter(ray, &rec), arr, depth - 1, left_reflect * rec.mat->reflectivity); 
-    hit_pointls(arr, (t_ray){ftray_at(ray, rec.t), ftvec3(0), ray.ambient, ray.ambient_intensity}, 0.0001, INFINITY, &lightcolor);
-    return ftcol_add(
-        ftcol_scale(next_color, rec.mat->reflectivity),
-        ftcol_mult(ftcol_scale(lightcolor, rec.mat->reflectivity), rec.mat->color));
+    t_vec3 local_color = ftcol_scale(ray.ambient, ray.ambient_intensity);
+    t_vec3 light_acc = ftvec3(0);
+    uint32_t i = 0;
+    while (i < arr->filled)
+    {
+        t_obj *obj = arr->elem + i * arr->mem_size;
+        if (obj->type == POINT_LIGHT)
+        {
+            t_point_light_p *pl = (t_point_light_p *)obj->props;
+            t_vec3 to_light = ftvec3_minus(pl->position, rec.hit);
+            t_hitrec temp;
+            if (!world_hit(arr, (t_ray){
+                .origin = ftvec3_plus(rec.hit, ftvec3_multiply(rec.normal, ftvec3(FLOAT_NEAR_ZERO))),
+                .direction = ftvec3_unit(to_light), .ambient = ftvec3(0), .ambient_intensity = 0
+            }, 0.0001, ftvec3_length(to_light) - 1e-4, &temp))
+            {
+                // Lambert
+                float ndotl = ftvec3_dot(rec.normal, ftvec3_unit(to_light));
+                if (ndotl > 0.0f)
+                    light_acc = ftcol_add(light_acc, ftcol_mult(ftcol_scale(pl->color, pl->brightness * ndotl * distance_col_scale(ftvec3_length(to_light))), rec.mat->color));
+                // phong
+                t_vec3 reflect_dir = ftvec3_reflect(ftvec3_multiply(ftvec3_unit(to_light), ftvec3(-1)), rec.normal);
+                float rdotv = ftvec3_dot(ftvec3_unit(reflect_dir), view_dir);
+                if (rdotv > 0.0f)
+                    light_acc = ftcol_add(
+                        light_acc,
+                        ftcol_scale(pl->color, pl->brightness * powf(rdotv, PHONG_SHININESS) * rec.mat->reflectivity * distance_col_scale(ftvec3_length(to_light))));
+            }
+        }
+        i++;
+    }
+    return (ftcol_add(
+        ftcol_scale(
+            ftcol_add(local_color, light_acc),
+            1.0f - rec.mat->reflectivity),
+        ftcol_scale(next_color, rec.mat->reflectivity)));
 }
 
 t_vec3 sample_square()

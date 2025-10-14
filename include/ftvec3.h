@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftvec3.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:05:58 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/13 14:40:00 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/14 13:42:07 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_vec3
 }	t_vec3;
 
 # define DOUBLE_NEAR_ZERO 1e-8
+# define FLOAT_NEAR_ZERO 1e-5 // true would be -6 but keep some...
 
 t_vec3 ftvec3_reflect(t_vec3 vec, t_vec3 norm);
 bool ftvec3_near_zero(t_vec3 vec);
