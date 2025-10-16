@@ -3,53 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   dyn.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 13:35:49 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/13 17:25:28 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/16 12:46:42 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "dyn_arr.h"
 
-int32_t dyn_init(t_dyn *array, uint8_t mem_size)
+int32_t	dyn_init(t_dyn *array, uint8_t mem_size)
 {
 	array->elem = malloc(DYN_INIT_S * mem_size);
 	if (array->elem == NULL)
-        return (1);
+		return (1);
 	array->filled = 0;
 	array->alloc = DYN_INIT_S;
-    array->mem_size = mem_size;
+	array->mem_size = mem_size;
 	return (0);
 }
 
-int32_t dyn_add(t_dyn *array, void *element)
+int32_t	dyn_add(t_dyn *array, void *element)
 {
 	if (array->filled + 1 >= array->alloc)
 	{
 		if (dyn_enhance(array))
 			return (1);
 	}
-    memcpy(array->elem + (array->filled * array->mem_size), element, array->mem_size);
+	memcpy(array->elem + (array->filled * array->mem_size),
+		element, array->mem_size);
 	array->filled++;
 	return (0);
 }
 
-int32_t dyn_enhance(t_dyn *array)
+int32_t	dyn_enhance(t_dyn *array)
 {
-	void			*replace;
+	void	*replace;
 
 	replace = malloc(array->alloc * 2 * array->mem_size);
 	if (replace == NULL)
 		return (1);
-    memcpy(replace, array->elem, array->filled*array->mem_size);
-    free(array->elem);
+	memcpy(replace, array->elem, array->filled * array->mem_size);
+	free(array->elem);
 	array->elem = replace;
 	array->alloc = array->alloc * 2;
 	return (0);
 }
 
-void dyn_dest(t_dyn *arr)
+void	dyn_dest(t_dyn *arr)
 {
-    free(arr->elem);
+	free(arr->elem);
 }
