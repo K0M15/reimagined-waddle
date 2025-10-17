@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/14 14:08:09 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/17 17:22:26 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,15 @@
 # define MAX_DEPTH 5
 # define MOV_SPEED 0.1
 # define PHONG_SHININESS 32.0f
+
+struct s_ftray_color_props{
+    t_hitrec    rec;
+    t_vec3      next_color;
+    t_vec3      view_dir;
+    t_vec3      local_color;
+    t_vec3      light_acc;
+    t_obj       *obj;
+};
 
 typedef struct s_camera
 {
@@ -82,7 +91,9 @@ t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect);
 uint32_t ft_camera_init(t_camera *camera, t_camera_p props);
 void ft_camera_calc(t_camera *camera);
 void ft_camera_apply(t_camera *cam, t_vec3 apply);
-uint32_t ft_camera_render(
-    t_app *app,
-    void (*put_pixel)(mlx_image_t *image, int x, int y, uint32_t color));
+uint32_t ft_camera_render(t_app *app, void (*put_pixel)(mlx_image_t *image, int x, int y, uint32_t color));
+void	ftref_lambert(struct s_ftray_color_props *p, t_point_light_p *pl,
+	t_vec3 to_light);
+void	ftref_phong(struct s_ftray_color_props *p, t_point_light_p *pl,
+	t_vec3 to_light);
 #endif /* MINI_RT_H */
