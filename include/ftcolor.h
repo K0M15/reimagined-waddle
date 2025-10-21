@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftcolor.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:58:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/13 14:09:05 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/21 18:06:15 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,3 @@ t_vec3	ftcol_add(t_vec3 c1, t_vec3 c2);
 	Multipling colors for filtering = reflections
 */
 t_vec3	ftcol_mult(t_vec3 c1, t_vec3 c2);
-

@@ -2,3 +2,4 @@
 libft/libft.a
 .DS_Store
 miniRT
+venv/
