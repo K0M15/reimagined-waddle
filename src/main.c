@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/13 17:29:28 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/21 16:52:56 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ int32_t main(void)
 	// t_obj sphere4 = ft_sphere_create((t_sphere_p){20,(t_vec3){0,10,30}}, &mat_l);
 	t_obj plane1 = ft_plane_create((t_plane_p){(t_vec3){0,-3,-10}, (t_vec3){0,1,0}}, &material2);
 	// t_obj plane2 = ft_plane_create((t_plane_p){(t_vec3){0,-3,-10}, (t_vec3){0,0,1}}, &material2);
-	// t_obj cyl1 = ft_cylinder_create((t_cylinder_p){10.0, 100.0, {0, 10, 10}, (t_vec3){1,0,0}}, &material);
+	t_obj cyl1 = ft_cylinder_create((t_cylinder_p){10.0, 100.0, {0, 10, -10}, (t_vec3){1,0,0}}, &material);
 	t_obj lightsource = ft_light_create((t_point_light_p){(t_vec3){-3,8,-2}, .7f, (t_vec3){1, 1, 1}});
 	// t_obj lightsource2 = ft_light_create((t_point_light_p){(t_vec3){1,0,-2}, 1.0f, (t_vec3){1, 1, 1}});
 	dyn_add(&app.hitable, &sphere);
@@ -175,7 +175,7 @@ int32_t main(void)
 	// dyn_add(&app.hitable, &lightsource2);
 	// dyn_add(&app.hitable, &plane2);
 	// dyn_add(&app.hitable, &sphere4);
-	// dyn_add(&app.hitable, &cyl1);
+	dyn_add(&app.hitable, &cyl1);
 	if (setupWindow(&app) == EXIT_FAILURE)
 		return (EXIT_FAILURE);	
 	

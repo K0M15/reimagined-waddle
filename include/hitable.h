@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/17 16:31:06 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/21 16:58:58 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,12 @@ struct s_world_hit_props
     t_obj *obj;
 };
 
+struct s_cylfuncp
+{
+	t_cylinder_p *c;
+	t_vec3 axis;
+};
+
 struct s_lpair
 {
     double min;
@@ -103,5 +109,7 @@ t_obj       ft_light_create(t_point_light_p props);
 void        ft_obj_dest(t_obj sphere);
 uint32_t	world_hit(t_dyn *world, t_ray ray, t_hitrec *rec, struct s_lpair limit);
 void	    ft_hitr_set_face_normal(t_hitrec *rec, t_ray ray, t_vec3 outwar_norm);
+void    	assign_rayhit(t_hitrec *rec, t_hitrec src, t_material *material);
+
 
 #endif /* FT_HITABLE_H */
