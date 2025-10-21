@@ -19,9 +19,7 @@ static int	add_sphere(t_vec3 *loc, FLOAT *diameter, t_vec3 *color, t_app *app)
 	cpy_rgb(&sphere.props.color, color);
 	sphere.type = SPHERE;
 	sphere.mat = NULL;
-	//add_ll_back_node(&(get_scene()->sphere), sphere);
-	dyn_add(&app->hitable, &sphere);
-	return (0);
+	return (dyn_add(&app->hitable, &sphere));
 }
 
 int	extract_sphere(const char *line, t_app *app)
@@ -53,7 +51,7 @@ int	extract_sphere(const char *line, t_app *app)
 	color = extract_color(tokens[3]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (add_sphere(&loc, &diameter, &color, app) == -1)
+	if (add_sphere(&loc, &diameter, &color, app))
 		return (free_tokens(tokens), -1);
 	return (free_tokens(tokens), 0);
 }

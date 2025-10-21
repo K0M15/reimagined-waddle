@@ -7,21 +7,16 @@
 #include "parser.h"
 #include "ft_ll.h"
 
-static int	add_light(t_vec3 *loc, FLOAT *brightness, t_vec3 *color)
+static int	add_light(t_vec3 *loc, FLOAT *brightness, t_vec3 *color, t_app *app)
 {
-	t_light	*light;
-	
-	light = (t_light *)malloc(sizeof(t_light));
-	if (!light)
-	{
-		printf("Malloc failed!\n");
-		return (-1);
-	}
-	light->brightness = *brightness;
-	cpy_loc(&light->loc, loc);
-	cpy_rgb(&light->color, color);
-	add_ll_back_node(&(get_scene()->light), light);
-	return (0);
+	t_obj	light;
+
+	light.props.brightness = *brightness;
+	cpy_loc(&(light.props.position), loc);
+	cpy_rgb(&light.props.color, color);
+	light.type = POINT_LIGHT;
+	light.mat = NULL;
+	return (dyn_add(&app->hitable, &light));
 }
 
 int	extract_light(const char *line, t_app *app)
@@ -31,7 +26,6 @@ int	extract_light(const char *line, t_app *app)
 	FLOAT	brightness;
 	t_vec3	color;
 
-	(void) app;
 	tokens = ft_split(line, ' ');
 	if (!tokens)
 	{
@@ -54,7 +48,7 @@ int	extract_light(const char *line, t_app *app)
 	color = extract_color(tokens[3]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (add_light(&loc, &brightness, &color) == -1)
+	if (add_light(&loc, &brightness, &color, app))
 		return (free_tokens(tokens), -1);
 	return (free_tokens(tokens), 0);
 }

@@ -11,7 +11,6 @@ void	cpy_normal(t_vec3 *dst, t_vec3 *src)
 	dst->z = src->z;
 }
 
-//TODO: make atof take negative numbers!!!
 static int	tokens_to_normal(char **tokens, t_vec3 *result)
 {
 	result->x = ft_atof(*tokens);
@@ -33,11 +32,10 @@ static void	init_normal(t_vec3 *normal)
 	normal->z = 0;
 }
 
-t_vec3	extract_normal(const char *input, t_app *app)
+t_vec3	extract_normal(const char *input)
 {
 	char		**tokens;
 	t_vec3	normal;
-	(void) app;
 
 	init_normal(&normal);
 	tokens = ft_split(input, ',');

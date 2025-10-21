@@ -7,21 +7,16 @@
 #include "parser.h"
 #include "ft_ll.h"
 
-static int	add_plane(t_vec3 *loc, t_vec3 *normal, t_vec3 *color)
+static int	add_plane(t_vec3 *loc, t_vec3 *normal, t_vec3 *color, t_app *app)
 {
-	t_plane	*plane;
-	
-	plane = (t_plane *)malloc(sizeof(t_plane));
-	if (!plane)
-	{
-		printf("Malloc failed!\n");
-		return (-1);
-	}
-	cpy_normal(&plane->normal, normal);
-	cpy_loc(&plane->loc, loc);
-	cpy_rgb(&plane->color, color);
-	add_ll_back_node(&(get_scene()->plane), plane);
-	return (0);
+	t_obj	plane;
+
+	cpy_loc(&(plane.props.position), loc);
+	cpy_rgb(&plane.props.color, color);
+	cpy_normal(&plane.props.rotation, normal);
+	plane.type = PLANE;
+	plane.mat = NULL;
+	return (dyn_add(&app->hitable, &plane));
 }
 
 int	extract_plane(const char *line, t_app *app)
@@ -30,7 +25,6 @@ int	extract_plane(const char *line, t_app *app)
 	t_vec3		loc;
 	t_vec3	normal;
 	t_vec3		color;
-	(void) app;
 
 	tokens = ft_split(line, ' ');
 	if (!tokens)
@@ -52,7 +46,7 @@ int	extract_plane(const char *line, t_app *app)
 	color = extract_color(tokens[3]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (add_plane(&loc, &normal, &color) == -1)
+	if (add_plane(&loc, &normal, &color, app))
 		return (free_tokens(tokens), -1);
 	return (free_tokens(tokens), 0);
 }

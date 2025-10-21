@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/11 14:19:38 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/21 13:29:05 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,15 @@ typedef struct s_sphere_p{
     t_vec3 position;
 }   t_sphere_p;
 
+*/
 typedef struct s_cylinder_p{
-    float radius;
+    float diameter;
     float height;
     t_vec3 position;
     t_vec3 rotation;
+	t_vec3	color;
 }   t_cylinder_p;
-
+/*
 typedef struct s_plane_p{
     t_vec3  position;
     t_vec3  rotation;

@@ -20,13 +20,12 @@ void	cpy_rgb(t_vec3 *dst, t_vec3 *src);
 t_vec3	extract_color(const char *input);
 
 //extract_cordinates.c
-void	cpy_loc(t_point *dst, t_point *src);
+void	cpy_loc(t_vec3 *dst, t_vec3 *src);
 t_point	extract_loc(const char *input);
 
 //extract_normal.c
-void	cpy_normal(t_normal *dst, t_normal *src);
-t_normal extract_normal(const char *input);
-
+void	cpy_normal(t_vec3 *dst, t_vec3 *src);
+t_vec3	extract_normal(const char *input);
 
 //free_tokens.c
 void	free_tokens(char **tokens);

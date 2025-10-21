@@ -7,30 +7,24 @@
 #include "parser.h"
 #include "ft_ll.h"
 
-static int	add_cylinder(t_cylinder *input)
+static int	add_cylinder(t_cylinder_p *input, t_app *app)
 {
-	t_cylinder	*cylinder;
-	
-	cylinder = (t_cylinder *)malloc(sizeof(t_cylinder));
-	if (!cylinder)
-	{
-		printf("Malloc failed!\n");
-		return (-1);
-	}
-	cpy_loc(&cylinder->loc, &input->loc);
-	cpy_normal(&cylinder->normal, &input->normal);
-	cylinder->diameter = input->diameter;
-	cylinder->height = input->height;
-	//cpy_rgb(&cylinder->color, &input->color);
-	add_ll_back_node(&(get_scene()->cylinder), cylinder);
-	return (0);
+	t_obj	cylinder;
+
+	cylinder.props.radius = input->diameter / 2.0;
+	cylinder.props.height = input->height;
+	cpy_loc(&(cylinder.props.position), &input->position);
+	cpy_rgb(&cylinder.props.color, &input->color);
+	cpy_normal(&cylinder.props.rotation, &input->rotation);
+	cylinder.type = CYLINDER;
+	cylinder.mat = NULL;
+	return (dyn_add(&app->hitable, &cylinder));
 }
 
 int	extract_cylinder(const char *line, t_app *app)
 {
 	char		**tokens;
-	t_cylinder	temp;
-	(void) app;
+	t_cylinder_p	temp;
 
 	tokens = ft_split(line, ' ');
 	if (!tokens)
@@ -43,10 +37,10 @@ int	extract_cylinder(const char *line, t_app *app)
 	if (ft_strncmp(tokens[0], "cy", 10) != 0)
 		return (free_tokens(tokens), -1);
 	errno = 0;
-	temp.loc = extract_loc(tokens[1]);
+	temp.position = extract_loc(tokens[1]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	temp.normal = extract_normal(tokens[2]);
+	temp.rotation = extract_normal(tokens[2]);
 	if (errno)
 		return (free_tokens(tokens), -1);
 	temp.diameter = atof(tokens[3]);
@@ -58,7 +52,7 @@ int	extract_cylinder(const char *line, t_app *app)
 	temp.color = extract_color(tokens[5]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (add_cylinder(&temp) == -1)
+	if (add_cylinder(&temp, app))
 		return (free_tokens(tokens), -1);
 	return (free_tokens(tokens), 0);
 }
