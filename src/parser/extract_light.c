@@ -15,7 +15,6 @@ static int	add_light(t_vec3 *loc, FLOAT *brightness, t_vec3 *color, t_app *app)
 	cpy_loc(&(light.props.position), loc);
 	cpy_rgb(&light.props.color, color);
 	light.type = POINT_LIGHT;
-	light.mat = NULL;
 	return (dyn_add(&app->hitable, &light));
 }
 

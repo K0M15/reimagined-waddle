@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/22 16:21:30 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/22 17:47:41 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ void key_hook(mlx_key_data_t keydata, void *param)
 	}
 	if (keydata.key == MLX_KEY_T)
 	{
-		((t_obj *)app->hitable.elem)->mat->reflectivity += .1;
+		((t_obj *)app->hitable.elem)->mat.reflectivity += .1;
 	}
 
 	if (keydata.key == MLX_KEY_G)
 	{
-		((t_obj *)app->hitable.elem)->mat->reflectivity -= .1;
+		((t_obj *)app->hitable.elem)->mat.reflectivity -= .1;
 	}
 }
 
@@ -206,6 +206,28 @@ void print_internal_data(t_app *app)
 	return ;
 }
 
+void add_material_to_objects(t_app *app)
+{
+	uint32_t	iter;
+	t_obj		*ptr;
+
+	iter = 0;
+	while (iter < app->hitable.filled)
+	{
+		ptr = app->hitable.elem + iter;
+		ptr->mat.color = ptr->props.color;
+		ptr->mat.reflectivity = 0.1;
+		ptr->mat.is_emitting = 0;
+		ptr->mat.scatter = .5;
+		if (ptr->type == POINT_LIGHT)
+		{
+			ptr->mat.is_emitting = 1;
+			ptr->mat.reflectivity = 0.1;
+		}
+		iter++;
+	}
+}
+
 int32_t	main(int argc, char *argv[])
 {
 	t_app app;
@@ -213,7 +235,7 @@ int32_t	main(int argc, char *argv[])
 	if (pars_init(argc, argv, &app) != 0)
 		return (-1);
 	//print_internal_data(&app);
-/*	t_camera camera;
+	t_camera camera;
 
 	// Pars terminal and file inputs
 	//TODO: convert to the different structures for the exec
@@ -236,23 +258,17 @@ int32_t	main(int argc, char *argv[])
 		});
 	app.active_camera = &camera;
 
-	t_material mat_l;
-	memset(&mat_l, 0, sizeof(t_material));
-	mat_l.color = (t_vec3) {1,1,1};
-	mat_l.reflectivity = 0.0; //Add 0.1 to objects
-	mat_l.is_emitting = 1;
-	mat_l.scatter = .5;
-	add_material_to_objects(app);
-	t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-4}}, &material);
-	t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){-3,5,-5}}, &material);
+	add_material_to_objects(&app);
+	//t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-4}}, &material);
+	//t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){-3,5,-5}}, &material);
 	// t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
 	// t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, &material);
 	// t_obj sphere3 = ft_sphere_create((t_sphere_p){.1,(t_vec3){0,40,30}}, &mat_l);
 	// t_obj sphere4 = ft_sphere_create((t_sphere_p){20,(t_vec3){0,10,30}}, &mat_l);
-	t_obj plane1 = ft_plane_create((t_plane_p){(t_vec3){0,-3,-10}, (t_vec3){0,1,0}}, &material2);
+	//t_obj plane1 = ft_plane_create((t_plane_p){(t_vec3){0,-3,-10}, (t_vec3){0,1,0}}, &material2);
 	// t_obj plane2 = ft_plane_create((t_plane_p){(t_vec3){0,-3,-10}, (t_vec3){0,0,1}}, &material2);
 	// t_obj cyl1 = ft_cylinder_create((t_cylinder_p){10.0, 100.0, {0, 10, 10}, (t_vec3){1,0,0}}, &material);
-	t_obj lightsource = ft_light_create((t_point_light_p){(t_vec3){-3,8,-2}, .7f, (t_vec3){1, 1, 1}});
+	//t_obj lightsource = ft_light_create((t_point_light_p){(t_vec3){-3,8,-2}, .7f, (t_vec3){1, 1, 1}});
 	// t_obj lightsource2 = ft_light_create((t_point_light_p){(t_vec3){1,0,-2}, 1.0f, (t_vec3){1, 1, 1}});
 //	dyn_add(&app.hitable, &sphere);
 //	dyn_add(&app.hitable, &sphere1);
@@ -273,7 +289,6 @@ int32_t	main(int argc, char *argv[])
 	mlx_loop(app.mlx);
 	mlx_terminate(app.mlx);
 	dyn_free(&app.hitable);
-	free(mat_l);*/
 	return (EXIT_SUCCESS);
 }
 

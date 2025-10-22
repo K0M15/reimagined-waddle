@@ -17,7 +17,6 @@ static int	add_cylinder(t_cylinder_p *input, t_app *app)
 	cpy_rgb(&cylinder.props.color, &input->color);
 	cpy_normal(&cylinder.props.rotation, &input->rotation);
 	cylinder.type = CYLINDER;
-	cylinder.mat = NULL;
 	return (dyn_add(&app->hitable, &cylinder));
 }
 

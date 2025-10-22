@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/17 16:49:52 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/22 17:46:36 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ uint32_t	world_hit(t_dyn *world, t_ray ray,
 		if (p.hit && p.temp.t < p.closest)
 		{
 			p.closest = p.temp.t;
-			assign_rayhit(rec, p.temp, p.obj->mat);
+			assign_rayhit(rec, p.temp, &p.obj->mat);
 		}
 		p.ctr++;
 	}
