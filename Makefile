@@ -1,4 +1,4 @@
-.PHONY=all fractol fclean clean re MLX42 mylibft
+.PHONY: all fractol fclean clean re MLX42 mylibft
 NAME=miniRT
 CC=cc
 FLAGS=-Wall -Wextra -Werror
@@ -31,6 +31,12 @@ FILES+=src/ft_sphere.c src/ft_cylinder.c src/ft_plane.c src/hitable.c
 FILES+=src/ft_point_light.c	src/reflection.c							# OBJECTS
 FILES+=src/main.c src/pseudo_random.c
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S), Linux)
+    FLAGS_OS = $(FLAGS_LINUX)
+else ifeq ($(UNAME_S), Darwin)
+    FLAGS_OS = $(FLAGS_MAC)
+endif
 
 SCENE_FILES	=	scene_utils.c
 
@@ -55,18 +61,32 @@ $(NAME): $(FILES:.c=.o)
 	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBFT) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(F_INC) $(FLAGS) -c -o $@ $^
+	@echo "Building $@"
+	@$(CC) $(F_INC) $(FLAGS) -c -o $@ $^
 
-mylibft:
+$(LIBFT):
 	cd ./libft && make 
 	@$(MAKE) -C $(LIBLLIST_PATH) > /dev/null
 	@$(MAKE) -C $(LIBGNL_PATH) > /dev/null
 
 fclean: clean
-	rm -f $(NAME)
+	@echo "Removing executeable"
+	@rm -f $(NAME)
+	@echo "Removing MLX42 build"
+	@rm -rf MLX42/build/
+	@echo "Removing Libft build"
+	@cd ./libft && make clean
+	@echo "\033[92mRemoving done!\033[0m"
 
 clean:
-	rm -f $(FILES:.c=.o)
+	@echo "Clean local objects"
+	@rm -f $(FILES:.c=.o)
+	@echo "Clean libft objects"
+	@cd ./libft && make clean
+	@echo "Clean MLX42 prebuild files"
+	@rm -f MLX42/build/Makefile MLX42/build/mlx_frag_shader.c MLX42/build/mlx_vert_shader.c MLX42/build/CMakeCache.txt MLX42/build/cmake_install.cmake
+	@rm -rf MLX42/build/CMakeFiles/
+	@echo "\033[92mClean done!\033[0m"
 
 re: fclean all
 #NAME        = miniRT 
