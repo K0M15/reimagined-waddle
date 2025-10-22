@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/25 16:23:28 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/25 16:24:11 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,9 @@ void	print_element(int iter, t_app *app)
 	printf("The type: %s\n", types[ptr->type]);
 	func[ptr->type](ptr);
 	printf("\n");
+	printf("The materials:\n color: %f, %f, %f; reflectivity: %f; is_emitting: %d; scatter: %f",\
+			ptr->mat.color.x, ptr->mat.color.y, ptr->mat.color.z, ptr->mat.reflectivity,\
+			ptr->mat.is_emitting, ptr->mat.scatter);
 	printf("==========\n");
 }
 
@@ -247,7 +250,6 @@ int32_t	main(int argc, char *argv[])
 
 	if (pars_init(argc, argv, &app) != 0)
 		return (-1);
-	//print_internal_data(&app);
 	t_camera camera;
 
 	// Pars terminal and file inputs
@@ -272,6 +274,7 @@ int32_t	main(int argc, char *argv[])
 	app.active_camera = &camera;
 
 	add_material_to_objects(&app);
+	print_internal_data(&app);
 	//t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-4}}, &material);
 	//t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){-3,5,-5}}, &material);
 	// t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
