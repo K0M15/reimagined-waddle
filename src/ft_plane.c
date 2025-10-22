@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:05:57 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 09:54:07 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/25 16:21:53 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ uint32_t	ft_plane_hit(t_obj plane, t_ray ray, t_hitrec *rec,
 		return (false);
 	rec->t = denom;
 	rec->hit = ftray_at(ray, denom);
-	rec->mat = plane.mat;
+	rec->mat = &plane.mat;
 	ft_hitr_set_face_normal(rec, ray, ftvec3_unit(props->rotation));
 	return (true);
 }

@@ -34,7 +34,7 @@ typedef struct s_obj
 {
     enum e_obj_type type;
     t_props			props;
-    t_material      *mat;   //Maybe change object to have 
+    t_material      mat;   //Maybe change object to have 
 }   t_obj;
 
 #endif
