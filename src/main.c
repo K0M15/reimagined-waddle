@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/22 18:11:06 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/22 19:51:16 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ void add_material_to_objects(t_app *app)
 		if (ptr->type == POINT_LIGHT)
 		{
 			ptr->mat.is_emitting = 1;
-			ptr->mat.reflectivity = 0.1;
+			ptr->mat.reflectivity = 0.0;
 		}
 		iter++;
 	}

@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:11:25 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/22 16:59:26 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/22 19:26:14 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_vec3	ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect)
 			(struct s_lpair){MIN_DIST, MAX_DIST}))
 		return (ftcol_scale(ray.ambient, ray.ambient_intensity));
 	if (p.rec.mat->is_emitting)
-		return (p.rec.mat->color); //todo: scale
+		return (p.rec.mat->color);
 	p.view_dir = ftvec3_unit(ftvec3_multiply(ray.direction, ftvec3(-1)));
 	p.next_color = ftray_color(ft_mat_scatter(ray, &p.rec), arr, depth - 1,
 			left_reflect * p.rec.mat->reflectivity);
@@ -110,8 +110,8 @@ uint32_t	ft_camera_init(t_camera *camera, t_camera_p props)
 	camera->center = props.center;
 	camera->look_at = props.look_at;
 	camera->fov = props.fov;
-	camera->image_width = props.imageWidth;
-	camera->image_height = props.imageHeight;
+	camera->image_width = props.image_width;
+	camera->image_height = props.image_height;
 	ft_camera_calc(camera);
 	camera->samples_per_pixel = props.samples_per_pixel;
 	camera->ambient = props.ambient;

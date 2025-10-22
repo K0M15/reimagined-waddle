@@ -58,11 +58,11 @@ MLX42:
 
 $(NAME): $(FILES:.c=.o)
 	cd MLX42 && cmake -B build && cmake --build build -j4
-	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBFT) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
+	$(CC) -g $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBFT) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
 
 %.o: %.c
 	@echo "Building $@"
-	@$(CC) $(F_INC) $(FLAGS) -c -o $@ $^
+	@$(CC) -g $(F_INC) $(FLAGS) -c -o $@ $^
 
 $(LIBFT):
 	cd ./libft && make 

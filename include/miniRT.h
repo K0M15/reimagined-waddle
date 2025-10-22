@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/22 15:20:57 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/22 19:27:19 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ typedef struct s_camera_p{
     t_vec3 center;
     t_vec3 look_at;
     float fov;
-    int imageHeight;
-    int imageWidth;
+    int image_height;
+    int image_width;
     uint32_t samples_per_pixel;
     t_vec3 ambient;
     float ambient_intensity;
