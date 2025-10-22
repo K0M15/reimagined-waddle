@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftvec3.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:05:58 by afelger           #+#    #+#             */
-/*   Updated: 2025/06/18 16:34:05 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/14 13:42:07 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ typedef struct s_vec3
     float z;
 }	t_vec3;
 
-# define FTVEC3(x) (t_vec3){x,x,x}
 # define DOUBLE_NEAR_ZERO 1e-8
+# define FLOAT_NEAR_ZERO 1e-5 // true would be -6 but keep some...
 
 t_vec3 ftvec3_reflect(t_vec3 vec, t_vec3 norm);
 bool ftvec3_near_zero(t_vec3 vec);
@@ -46,5 +46,8 @@ t_vec3 ftvec3_unit(t_vec3 v);
 uint32_t ftvec3_tocolor(t_vec3 v, float alpha);
 t_vec3 ftvec3_lin_gamma(t_vec3 color);
 double clamp(double f, double min, double max);
+/* Returns a (t_vec3){f,f,f} */
+t_vec3 ftvec3(float f);
+
 
 #endif /* FT_VEC3_H */

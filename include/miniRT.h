@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/10 09:29:52 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/22 15:20:57 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "pseudo_random.h"
 # include "MLX42.h"
 # include "ftray.h"
+# include "ftcolor.h"
 # include "ftvec3.h"
 # include "dyn_arr.h"
 # include "hitable.h"
@@ -22,9 +23,19 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-# define STAN_SAMPLES_PER_PIXEL 1
-# define MAX_DEPTH 3
-# define MOV_SPEED 0.01
+# define STAN_SAMPLES_PER_PIXEL 20
+# define MAX_DEPTH 5
+# define MOV_SPEED 0.1
+# define PHONG_SHININESS 32.0f
+
+struct s_ftray_color_props{
+    t_hitrec    rec;
+    t_vec3      next_color;
+    t_vec3      view_dir;
+    t_vec3      local_color;
+    t_vec3      light_acc;
+    t_obj       *obj;
+};
 
 typedef struct s_camera
 {
@@ -47,6 +58,7 @@ typedef struct s_camera
     uint32_t samples_per_pixel;
     t_vec3 vec_up;
     t_vec3 ambient;
+    float ambient_intensity;
 }   t_camera;
 
 typedef struct s_camera_p{
@@ -57,6 +69,7 @@ typedef struct s_camera_p{
     int imageWidth;
     uint32_t samples_per_pixel;
     t_vec3 ambient;
+    float ambient_intensity;
 }   t_camera_p;
 
 typedef struct s_ray_props{
@@ -74,11 +87,14 @@ typedef struct s_app
     t_dyn   hitable;
 }	t_app;
 
-t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth);
+int32_t pars_init(int argc, char **argv, t_app *app);
+t_vec3 ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect);
 uint32_t ft_camera_init(t_camera *camera, t_camera_p props);
 void ft_camera_calc(t_camera *camera);
 void ft_camera_apply(t_camera *cam, t_vec3 apply);
-uint32_t ft_camera_render(
-    t_app *app,
-    void (*put_pixel)(mlx_image_t *image, int x, int y, uint32_t color));
+uint32_t ft_camera_render(t_app *app, void (*put_pixel)(mlx_image_t *image, int x, int y, uint32_t color));
+void	ftref_lambert(struct s_ftray_color_props *p, t_point_light_p *pl,
+	t_vec3 to_light);
+void	ftref_phong(struct s_ftray_color_props *p, t_point_light_p *pl,
+	t_vec3 to_light);
 #endif /* MINI_RT_H */

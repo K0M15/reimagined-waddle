@@ -3,43 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   hitable.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/09/05 15:32:41 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/22 16:46:56 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_HITABLE_H
 # define FT_HITABLE_H
 
+# include "dyn_arr.h"
 # include <stdint.h>
 # include <stdlib.h>
 # include "ftray.h"
 # include "ftvec3.h"
-# include "dyn_arr.h"
+# include "object.h"
 
-enum e_obj_type{
-    SPHERE,
-    CYLINDER,
-    PLANE,
-    ERROR = 0xFFFF
-};
+typedef struct s_ray t_ray;
+#define MIN_DIST 0.001
+#define MAX_DIST 1000
 
-typedef struct s_material
-{
-    double  reflectivity;
-    double  scatter;
-    t_vec3          color;
-    bool    is_emitting;
-}   t_material;
-
-typedef struct s_obj
-{
-    enum e_obj_type type;
-    void            *props;
-    t_material      *mat;   //Maybe change object to have 
-}   t_obj;
 
 typedef struct s_sphere_p{
     float radius;
@@ -47,10 +31,11 @@ typedef struct s_sphere_p{
 }   t_sphere_p;
 
 typedef struct s_cylinder_p{
-    float radius;
+    float diameter;
     float height;
     t_vec3 position;
     t_vec3 rotation;
+	t_vec3	color;
 }   t_cylinder_p;
 
 typedef struct s_plane_p{
@@ -58,6 +43,12 @@ typedef struct s_plane_p{
     t_vec3  rotation;
 }   t_plane_p;
 
+typedef struct s_point_light_p
+{
+	t_vec3	position;
+	float	brightness;
+	t_vec3	color;
+}	t_point_light_p;
 
 typedef struct s_hitrec
 {
@@ -68,10 +59,30 @@ typedef struct s_hitrec
     bool front_face;
 }   t_hitrec;
 
-t_obj ft_sphere_create(t_sphere_p params, t_material *mat);
-uint32_t ft_sphere_hit(t_obj sphere, t_ray ray, double min, double max, t_hitrec *rec);
-t_obj   ft_cylinder_create(t_cylinder_p params, t_material *mat);
-t_obj   ft_plane_create(t_plane_p params, t_material *mat);
-void ft_obj_dest(t_obj sphere);
+struct s_world_hit_props
+{
+    t_hitrec temp;
+    uint32_t ctr;
+    uint32_t hit;
+    double closest;
+    t_obj *obj;
+};
+
+struct s_lpair
+{
+    double min;
+    double max;
+};
+
+t_obj       ft_sphere_create(t_sphere_p params, t_material *mat);
+uint32_t    ft_sphere_hit(t_obj sphere, t_ray ray, t_hitrec *rec, struct s_lpair limit);
+t_obj       ft_cylinder_create(t_cylinder_p params, t_material *mat);
+uint32_t    ft_cylinder_hit(t_obj cyl, t_ray ray, t_hitrec *rec, struct s_lpair limit);
+t_obj       ft_plane_create(t_plane_p params, t_material *mat);
+uint32_t    ft_plane_hit(t_obj plane, t_ray ray, t_hitrec *rec, struct s_lpair limit);
+t_obj       ft_light_create(t_point_light_p props);
+void        ft_obj_dest(t_obj sphere);
+uint32_t	world_hit(t_dyn *world, t_ray ray, t_hitrec *rec, struct s_lpair limit);
+void	    ft_hitr_set_face_normal(t_hitrec *rec, t_ray ray, t_vec3 outwar_norm);
 
 #endif /* FT_HITABLE_H */
