@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/22 13:02:46 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/22 16:21:30 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color)
 	uint8_t *pixel;
 
 	pixel = &image->pixels[(y * image->width + x) * 4];
-	*(pixel) = ((uint8_t)(color >> 24) + *pixel);
+	*(pixel) = ((uint8_t)(color >> 24) + *pixel) / 2;
 	pixel++;
-	*(pixel) = ((uint8_t)(color >> 16) + *pixel);
+	*(pixel) = ((uint8_t)(color >> 16) + *pixel) / 2;
 	pixel++;
-	*(pixel) = ((uint8_t)(color >> 8) + *pixel);
+	*(pixel) = ((uint8_t)(color >> 8) + *pixel) / 2;
 	pixel++;
-	*(pixel) = ((uint8_t)(color & 0xFF) + *pixel);
+	*(pixel) = ((uint8_t)(color & 0xFF) + *pixel) / 2;
 }	
 
 void ft_put_pixel(mlx_image_t *image, int x, int y, uint32_t color)
@@ -81,8 +81,8 @@ void draw_loop(void *args)
 	t_app *app;
 
 	app = (t_app *)args;
-	// ft_camera_render(app, ft_put_pixel);
-	ft_camera_render(app, ft_kumul_pixel);
+	ft_camera_render(app, ft_put_pixel);
+	// ft_camera_render(app, ft_kumul_pixel);
 	printf("Cam: X%.2f Y%.2f Z%.2f, FOV%.2F\n", app->active_camera->look_at.x, app->active_camera->look_at.y, app->active_camera->look_at.z, app->active_camera->fov);
 }
 
@@ -205,26 +205,6 @@ void print_internal_data(t_app *app)
 	}
 	return ;
 }
-/*
-#include <stdio.h>
-#include "parser.h"
-#include "minirt.h"
-
-
-int	main(int argc, char *argv[])
-{
-	if (argc != 2)
-	{
-		print_instructions();
-		return (-1);
-	}
-	if (pars(argv[1]) == -1)
-		return (-1);
-	//TODO: Implement after parsing function
-	return (0);
->>>>>>> rt_temp/temp
-}
-*/
 
 int32_t	main(int argc, char *argv[])
 {
@@ -232,23 +212,16 @@ int32_t	main(int argc, char *argv[])
 
 	if (pars_init(argc, argv, &app) != 0)
 		return (-1);
-	//Print all the parsed input:
-	print_internal_data(&app);
-	dyn_free(&app.hitable);
-	return (0);
-	/*
-	t_app app;
-	t_camera camera;
+	//print_internal_data(&app);
+/*	t_camera camera;
 
-	//This the location of the parsing
-	pars_init(argc, argv, &app);
 	// Pars terminal and file inputs
 	//TODO: convert to the different structures for the exec
 	app.width = 1200;
 	app.height = 800;
 	ft_camera_init(
 		&camera, (t_camera_p){
-			FTVEC3(0),
+			ftvec3(0),
 			(t_vec3){0,0, -1},
 			90,
 			app.width,
@@ -256,37 +229,42 @@ int32_t	main(int argc, char *argv[])
 			STAN_SAMPLES_PER_PIXEL,
 			// (t_vec3){0.5,0.9,1}
 			// (t_vec3){66.0/255.0,245.0/255.0,135.0/255.0}
-			(t_vec3){1.0*255.0/255.0,1.0*255.0/255.0,1.0*255.0/255.0}
+			(t_vec3){
+				1, 1, 1
+			},
+			.2
 		});
 	app.active_camera = &camera;
-
-	dyn_init(&app.hitable, sizeof(t_obj));
-
-	t_material material;
-	memset(&material, 0, sizeof(t_material));
-	material.color = (t_vec3) {1, 1, 0};
-	material.reflectivity = .1;
-	material.is_emitting = 0;
-	material.scatter = .7;
 
 	t_material mat_l;
 	memset(&mat_l, 0, sizeof(t_material));
 	mat_l.color = (t_vec3) {1,1,1};
-	mat_l.reflectivity = 0.0;
+	mat_l.reflectivity = 0.0; //Add 0.1 to objects
 	mat_l.is_emitting = 1;
 	mat_l.scatter = .5;
-	
-	//TODO: Free the parser internal storage
-	//t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){0,0,-4}}, &material);
-	//t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
-	//t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, &material);
-	//t_obj sphere3 = ft_sphere_create((t_sphere_p){.1,(t_vec3){0,40,30}}, &mat_l);
+	add_material_to_objects(app);
+	t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-4}}, &material);
+	t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){-3,5,-5}}, &material);
+	// t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
+	// t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, &material);
+	// t_obj sphere3 = ft_sphere_create((t_sphere_p){.1,(t_vec3){0,40,30}}, &mat_l);
 	// t_obj sphere4 = ft_sphere_create((t_sphere_p){20,(t_vec3){0,10,30}}, &mat_l);
-	//dyn_add(&app.hitable, &sphere);
-	//dyn_add(&app.hitable, &sphere1);
-	//dyn_add(&app.hitable, &sphere2);
-	//dyn_add(&app.hitable, &sphere3);
+	t_obj plane1 = ft_plane_create((t_plane_p){(t_vec3){0,-3,-10}, (t_vec3){0,1,0}}, &material2);
+	// t_obj plane2 = ft_plane_create((t_plane_p){(t_vec3){0,-3,-10}, (t_vec3){0,0,1}}, &material2);
+	// t_obj cyl1 = ft_cylinder_create((t_cylinder_p){10.0, 100.0, {0, 10, 10}, (t_vec3){1,0,0}}, &material);
+	t_obj lightsource = ft_light_create((t_point_light_p){(t_vec3){-3,8,-2}, .7f, (t_vec3){1, 1, 1}});
+	// t_obj lightsource2 = ft_light_create((t_point_light_p){(t_vec3){1,0,-2}, 1.0f, (t_vec3){1, 1, 1}});
+//	dyn_add(&app.hitable, &sphere);
+//	dyn_add(&app.hitable, &sphere1);
+	// dyn_add(&app.hitable, &sphere2);
+	// dyn_add(&app.hitable, &sphere3);
+//	dyn_add(&app.hitable, &plane1);
+	//dyn_add(&app.hitable, &lightsource);
+	// dyn_add(&app.hitable, &lightsource2);
+	// dyn_add(&app.hitable, &plane2);
 	// dyn_add(&app.hitable, &sphere4);
+	// dyn_add(&app.hitable, &cyl1);
+	// TODO: Still cleanup to do
 	if (setupWindow(&app) == EXIT_FAILURE)
 		return (EXIT_FAILURE);	
 	
@@ -294,7 +272,8 @@ int32_t	main(int argc, char *argv[])
 	mlx_loop_hook(app.mlx, draw_loop, (void *) &app);
 	mlx_loop(app.mlx);
 	mlx_terminate(app.mlx);
+	dyn_free(&app.hitable);
+	free(mat_l);*/
 	return (EXIT_SUCCESS);
-	*/
 }
 

@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ftray.h                                            :+:      :+:    :+:   */
+/*   ftcolor.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/14 10:07:56 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/13 14:37:55 by afelger          ###   ########.fr       */
+/*   Created: 2025/10/13 13:58:31 by afelger           #+#    #+#             */
+/*   Updated: 2025/10/13 14:09:05 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FTRAY_H
-# define FTRAY_H
+#include "ftvec3.h"
 
-# include <stdint.h>
-# include "ftvec3.h"
-# include "dyn_arr.h"
+t_vec3	ftcol_scale(t_vec3 color, float scale);
+/*
+	Adding the light would be needed with adding to color light sources,
+	or adding diffuse and specular reflections
+*/
+t_vec3	ftcol_add(t_vec3 c1, t_vec3 c2);
+/*
+	Multipling colors for filtering = reflections
+*/
+t_vec3	ftcol_mult(t_vec3 c1, t_vec3 c2);
 
-typedef struct s_ray
-{
-	t_vec3	origin;
-	t_vec3	direction;
-	t_vec3	ambient;
-	float	ambient_intensity;
-}	t_ray;
-
-t_ray	ftray_create(t_vec3 ambient, float ambient_intensity,
-			t_vec3 origin, t_vec3 direction);
-t_vec3	ftray_at(t_ray ray, float t);
-
-#endif /* FTRAY_H */

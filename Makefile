@@ -7,8 +7,6 @@ FLAGS_LINUX= -ldl -lglfw -lpthread -lm
 F_INC=-Iinclude
 MLX=MLX42/build/libmlx42.a
 LIBFT=libft/libft.a
-FILES=src/ftray.c src/ftvec3.c src/ftcamera.c src/dyn.c
-FILES+=src/main.c src/pseudo_random.c
 PARSER_DIR	=	src/parser
 SCENE_DIR	=	src
 LIBLLIST_PATH  = ./lib/llist
@@ -26,6 +24,12 @@ PARSER_FILES 	=	extract_ambient_light.c \
 			extract_sphere.c \
 			parser.c \
 			token_utils.c
+FILES=src/ftray.c src/ftcolor.c src/dyn.c
+FILES+=src/ftvec3.c src/ftvec3_1.c src/ftvec3_2.c src/ftvec3_3.c	# VECTOR
+FILES+=src/ftcamera.c src/ftcamera_2.c								# CAMERA
+FILES+=src/ft_sphere.c src/ft_cylinder.c src/ft_plane.c src/hitable.c
+FILES+=src/ft_point_light.c	src/reflection.c							# OBJECTS
+FILES+=src/main.c src/pseudo_random.c
 
 
 SCENE_FILES	=	scene_utils.c
@@ -39,13 +43,12 @@ LIBRARIES   = -L$(LIBGNL_PATH) -l$(LIBGNL_NAME) -L$(LIBLLIST_PATH) -l$(LIBLLIST_
 
 all: FLAGS+=-ffast-math
 all: FLAGS+=-O3
-all: mylibft $(NAME)
-
-MLX42: MLX42/include/MLX42/MLX42.h
-	# if [ ! -d "MLX42" ]; then git clone https://github.com/codam-coding-college/MLX42.git; fi
+all: $(MLX42) mylibft $(NAME)
 
 debug: FLAGS+=-g
 debug: re
+
+MLX42:
 
 $(NAME): $(FILES:.c=.o)
 	cd MLX42 && cmake -B build && cmake --build build -j4
