@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/25 16:24:11 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/25 16:26:21 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ void add_material_to_objects(t_app *app)
 		if (ptr->type == POINT_LIGHT)
 		{
 			ptr->mat.is_emitting = 1;
-			ptr->mat.reflectivity = 0.1;
+			ptr->mat.reflectivity = 0.0;
 		}
 		iter++;
 	}

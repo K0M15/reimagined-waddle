@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 09:51:15 by afelger          ###   ########.fr       */
+/*   Created: 2025/10/16 13:54:21 by afelger           #+#    #+#             */
+/*   Updated: 2025/10/25 16:26:04 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "miniRT.h"
 
 void	ft_camera_apply(t_camera *cam, t_vec3 apply)
 {
