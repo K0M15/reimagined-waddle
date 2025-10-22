@@ -58,6 +58,7 @@ int pars(const char *path, t_app *app)
 		ret = extract_line_data(line, app);
 		if (ret == -1)
 		{
+			printf("Invalid line: %s\n", line);
 			while(line) 
 			{
 				line = get_next_line(fd);
