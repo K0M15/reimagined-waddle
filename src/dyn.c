@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 13:35:49 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/13 15:54:52 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/22 10:50:52 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,11 @@ int32_t dyn_enhance(t_dyn *array)
 	array->elem = replace;
 	array->alloc = array->alloc * 2;
 	return (0);
+}
+
+void	dyn_free(t_dyn *array)
+{
+	if (array->elem)
+		free(array->elem);
+	return ;
 }

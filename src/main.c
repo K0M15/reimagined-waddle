@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/13 15:23:32 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/22 11:17:03 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,12 @@ int32_t setupWindow(t_app *app)
 int32_t	main(int argc, char *argv[])
 {
 	t_app app;
+
+	pars_init(argc, argv, &app);
+	dyn_free(&app.hitable);
+	return (0);
+	/*
+	t_app app;
 	t_camera camera;
 
 	//This the location of the parsing
@@ -168,11 +174,11 @@ int32_t	main(int argc, char *argv[])
 	mlx_loop(app.mlx);
 	mlx_terminate(app.mlx);
 	return (EXIT_SUCCESS);
+	*/
 }
 
 #include <stdio.h>
 #include "parser.h"
-//#include "minirt.h"
 
 static void	print_instructions(void)
 {
@@ -186,6 +192,7 @@ int32_t pars_init(int argc, char **argv, t_app *app)
 		print_instructions();
 		return (-1);
 	}
+	dyn_init(&app->hitable, sizeof(t_obj));
 	if (pars(argv[1], app) == -1)
 		return (-1);
 	return (0);

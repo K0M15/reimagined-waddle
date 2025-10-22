@@ -9,8 +9,6 @@ static int	extract_line_data(const char *line, t_app *app)
 	int ret;
 
 	ret = 0;
-//	TODO: remove the debug line under
-//	printf("The line is: %s\n", line);
 	if (*line == 'A')
 		ret = extract_ambient_light(line, app);	
 	else if (*line == 'C')
