@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/22 11:17:03 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/22 13:02:46 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,132 @@ int32_t setupWindow(t_app *app)
 	return (EXIT_SUCCESS);
 }
 
+#include <stdio.h>
+#include "parser.h"
+
+static void	print_instructions(void)
+{
+	printf("The program usage: ./miniRT [scene file]\n");
+}
+
+int32_t pars_init(int argc, char **argv, t_app *app)
+{
+	if (argc != 2)
+	{
+		print_instructions();
+		return (-1);
+	}
+	dyn_init(&app->hitable, sizeof(t_obj));
+	if (pars(argv[1], app) == -1)
+		return (-1);
+	return (0);
+}
+
+void	print_vec3(t_vec3 *vec)
+{
+	printf("%f,%f,%f", vec->x, vec->y, vec->z);
+}
+
+void	print_sphere(t_obj *app)
+{
+	print_vec3(&app->props.position);
+	printf("\t");
+	printf("%f", app->props.radius);
+	printf("\t");
+	print_vec3(&app->props.color);
+}
+
+void	print_cylinder(t_obj *app)
+{
+	print_vec3(&app->props.position);
+	printf("\t");
+	print_vec3(&app->props.rotation);
+	printf("\t");
+	printf("%f", app->props.radius);
+	printf("\t");
+	printf("%f", app->props.height);
+	printf("\t");
+	print_vec3(&app->props.color);
+}
+
+void	print_plane(t_obj *app)
+{
+	print_vec3(&app->props.position);
+	printf("\t");
+	print_vec3(&app->props.rotation);
+	printf("\t");
+	print_vec3(&app->props.color);
+}
+
+void	print_point_light(t_obj *app)
+{
+	print_vec3(&app->props.position);
+	printf("\t");
+	printf("%f", app->props.brightness);
+	printf("\t");
+	print_vec3(&app->props.color);
+}
+
+void	print_element(int iter, t_app *app)
+{
+	t_obj		*ptr;
+	const char	*types[] = {"SPHERE", "CYLINDER", "PLANE", "POINT_LIGHT"};
+	void	(*func[])(t_obj*)= {print_sphere, print_cylinder, print_plane, print_point_light};
+
+	ptr = app->hitable.elem + iter;
+	if (ptr->type == 0xFFFF)
+	{
+		printf("There is an error type in the objects!!/n");
+		return ;
+	}
+	printf("==========\n");
+	printf("The type: %s\n", types[ptr->type]);
+	func[ptr->type](ptr);
+	printf("\n");
+	printf("==========\n");
+}
+
+void print_internal_data(t_app *app)
+{
+	uint32_t	iter;
+
+	iter = 0;
+	while (iter < app->hitable.filled)
+	{
+		print_element(iter, app);
+		iter++;
+	}
+	return ;
+}
+/*
+#include <stdio.h>
+#include "parser.h"
+#include "minirt.h"
+
+
+int	main(int argc, char *argv[])
+{
+	if (argc != 2)
+	{
+		print_instructions();
+		return (-1);
+	}
+	if (pars(argv[1]) == -1)
+		return (-1);
+	//TODO: Implement after parsing function
+	return (0);
+>>>>>>> rt_temp/temp
+}
+*/
+
 int32_t	main(int argc, char *argv[])
 {
 	t_app app;
 
-	pars_init(argc, argv, &app);
+	if (pars_init(argc, argv, &app) != 0)
+		return (-1);
+	//Print all the parsed input:
+	print_internal_data(&app);
 	dyn_free(&app.hitable);
 	return (0);
 	/*
@@ -177,43 +298,3 @@ int32_t	main(int argc, char *argv[])
 	*/
 }
 
-#include <stdio.h>
-#include "parser.h"
-
-static void	print_instructions(void)
-{
-	printf("The program usage: ./miniRT [scene file]\n");
-}
-
-int32_t pars_init(int argc, char **argv, t_app *app)
-{
-	if (argc != 2)
-	{
-		print_instructions();
-		return (-1);
-	}
-	dyn_init(&app->hitable, sizeof(t_obj));
-	if (pars(argv[1], app) == -1)
-		return (-1);
-	return (0);
-}
-/*
-#include <stdio.h>
-#include "parser.h"
-#include "minirt.h"
-
-
-int	main(int argc, char *argv[])
-{
-	if (argc != 2)
-	{
-		print_instructions();
-		return (-1);
-	}
-	if (pars(argv[1]) == -1)
-		return (-1);
-	//TODO: Implement after parsing function
-	return (0);
->>>>>>> rt_temp/temp
-}
-*/

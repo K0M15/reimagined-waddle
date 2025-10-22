@@ -42,6 +42,9 @@ static int	tokens_to_rgb(char **tokens, t_vec3 *result)
 	result->z = ft_atoi(*(tokens + 2));
 	if (result->x > 255 || result->y > 255 || result->z > 255)
 		return (-1);
+	result->x /= 255;
+	result->y /= 255;
+	result->z /= 255;
 	return (0);
 }
 

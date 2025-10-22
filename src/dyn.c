@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger93+42@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 13:35:49 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/22 10:50:52 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/22 13:10:44 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,16 @@ int32_t dyn_init(t_dyn *array, uint8_t mem_size)
 	return (0);
 }
 
+#include "stdio.h"
 int32_t dyn_add(t_dyn *array, t_obj *element)
 {
+	printf("New element added radius: %f\n", element->props.radius);
 	if (array->filled + 1 >= array->alloc)
 	{
 		if (dyn_enhance(array))
 			return (1);
 	}
-    memcpy(array->elem + (array->filled * array->mem_size), element, array->mem_size);
+    memcpy(array->elem + array->filled, element, array->mem_size);
 	array->filled++;
 	return (0);
 }
