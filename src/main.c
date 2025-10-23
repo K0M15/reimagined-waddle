@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/25 16:27:17 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/25 16:28:09 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int32_t pars_init(int argc, char **argv, t_app *app)
 		print_instructions();
 		return (-1);
 	}
-	dyn_init(&app->hitable, sizeof(t_obj));
+	dyn_init(&app->hitable);
 	if (pars(argv[1], app) == -1)
 		return (-1);
 	return (0);

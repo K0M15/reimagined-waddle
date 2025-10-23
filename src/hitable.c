@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/25 16:22:04 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/25 16:27:59 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ uint32_t	world_hit(t_dyn *world, t_ray ray,
 	p.closest = INFINITY;
 	while (p.ctr < world->filled)
 	{
-		p.obj = world->elem + p.ctr * world->mem_size;
+		p.obj = &world->elem[p.ctr];
 		p.hit = 0;
 		if (p.obj->type == SPHERE)
 			p.hit = ft_sphere_hit(*p.obj, ray, &p.temp, limit);
