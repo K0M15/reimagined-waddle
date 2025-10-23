@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:51:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 11:08:17 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/23 11:13:29 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,17 @@ t_uv	uv_sphere(t_props sphere, t_vec3 p)
 	return ((t_uv){uu - floorf(uu), clamp(vv, 0.f, 1.0f)});
 }
 
+/*
+Somwhat of Reference
+https://gamedev.stackexchange.com/questions/172352/finding-texture-coordinates-for-plane
+but mapping planes is easy, finding a scale for the texture is not
+*/
 t_uv	uv_plane(t_props plane, t_vec3 p)
 {
 	
 }
 
+//http://www.raytracerchallenge.com/bonus/texture-mapping.html
 t_uv	uv_cylside(t_props cylinder, t_vec3 p)
 {
 	
