@@ -6,11 +6,11 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/21 16:52:56 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/23 09:01:12 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 void ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color)
 {
@@ -108,11 +108,115 @@ int32_t setupWindow(t_app *app)
 	return (EXIT_SUCCESS);
 }
 
-int32_t main(void)
+#include <stdio.h>
+#include "parser.h"
+
+static void	print_instructions(void)
+{
+	printf("The program usage: ./miniRT [scene file]\n");
+}
+
+int32_t pars_init(int argc, char **argv, t_app *app)
+{
+	if (argc != 2)
+	{
+		print_instructions();
+		return (-1);
+	}
+	dyn_init(&app->hitable, sizeof(t_obj));
+	if (pars(argv[1], app) == -1)
+		return (-1);
+	return (0);
+}
+
+void	print_vec3(t_vec3 *vec)
+{
+	printf("%f,%f,%f", vec->x, vec->y, vec->z);
+}
+
+void	print_sphere(t_obj *app)
+{
+	print_vec3(&app->props.position);
+	printf("\t");
+	printf("%f", app->props.radius);
+	printf("\t");
+	print_vec3(&app->props.color);
+}
+
+void	print_cylinder(t_obj *app)
+{
+	print_vec3(&app->props.position);
+	printf("\t");
+	print_vec3(&app->props.rotation);
+	printf("\t");
+	printf("%f", app->props.radius);
+	printf("\t");
+	printf("%f", app->props.height);
+	printf("\t");
+	print_vec3(&app->props.color);
+}
+
+void	print_plane(t_obj *app)
+{
+	print_vec3(&app->props.position);
+	printf("\t");
+	print_vec3(&app->props.rotation);
+	printf("\t");
+	print_vec3(&app->props.color);
+}
+
+void	print_point_light(t_obj *app)
+{
+	print_vec3(&app->props.position);
+	printf("\t");
+	printf("%f", app->props.brightness);
+	printf("\t");
+	print_vec3(&app->props.color);
+}
+
+void	print_element(int iter, t_app *app)
+{
+	t_obj		*ptr;
+	const char	*types[] = {"SPHERE", "CYLINDER", "PLANE", "POINT_LIGHT"};
+	void	(*func[])(t_obj*)= {print_sphere, print_cylinder, print_plane, print_point_light};
+
+	ptr = app->hitable.elem + iter;
+	if (ptr->type == 0xFFFF)
+	{
+		printf("There is an error type in the objects!!/n");
+		return ;
+	}
+	printf("==========\n");
+	printf("The type: %s\n", types[ptr->type]);
+	func[ptr->type](ptr);
+	printf("\n");
+	printf("==========\n");
+}
+
+void print_internal_data(t_app *app)
+{
+	uint32_t	iter;
+
+	iter = 0;
+	while (iter < app->hitable.filled)
+	{
+		print_element(iter, app);
+		iter++;
+	}
+	return ;
+}
+
+int32_t	main(int argc, char *argv[])
 {
 	t_app app;
-	t_camera camera;
 
+	if (pars_init(argc, argv, &app) != 0)
+		return (-1);
+	//print_internal_data(&app);
+/*	t_camera camera;
+
+	// Pars terminal and file inputs
+	//TODO: convert to the different structures for the exec
 	app.width = 1200;
 	app.height = 800;
 	ft_camera_init(
@@ -132,29 +236,13 @@ int32_t main(void)
 		});
 	app.active_camera = &camera;
 
-	dyn_init(&app.hitable, sizeof(t_obj));
-
-	t_material material;
-	memset(&material, 0, sizeof(t_material));
-	material.color = (t_vec3) {1, 1, 0};
-	material.reflectivity = .4;
-	material.is_emitting = 0;
-	material.scatter = .2;
-
-	t_material material2;
-	memset(&material2, 0, sizeof(t_material));
-	material2.color = (t_vec3) {0, 1, 0};
-	material2.reflectivity = .3;
-	material2.is_emitting = 0;
-	material2.scatter = .2;
-
 	t_material mat_l;
 	memset(&mat_l, 0, sizeof(t_material));
 	mat_l.color = (t_vec3) {1,1,1};
-	mat_l.reflectivity = 0.0;
+	mat_l.reflectivity = 0.0; //Add 0.1 to objects
 	mat_l.is_emitting = 1;
 	mat_l.scatter = .5;
-	
+	add_material_to_objects(app);
 	t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-4}}, &material);
 	t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){-3,5,-5}}, &material);
 	// t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
@@ -166,16 +254,17 @@ int32_t main(void)
 	t_obj cyl1 = ft_cylinder_create((t_cylinder_p){10.0, 100.0, {0, 10, -10}, (t_vec3){1,0,0}}, &material);
 	t_obj lightsource = ft_light_create((t_point_light_p){(t_vec3){-3,8,-2}, .7f, (t_vec3){1, 1, 1}});
 	// t_obj lightsource2 = ft_light_create((t_point_light_p){(t_vec3){1,0,-2}, 1.0f, (t_vec3){1, 1, 1}});
-	dyn_add(&app.hitable, &sphere);
-	dyn_add(&app.hitable, &sphere1);
+//	dyn_add(&app.hitable, &sphere);
+//	dyn_add(&app.hitable, &sphere1);
 	// dyn_add(&app.hitable, &sphere2);
 	// dyn_add(&app.hitable, &sphere3);
-	dyn_add(&app.hitable, &plane1);
-	dyn_add(&app.hitable, &lightsource);
+//	dyn_add(&app.hitable, &plane1);
+	//dyn_add(&app.hitable, &lightsource);
 	// dyn_add(&app.hitable, &lightsource2);
 	// dyn_add(&app.hitable, &plane2);
 	// dyn_add(&app.hitable, &sphere4);
-	dyn_add(&app.hitable, &cyl1);
+	// dyn_add(&app.hitable, &cyl1);
+	// TODO: Still cleanup to do
 	if (setupWindow(&app) == EXIT_FAILURE)
 		return (EXIT_FAILURE);	
 	
@@ -183,5 +272,8 @@ int32_t main(void)
 	mlx_loop_hook(app.mlx, draw_loop, (void *) &app);
 	mlx_loop(app.mlx);
 	mlx_terminate(app.mlx);
+	dyn_free(&app.hitable);
+	free(mat_l);*/
 	return (EXIT_SUCCESS);
 }
+

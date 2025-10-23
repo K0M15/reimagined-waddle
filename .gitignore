@@ -1,5 +1,9 @@
 **/*.o
 libft/libft.a
+lib/gnl/libgnl.a
+lib/llist/libllist.a
+src/parser/todo
 .DS_Store
 miniRT
 venv/
+.vscode

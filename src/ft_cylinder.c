@@ -6,30 +6,28 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:07:04 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/21 17:53:15 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/23 08:58:02 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hitable.h"
 #include "ftvec3.h"
 
-t_obj	ft_cylinder_create(t_cylinder_p params, t_material *mat)
-{
-	t_obj	cyl;
+// t_obj	ft_cylinder_create(s_props params, t_material *mat)
+// {
+// 	t_obj	cyl;
 
-	cyl.type = ERROR;
-	cyl.props = malloc(sizeof(t_cylinder_p));
-	if (!cyl.props)
-		return (cyl);
-	cyl.type = CYLINDER;
-	cyl.mat = mat;
-	memcpy(cyl.props, &params, sizeof(t_cylinder_p));
-	((t_cylinder_p *)cyl.props)->rotation
-		= ftvec3_unit(((t_cylinder_p *)cyl.props)->rotation);
-	return (cyl);
-}
+// 	cyl.type = ERROR;
+// 	if(!(cyl.props = malloc(sizeof(s_props))))
+// 		return cyl;
+// 	cyl.type = CYLINDER;
+// 	cyl.mat = mat;
+// 	memcpy(cyl.props, &params, sizeof(s_props));
+// 	((s_props*) cyl.props)->rotation = ftvec3_unit(((s_props*) cyl.props)->rotation);
+// 	return (cyl);
+// }
 
-static t_vec3	fillabc(t_vec3 axis, t_cylinder_p *c, t_vec3 ro_base, t_ray ray)
+static t_vec3	fillabc(t_vec3 axis, t_props *c, t_vec3 ro_base, t_ray ray)
 {
 	t_vec3	abc;
 
@@ -49,7 +47,7 @@ static t_vec3	fillabc(t_vec3 axis, t_cylinder_p *c, t_vec3 ro_base, t_ray ray)
 }
 
 t_hitrec	find_root_hit(float drr[3], t_ray ray,
-	struct s_lpair limit, t_cylinder_p *c)
+	struct s_lpair limit, t_props *c)
 {
 	t_vec3		p;
 	t_hitrec	hit;
@@ -77,7 +75,7 @@ t_hitrec	find_root_hit(float drr[3], t_ray ray,
 }
 
 //drr: 0 = disk, 1,2 = roots
-t_hitrec	find_best_hit(t_vec3 axis, t_cylinder_p *c,
+t_hitrec	find_best_hit(t_vec3 axis, t_props *c,
 	t_ray ray, struct s_lpair limit)
 {
 	t_vec3		ro_base;
@@ -106,14 +104,14 @@ t_hitrec	find_best_hit(t_vec3 axis, t_cylinder_p *c,
 uint32_t	ft_cylinder_hit(t_obj cyl, t_ray ray,
 	t_hitrec *rec, struct s_lpair limit)
 {
-	t_cylinder_p	*c;
+	t_props	c;
 	t_vec3			axis;
 	t_hitrec		best_hit[2];
 
-	c = (t_cylinder_p *)cyl.props;
-	axis = ftvec3_unit(c->rotation);
-	best_hit[0] = find_best_hit(axis, c, ray, limit);
-	best_hit[1] = find_cap_hit(axis, c, ray, limit);
+	c = cyl.props;
+	axis = ftvec3_unit(c.rotation);
+	best_hit[0] = find_best_hit(axis, &c, ray, limit);
+	best_hit[1] = find_cap_hit(axis, &c, ray, limit);
 	if (best_hit[0].t == INFINITY && best_hit[1].t == INFINITY)
 		return (false);
 	if (best_hit[0].t > best_hit[1].t)

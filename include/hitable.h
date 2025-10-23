@@ -6,45 +6,46 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/21 18:06:35 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/23 09:02:24 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HITABLE_H
 # define HITABLE_H
 
+# include "dyn_arr.h"
 # include <stdint.h>
 # include <stdlib.h>
 # include "ftray.h"
 # include "ftvec3.h"
-# include "dyn_arr.h"
+# include "object.h"
 
+typedef struct s_ray t_ray;
 # define MIN_DIST 0.001
 # define MAX_DIST 1000
 
-enum e_obj_type
-{
-	SPHERE,
-	CYLINDER,
-	PLANE,
-	POINT_LIGHT,
-	ERROR = 0xFFFF
+enum e_obj_type{
+    SPHERE,
+    CYLINDER,
+    PLANE,
+    POINT_LIGHT,
+    ERROR = 0xFFFF
 };
 
 typedef struct s_material
 {
-	double	reflectivity;
-	double	scatter;
-	t_vec3	color;
-	bool	is_emitting;
-}	t_material;
+    double  reflectivity;
+    double  scatter;
+    t_vec3          color;
+    bool    is_emitting;
+}   t_material;
 
 typedef struct s_obj
 {
-	enum e_obj_type	type;
-	void			*props;
-	t_material		*mat;
-}	t_obj;
+    enum e_obj_type type;
+    void            *props;
+    t_material      *mat;   //Maybe change object to have 
+}   t_obj;
 
 typedef struct s_sphere_p
 {
@@ -52,13 +53,13 @@ typedef struct s_sphere_p
 	t_vec3	position;
 }	t_sphere_p;
 
-typedef struct s_cylinder_p
-{
-	float	radius;
-	float	height;
-	t_vec3	position;
-	t_vec3	rotation;
-}	t_cylinder_p;
+typedef struct s_cylinder_p{
+    float diameter;
+    float height;
+    t_vec3 position;
+    t_vec3 rotation;
+	t_vec3	color;
+}   t_cylinder_p;
 
 typedef struct s_plane_p
 {

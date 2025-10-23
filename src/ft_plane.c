@@ -13,28 +13,28 @@
 #include "hitable.h"
 #include "ftvec3.h"
 
-t_obj	ft_plane_create(t_plane_p params, t_material *mat)
-{
-	t_obj	plane;
+// t_obj	ft_plane_create(t_plane_p params, t_material *mat)
+// {
+// 	t_obj	plane;
 
-	plane.type = ERROR;
-	plane.props = malloc(sizeof(t_plane_p));
-	if (!plane.props)
-		return (plane);
-	plane.type = PLANE;
-	plane.mat = mat;
-	memcpy(plane.props, &params, sizeof(t_plane_p));
-	return (plane);
-}
+// 	plane.type = ERROR;
+// 	plane.props = malloc(sizeof(t_plane_p));
+// 	if (!plane.props)
+// 		return (plane);
+// 	plane.type = PLANE;
+// 	plane.mat = mat;
+// 	memcpy(plane.props, &params, sizeof(t_plane_p));
+// 	return (plane);
+// }
 
 uint32_t	ft_plane_hit(t_obj plane, t_ray ray, t_hitrec *rec,
 	struct s_lpair limit)
 {
-	t_plane_p	*props;
+	t_props	*props;
 	double		denom;
 	double		d;
 
-	props = (t_plane_p *)plane.props;
+	props = (t_props *)&plane.props;
 	denom = ftvec3_dot(ftvec3_unit(props->rotation), ray.direction);
 	if (fabs(denom) < DOUBLE_NEAR_ZERO)
 		return (false);

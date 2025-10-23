@@ -23,7 +23,8 @@ void	ft_hitr_set_face_normal(t_hitrec *rec, t_ray ray, t_vec3 outwar_norm)
 
 void	ft_obj_dest(t_obj obj)
 {
-	free(obj.props);
+	// we dont destroy
+	(void) obj;
 }
 
 void	assign_rayhit(t_hitrec *rec, t_hitrec src, t_material *material)
