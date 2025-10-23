@@ -6,14 +6,14 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 17:21:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/21 17:36:40 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/23 09:06:55 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hitable.h"
 #include "ftvec3.h"
 
-static int	fillvars(t_vec3 *cap, t_cylinder_p *c, t_vec3 axis)
+static int	fillvars(t_vec3 *cap, t_props *c, t_vec3 axis)
 {
 	cap[0] = c->position;
 	cap[1] = ftvec3_plus(c->position, ftvec3_multiply(axis, ftvec3(c->height)));
@@ -22,7 +22,7 @@ static int	fillvars(t_vec3 *cap, t_cylinder_p *c, t_vec3 axis)
 	return (-1);
 }
 
-static int	check_hit(t_vec3 p, t_cylinder_p *c, t_vec3 ci, t_vec3 axis)
+static int	check_hit(t_vec3 p, t_props *c, t_vec3 ci, t_vec3 axis)
 {
 	return (ftvec3_dot(ftvec3_minus(ftvec3_minus(p, ci),
 				ftvec3_multiply(axis, ftvec3(ftvec3_dot(ftvec3_minus(p, ci),
@@ -33,7 +33,7 @@ static int	check_hit(t_vec3 p, t_cylinder_p *c, t_vec3 ci, t_vec3 axis)
 		<= c->radius * c->radius + 1e-6f);
 }
 
-t_hitrec	find_cap_hit(t_vec3 axis, t_cylinder_p *c,
+t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
 	t_ray ray, struct s_lpair limit)
 {
 	t_vec3		cap[5];

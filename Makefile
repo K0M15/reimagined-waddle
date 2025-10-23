@@ -1,4 +1,4 @@
-.PHONY: all fractol fclean clean re MLX42 mylibft
+.PHONY: all fractol fclean clean re MLX42
 NAME=miniRT
 CC=cc
 FLAGS=-Wall -Wextra -Werror
@@ -6,13 +6,14 @@ FLAGS_MAC= -framework Cocoa -framework OpenGL -framework IOKit -lglfw
 FLAGS_LINUX= -ldl -lglfw -lpthread -lm 
 F_INC=-Iinclude
 MLX=MLX42/build/libmlx42.a
-LIBFT=libft/libft.a
 PARSER_DIR	=	src/parser
 SCENE_DIR	=	src
+LIBFT_PATH  = ./lib/libft
+LIBFT_NAME  = $(LIBFT_PATH)/libft.a
 LIBLLIST_PATH  = ./lib/llist
-LIBLLIST_NAME	= llist
+LIBLLIST_NAME	= $(LIBLLIST_PATH)/libllist.a
 LIBGNL_PATH    = ./lib/gnl
-LIBGNL_NAME	= gnl 
+LIBGNL_NAME	= $(LIBGNL_PATH)/libgnl.a
 PARSER_FILES 	=	extract_ambient_light.c \
 			extract_camera.c \
 			extract_cordinates.c \
@@ -39,35 +40,36 @@ else ifeq ($(UNAME_S), Darwin)
 endif
 
 SCENE_FILES	=	scene_utils.c
-
 SCENE_SRCS	+= $(addprefix $(SCENE_DIR)/, $(SCENE_FILES))
-
 PARSER_SRCS	+= $(addprefix $(PARSER_DIR)/, $(PARSER_FILES))
 FILES+=$(PARSER_SRCS) $(SCENE_SRCS)
-#LIBRARIES   = -L$(LIBFT_PATH) -l$(LIBFT_NAME) -L$(LIBGNL_PATH) -l$(LIBGNL_NAME) -L$(LIBLLIST_PATH) -l$(LIBLLIST_NAME)
-LIBRARIES   = -L$(LIBGNL_PATH) -l$(LIBGNL_NAME) -L$(LIBLLIST_PATH) -l$(LIBLLIST_NAME)
+LIBRARIES   = $(LIBGNL_NAME) $(LIBLLIST_NAME) $(LIBFT_NAME)
 
 # all: FLAGS+=-ffast-math
 # all: FLAGS+=-O3
-all: $(MLX42) mylibft $(NAME)
+all: $(MLX) $(LIBGNL_NAME) $(LIBLLIST_NAME) $(LIBFT_NAME) $(NAME)
 
 debug: FLAGS+=-g
 debug: re
 
-MLX42:
+$(MLX):
+	cd MLX42 && cmake -B build && cmake --build build -j4
 
 $(NAME): $(FILES:.c=.o)
-	cd MLX42 && cmake -B build && cmake --build build -j4
-	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBFT) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
+	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
 
 %.o: %.c
 	@echo "Building $@"
 	@$(CC) $(F_INC) $(FLAGS) -c -o $@ $^
 
-$(LIBFT):
-	cd ./libft && make 
-	@$(MAKE) -C $(LIBLLIST_PATH) > /dev/null
+$(LIBFT_NAME):
+	@$(MAKE) -C $(LIBFT_PATH) > /dev/null
+
+$(LIBGNL_NAME):
 	@$(MAKE) -C $(LIBGNL_PATH) > /dev/null
+
+$(LIBLLIST_NAME):
+	@$(MAKE) -C $(LIBLLIST_PATH) > /dev/null
 
 fclean: clean
 	@echo "Removing executeable"
@@ -75,14 +77,18 @@ fclean: clean
 	@echo "Removing MLX42 build"
 	@rm -rf MLX42/build/
 	@echo "Removing Libft build"
-	@cd ./libft && make clean
+	@make -C $(LIBFT_PATH) fclean > /dev/null
+	@make -C $(LIBGNL_PATH) fclean > /dev/null
+	@make -C $(LIBLLIST_PATH) fclean > /dev/null
 	@echo "\033[92mRemoving done!\033[0m"
 
 clean:
 	@echo "Clean local objects"
 	@rm -f $(FILES:.c=.o)
 	@echo "Clean libft objects"
-	@cd ./libft && make clean
+	@make -C $(LIBFT_PATH) clean > /dev/null
+	@make -C $(LIBGNL_PATH) clean > /dev/null
+	@make -C $(LIBLLIST_PATH) clean > /dev/null
 	@echo "Clean MLX42 prebuild files"
 	@rm -f MLX42/build/Makefile MLX42/build/mlx_frag_shader.c MLX42/build/mlx_vert_shader.c MLX42/build/CMakeCache.txt MLX42/build/cmake_install.cmake
 	@rm -rf MLX42/build/CMakeFiles/

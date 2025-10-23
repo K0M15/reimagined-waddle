@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 09:01:41 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/23 09:05:43 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ void		ft_camera_calc(t_camera *camera);
 void		ft_camera_apply(t_camera *cam, t_vec3 apply);
 uint32_t	ft_camera_render(t_app *app, void (*put_pixel)(mlx_image_t *image,
 					int x, int y, uint32_t color));
-void		ftref_lambert(struct s_ftray_color_props *p, t_point_light_p *pl,
+void		ftref_lambert(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
-void		ftref_phong(struct s_ftray_color_props *p, t_point_light_p *pl,
+void		ftref_phong(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
 #endif /* MINIRT_H */
