@@ -9,18 +9,8 @@
 
 static int	add_ambient_light(FLOAT *light_ratio, t_vec3 *color, t_app *app)
 {
-	t_ambient_light	*a_light;
-	
-	(void) app;
-	a_light = (t_ambient_light *)malloc(sizeof(t_ambient_light));
-	if (!a_light)
-	{
-		printf("Malloc failed!\n");
-		return (-1);
-	}
-	a_light->lighting_ratio = *light_ratio;
-	cpy_rgb(&a_light->color, color);
-	add_ll_back_node(&(get_scene()->ambient_light), a_light);
+	app->active_camera->ambient_intensity = *light_ratio;
+	app->active_camera->ambient = *color;
 	return (0);
 }
 
