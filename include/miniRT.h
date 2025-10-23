@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 11:24:38 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/23 15:54:23 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define MAX_DEPTH 5
 # define MOV_SPEED 0.1
 # define PHONG_SHININESS 32.0f
+# define MIN_REFLECTION_DROPOUT .05f
 
 struct s_ftray_color_props
 {

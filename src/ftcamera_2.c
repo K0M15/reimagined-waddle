@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:11:25 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 11:28:12 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/23 15:54:37 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ t_vec3	ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect)
 	struct s_ftray_color_props	p;
 	uint32_t					i;
 
-	if (depth <= 0 || left_reflect < .1 || !world_hit(arr, ray, &p.rec,
-			(struct s_lpair){MIN_DIST, MAX_DIST}))
+	if (depth <= 0 || left_reflect < MIN_REFLECTION_DROPOUT
+		|| !world_hit(arr, ray, &p.rec, (struct s_lpair){MIN_DIST, MAX_DIST}))
 		return (ftcol_scale(ray.ambient, ray.ambient_intensity));
 	if (p.rec.mat->is_emitting)
 		return (p.rec.mat->color);
@@ -65,7 +65,7 @@ t_vec3	ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect)
 	i = 0;
 	while (i < arr->filled)
 	{
-		p.obj = arr->elem + i * arr->mem_size;
+		p.obj = &arr->elem[i];
 		if (p.obj->type == POINT_LIGHT)
 			handle_pl(&p, arr);
 		i++;
