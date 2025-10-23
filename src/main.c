@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 11:30:06 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/23 12:42:37 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,20 +234,15 @@ void add_material_to_objects(t_app *app)
 int32_t	main(int argc, char *argv[])
 {
 	t_app app;
-
-	if (pars_init(argc, argv, &app) != 0)
-		return (-1);
 	t_camera camera;
 
-	// Pars terminal and file inputs
-	//TODO: convert to the different structures for the exec
 	app.width = 1200;
 	app.height = 800;
 	ft_camera_init(
 		&camera, (t_camera_p){
 			ftvec3(0),
-			(t_vec3){0,0, -1},
-			90,
+			(t_vec3){0,0, 0},
+			0,
 			app.width,
 			app.height,
 			STAN_SAMPLES_PER_PIXEL,
@@ -259,6 +254,12 @@ int32_t	main(int argc, char *argv[])
 			.2
 		});
 	app.active_camera = &camera;
+	//!!!Pars init changes location, normal & FOV for camera + ambient + adds hitables
+	if (pars_init(argc, argv, &app) != 0)
+		return (-1);
+
+	// Pars terminal and file inputs
+	//TODO: convert to the different structures for the exec
 
 	add_material_to_objects(&app);
 	print_internal_data(&app);
