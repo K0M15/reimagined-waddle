@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:11:25 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 09:06:01 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/23 09:54:55 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static void	handle_pl(struct s_ftray_color_props *p, t_dyn *arr)
 {
-	t_props	*pl;
-	t_vec3			to_light;
-	t_hitrec		temp;
+	t_props		*pl;
+	t_vec3		to_light;
+	t_hitrec	temp;
 
 	pl = &p->obj->props;
 	to_light = ftvec3_minus(pl->position, p->rec.hit);

@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:07:04 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 08:58:02 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/23 09:53:07 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ t_hitrec	find_best_hit(t_vec3 axis, t_props *c,
 uint32_t	ft_cylinder_hit(t_obj cyl, t_ray ray,
 	t_hitrec *rec, struct s_lpair limit)
 {
-	t_props	c;
-	t_vec3			axis;
-	t_hitrec		best_hit[2];
+	t_props		c;
+	t_vec3		axis;
+	t_hitrec	best_hit[2];
 
 	c = cyl.props;
 	axis = ftvec3_unit(c.rotation);

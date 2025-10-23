@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 13:35:49 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/22 15:22:50 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/23 09:52:17 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ int32_t	dyn_init(t_dyn *array, uint8_t mem_size)
 	return (0);
 }
 
-int32_t dyn_add(t_dyn *array, t_obj *element)
+int32_t	dyn_add(t_dyn *array, t_obj *element)
 {
 	if (array->filled + 1 >= array->alloc)
 	{
 		if (dyn_enhance(array))
 			return (1);
 	}
-    memcpy(array->elem + array->filled, element, array->mem_size);
+	memcpy(array->elem + array->filled, element, array->mem_size);
 	array->filled++;
 	return (0);
 }
