@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:05:57 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/22 17:46:17 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/23 11:27:01 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ uint32_t	ft_plane_hit(t_obj plane, t_ray ray, t_hitrec *rec,
 	struct s_lpair limit)
 {
 	t_props	*props;
-	double		denom;
-	double		d;
+	double	denom;
+	double	d;
 
 	props = (t_props *)&plane.props;
 	denom = ftvec3_dot(ftvec3_unit(props->rotation), ray.direction);

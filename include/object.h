@@ -21,11 +21,12 @@ typedef struct s_material
 
 /*TODO: Reorder the elements in order from largest to smallest*/
 typedef struct	s_props{
-	float radius;
-	float height;
-	t_vec3 position;
-	t_vec3 rotation;
-	float	brightness;
+	float   radius;
+	float   diameter;
+	float   height;
+	t_vec3  position;
+	t_vec3  rotation;
+    float	brightness;
 	t_vec3	color;
 } t_props;
 

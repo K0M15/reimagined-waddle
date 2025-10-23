@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:48:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/17 16:52:47 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/23 09:06:42 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ float	distance_col_scale(float distance)
 	return (att);
 }
 
-void	ftref_lambert(struct s_ftray_color_props *p, t_point_light_p *pl,
+void	ftref_lambert(struct s_ftray_color_props *p, t_props *pl,
 	t_vec3 to_light)
 {
 	float	ndotl;
@@ -36,7 +36,7 @@ void	ftref_lambert(struct s_ftray_color_props *p, t_point_light_p *pl,
 							ftvec3_length(to_light))), p->rec.mat->color));
 }
 
-void	ftref_phong(struct s_ftray_color_props *p, t_point_light_p *pl,
+void	ftref_phong(struct s_ftray_color_props *p, t_props *pl,
 	t_vec3 to_light)
 {
 	t_vec3	reflect_dir;

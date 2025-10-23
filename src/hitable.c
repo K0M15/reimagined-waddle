@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/22 17:46:36 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/23 11:28:34 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ uint32_t	world_hit(t_dyn *world, t_ray ray,
 
 	p.ctr = 0;
 	p.hit = 0;
-	p.closest = 0.0;
+	p.closest = INFINITY;
 	while (p.ctr < world->filled)
 	{
 		p.obj = world->elem + p.ctr * world->mem_size;
@@ -63,5 +63,5 @@ uint32_t	world_hit(t_dyn *world, t_ray ray,
 		}
 		p.ctr++;
 	}
-	return (p.closest != 0.0);
+	return (p.closest != INFINITY);
 }

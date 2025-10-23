@@ -7,7 +7,7 @@
 #include "parser.h"
 #include "ft_ll.h"
 
-static int	add_cylinder(t_cylinder_p *input, t_app *app)
+static int	add_cylinder(t_props *input, t_app *app)
 {
 	t_obj	cylinder;
 
@@ -23,7 +23,7 @@ static int	add_cylinder(t_cylinder_p *input, t_app *app)
 int	extract_cylinder(const char *line, t_app *app)
 {
 	char		**tokens;
-	t_cylinder_p	temp;
+	t_props		temp;
 
 	tokens = ft_split(line, ' ');
 	if (!tokens)

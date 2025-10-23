@@ -5,4 +5,5 @@ lib/llist/libllist.a
 src/parser/todo
 .DS_Store
 miniRT
+venv/
 .vscode

@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:08:01 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/22 17:11:36 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/23 09:00:25 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ uint32_t	ft_sphere_hit(t_obj sphere, t_ray ray, t_hitrec *rec,
 	root = (abc.y - discriminant) / abc.x;
 	if ((root <= limit.min || limit.max <= root)
 		&& (((abc.y + discriminant) / abc.x) <= limit.min
-		|| limit.max <= ((abc.y + discriminant) / abc.x)))
+			|| limit.max <= ((abc.y + discriminant) / abc.x)))
 		return (false);
 	rec->t = root;
 	rec->hit = ftray_at(ray, root);
