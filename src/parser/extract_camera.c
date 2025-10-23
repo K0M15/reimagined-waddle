@@ -14,6 +14,16 @@ int	add_camera(t_vec3 *loc, t_vec3 *normal, int *fov, t_app *app)
 	app->active_camera->center = *loc;
 	app->active_camera->look_at = *normal;
 	app->active_camera->fov = (float)*fov;
+	ft_camera_init(app->active_camera, (t_camera_p){
+		app->active_camera->center,
+		app->active_camera->look_at,
+		app->active_camera->fov,
+		app->active_camera->image_height,
+		app->active_camera->image_width,
+		app->active_camera->samples_per_pixel,
+		app->active_camera->ambient,
+		app->active_camera->ambient_intensity
+	});
 	return (0);
 }
 

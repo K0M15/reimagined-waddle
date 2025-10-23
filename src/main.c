@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 14:14:30 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/23 15:31:15 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ void	print_element(int iter, t_app *app)
 	printf("The materials:\n color: %f, %f, %f; reflectivity: %f; is_emitting: %d; scatter: %f",\
 			ptr->mat.color.x, ptr->mat.color.y, ptr->mat.color.z, ptr->mat.reflectivity,\
 			ptr->mat.is_emitting, ptr->mat.scatter);
-	printf("==========\n");
+	printf("\n==========\n");
 }
 
 void print_internal_data(t_app *app)
@@ -254,8 +254,8 @@ int32_t	main(int argc, char *argv[])
 	ft_camera_init(
 		&camera, (t_camera_p){
 			ftvec3(0),
-			(t_vec3){0,0, 0},
-			0,
+			(t_vec3){0,0, -1},
+			90,
 			app.width,
 			app.height,
 			STAN_SAMPLES_PER_PIXEL,
