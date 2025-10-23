@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 12:42:37 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/23 14:14:30 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,6 +231,19 @@ void add_material_to_objects(t_app *app)
 	}
 }
 
+void	resize_hook(int32_t width, int32_t height, void* param)
+{
+	t_app *app;
+
+	app = (t_app *) param;
+
+	app->width = width;
+	app->height = height;
+	app->active_camera->image_width = width;
+	app->active_camera->image_height = height;
+	ft_camera_calc(app->active_camera);
+}
+
 int32_t	main(int argc, char *argv[])
 {
 	t_app app;
@@ -290,6 +303,7 @@ int32_t	main(int argc, char *argv[])
 	
 	mlx_key_hook(app.mlx, key_hook, (void *) &app);
 	mlx_loop_hook(app.mlx, draw_loop, (void *) &app);
+  	mlx_resize_hook(app.mlx, resize_hook, (void *) &app);
 	mlx_loop(app.mlx);
 	mlx_terminate(app.mlx);
 	dyn_free(&app.hitable);
