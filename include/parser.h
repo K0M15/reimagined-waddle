@@ -1,6 +1,5 @@
 #ifndef PARSER_H
 # define PARSER_H
-#include "settings.h"
 #include "elements.h"
 #include "miniRT.h"
 
@@ -30,6 +29,6 @@ t_vec3	extract_normal(const char *input);
 //free_tokens.c
 void	free_tokens(char **tokens);
 int	token_ammount(char **tokens);
-FLOAT	ft_atof(const char *input);
+double	ft_atof(const char *input);
 
 #endif
