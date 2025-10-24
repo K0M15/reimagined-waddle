@@ -2,7 +2,7 @@
 # define PARSER_H
 #include "settings.h"
 #include "elements.h"
-#include "minirt.h"
+#include "miniRT.h"
 
 //parser.c
 int	pars(const char *path, t_app *app);

@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/25 16:27:28 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/25 16:28:32 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-# define STAN_SAMPLES_PER_PIXEL 20
-# define MAX_DEPTH 5
+# define STAN_SAMPLES_PER_PIXEL 1
+# define MAX_DEPTH 3
 # define MOV_SPEED 0.1
 # define PHONG_SHININESS 32.0f
 # define MIN_REFLECTION_DROPOUT .05f

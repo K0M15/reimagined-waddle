@@ -1,11 +1,10 @@
 #include <errno.h>
 #include <stdio.h>
-#include "minirt.h"
+#include "miniRT.h"
 #include "libft.h"
 #include "settings.h"
 #include "elements.h"
 #include "parser.h"
-#include "ft_ll.h"
 #include "hitable.h"
 
 /*TODO: have the possibility to add more materials to the sphere*/

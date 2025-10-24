@@ -6,11 +6,11 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/25 16:28:09 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/25 16:28:18 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "miniRT.h"
 
 void ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color)
 {
