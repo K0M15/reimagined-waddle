@@ -10,8 +10,6 @@ PARSER_DIR	=	src/parser
 SCENE_DIR	=	src
 LIBFT_PATH  = ./lib/libft
 LIBFT_NAME  = $(LIBFT_PATH)/libft.a
-LIBLLIST_PATH  = ./lib/llist
-LIBLLIST_NAME	= $(LIBLLIST_PATH)/libllist.a
 LIBGNL_PATH    = ./lib/gnl
 LIBGNL_NAME	= $(LIBGNL_PATH)/libgnl.a
 PARSER_FILES 	=	extract_ambient_light.c \
@@ -42,12 +40,12 @@ endif
 SCENE_FILES	=	scene_utils.c
 SCENE_SRCS	+= $(addprefix $(SCENE_DIR)/, $(SCENE_FILES))
 PARSER_SRCS	+= $(addprefix $(PARSER_DIR)/, $(PARSER_FILES))
-FILES+=$(PARSER_SRCS) $(SCENE_SRCS)
-LIBRARIES   = $(LIBGNL_NAME) $(LIBLLIST_NAME) $(LIBFT_NAME)
+FILES+=$(PARSER_SRCS)
+LIBRARIES   = $(LIBGNL_NAME) $(LIBFT_NAME)
 
 # all: FLAGS+=-ffast-math
 # all: FLAGS+=-O3
-all: $(MLX) $(LIBGNL_NAME) $(LIBLLIST_NAME) $(LIBFT_NAME) $(NAME)
+all: $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(NAME)
 
 debug: FLAGS+=-g
 debug: re
@@ -68,9 +66,6 @@ $(LIBFT_NAME):
 $(LIBGNL_NAME):
 	@$(MAKE) -C $(LIBGNL_PATH) > /dev/null
 
-$(LIBLLIST_NAME):
-	@$(MAKE) -C $(LIBLLIST_PATH) > /dev/null
-
 fclean: clean
 	@echo "Removing executeable"
 	@rm -f $(NAME)
@@ -79,7 +74,6 @@ fclean: clean
 	@echo "Removing Libft build"
 	@make -C $(LIBFT_PATH) fclean > /dev/null
 	@make -C $(LIBGNL_PATH) fclean > /dev/null
-	@make -C $(LIBLLIST_PATH) fclean > /dev/null
 	@echo "\033[92mRemoving done!\033[0m"
 
 clean:
@@ -88,7 +82,6 @@ clean:
 	@echo "Clean libft objects"
 	@make -C $(LIBFT_PATH) clean > /dev/null
 	@make -C $(LIBGNL_PATH) clean > /dev/null
-	@make -C $(LIBLLIST_PATH) clean > /dev/null
 	@echo "Clean MLX42 prebuild files"
 	@rm -f MLX42/build/Makefile MLX42/build/mlx_frag_shader.c MLX42/build/mlx_vert_shader.c MLX42/build/CMakeCache.txt MLX42/build/cmake_install.cmake
 	@rm -rf MLX42/build/CMakeFiles/
