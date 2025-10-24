@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:51:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/24 07:39:50 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/24 07:50:11 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 #include "hitable.h"
 #include "math.h"
 
-void uv_ortho_basis_from_n(t_vec3 normal, t_vec3 base[3])
+static void	uv_ortho_basis(t_vec3 normal, t_vec3 base[3])
 {
-    t_vec3 nn;
-    t_vec3 a;
+	t_vec3	nn;
+	t_vec3	a;
 
 	nn = ftvec3_unit(normal);
 	if (fabsf(nn.y) < 0.999f)
@@ -52,14 +52,14 @@ but mapping planes is easy, finding a scale for the texture is not
 */
 t_uv	uv_plane(t_props plane, t_vec3 p, t_vec3 normal)
 {
-	t_vec3	B[3];
+	t_vec3	basis[3];
 	t_uv	result;
 	float	uu;
 	float	vv;
 
-	uv_ortho_basis_from_n(normal, B);
-    uu = ftvec3_dot(ftvec3_minus(p, plane.position), B[0]) / 1; // TODO: REPLACE 1 with TextureScale
-    vv = ftvec3_dot(ftvec3_minus(p, plane.position), B[1]) / 1; // TODO: REPLACE 1 with TextureScale
+	uv_ortho_basis(normal, basis);
+	uu = ftvec3_dot(ftvec3_minus(p, plane.position), basis[0]) / 1; // TODO: REPLACE 1 with TextureScale
+	vv = ftvec3_dot(ftvec3_minus(p, plane.position), basis[1]) / 1; // TODO: REPLACE 1 with TextureScale
 	return ((t_uv){uu - floorf(uu), vv - floorf(vv)});
 }
 
@@ -67,5 +67,3 @@ t_uv	uv_plane(t_props plane, t_vec3 p, t_vec3 normal)
 t_uv	uv_cylside(t_vec3 axis, t_props cylinder, t_vec3 p)
 {
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 10:56:06 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/24 07:50:29 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_hitrec
 	t_material	*mat;
 	double		t;
 	bool		front_face;
-	t_uv		uv
+	t_uv		uv;
 }	t_hitrec;
 
 struct s_world_hit_props
@@ -110,7 +110,7 @@ t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
 				t_ray ray, struct s_lpair limit);
 			
 t_uv		uv_sphere(t_props sphere, t_vec3 p);
-t_uv		uv_plane(t_props plane, t_vec3 p);
+t_uv		uv_plane(t_props plane, t_vec3 p, t_vec3 normal);
 t_uv		uv_cylside(t_props cylinder, t_vec3 p);
 t_uv		uv_cylcap(t_props cylinder, t_vec3 p);
 
