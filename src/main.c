@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/24 14:20:19 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/24 15:34:29 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,8 +263,8 @@ int32_t	main(int argc, char *argv[])
 	t_app app;
 	t_camera camera;
 
-	app.width = 1200;
-	app.height = 800;
+	app.width = 120;
+	app.height = 80;
 	ft_camera_init(
 		&camera, (t_camera_p){
 			ftvec3(0),
@@ -319,6 +319,7 @@ int32_t	main(int argc, char *argv[])
 	mlx_loop_hook(app.mlx, draw_loop, (void *) &app);
   	mlx_resize_hook(app.mlx, resize_hook, (void *) &app);
 	mlx_loop(app.mlx);
+	mlx_delete_image(app.mlx, app.image);
 	mlx_terminate(app.mlx);
 	dyn_free(&app.hitable);
 	return (EXIT_SUCCESS);
