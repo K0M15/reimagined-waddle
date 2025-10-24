@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/24 12:18:11 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/24 14:20:19 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int32_t setupWindow(t_app *app)
 {
 	if (!(app->mlx = mlx_init(app->width, app->height, "MLX42", true)))
 	{
+		mlx_close_window(app->mlx);
 		printf("%s\n", mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
@@ -241,6 +242,19 @@ void	resize_hook(int32_t width, int32_t height, void* param)
 	app->height = height;
 	app->active_camera->image_width = width;
 	app->active_camera->image_height = height;
+	printf("The height: %d, the width: %d\n", app->mlx->height, app->mlx->width);
+	mlx_delete_image(app->mlx, app->image);
+	//TODO: in case of falure all the allocations should be freed
+	if (!(app->image = mlx_new_image(app->mlx, app->width, app->height)))
+	{
+		mlx_close_window(app->mlx);
+		printf("%s\n", mlx_strerror(mlx_errno));
+	}
+	if (mlx_image_to_window(app->mlx, app->image, 0, 0) == -1)
+	{
+		mlx_close_window(app->mlx);
+		printf("%s\n", mlx_strerror(mlx_errno));
+	}
 	ft_camera_calc(app->active_camera);
 }
 

@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "miniRT.h"
 #include "libft.h"
-#include "settings.h"
 #include "elements.h"
 #include "parser.h"
 

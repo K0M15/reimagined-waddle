@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <errno.h>
 #include "libft.h"
-#include "settings.h"
 #include <stdio.h>
 
 void	free_tokens(char **tokens)
@@ -32,10 +31,10 @@ int	token_ammount(char **tokens)
 	return (count);
 }
 
-FLOAT	ft_atof(const char *input)
+double	ft_atof(const char *input)
 {
-	FLOAT	result;
-	FLOAT	fraction_loc;
+	double	result;
+	double	fraction_loc;
 	int	sign;
 
 	result = 0;
@@ -63,7 +62,7 @@ FLOAT	ft_atof(const char *input)
 		return (result);
 	}
 	input++;
-	fraction_loc = (FLOAT)10;
+	fraction_loc = (double)10;
 	while (*input && ft_isdigit(*input))
 	{
 		result += (*input - '0') / fraction_loc;

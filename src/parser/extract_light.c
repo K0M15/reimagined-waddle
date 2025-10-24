@@ -2,11 +2,10 @@
 #include <stdio.h>
 #include "miniRT.h"
 #include "libft.h"
-#include "settings.h"
 #include "elements.h"
 #include "parser.h"
 
-static int	add_light(t_vec3 *loc, FLOAT *brightness, t_vec3 *color, t_app *app)
+static int	add_light(t_vec3 *loc, double *brightness, t_vec3 *color, t_app *app)
 {
 	t_obj	light;
 
@@ -21,7 +20,7 @@ int	extract_light(const char *line, t_app *app)
 {
 	char	**tokens;
 	t_vec3	loc;
-	FLOAT	brightness;
+	double	brightness;
 	t_vec3	color;
 
 	tokens = ft_split(line, ' ');
@@ -41,7 +40,7 @@ int	extract_light(const char *line, t_app *app)
 	brightness = ft_atof(tokens[2]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (brightness > (FLOAT)1.0 && brightness < (FLOAT)0.0)
+	if (brightness > (double)1.0 && brightness < (double)0.0)
 		return (free_tokens(tokens), -1);
 	color = extract_color(tokens[3]);
 	if (errno)
