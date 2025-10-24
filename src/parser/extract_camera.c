@@ -1,11 +1,9 @@
 #include <errno.h>
 #include <stdio.h>
-#include "minirt.h"
+#include "miniRT.h"
 #include "libft.h"
-#include "settings.h"
 #include "elements.h"
 #include "parser.h"
-#include "ft_ll.h"
 
 //TODO: change the t_camera_o to more meaningfull name
 //TODO: Add the direct addition to app object

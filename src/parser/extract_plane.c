@@ -1,11 +1,9 @@
 #include <errno.h>
 #include <stdio.h>
-#include "minirt.h"
+#include "miniRT.h"
 #include "libft.h"
-#include "settings.h"
 #include "elements.h"
 #include "parser.h"
-#include "ft_ll.h"
 
 static int	add_plane(t_vec3 *loc, t_vec3 *normal, t_vec3 *color, t_app *app)
 {

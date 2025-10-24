@@ -14,13 +14,13 @@ void	cpy_normal(t_vec3 *dst, t_vec3 *src)
 static int	tokens_to_normal(char **tokens, t_vec3 *result)
 {
 	result->x = ft_atof(*tokens);
-	if (errno || result->x > (FLOAT)1 || result->x < (FLOAT)-1)
+	if (errno || result->x > (double)1 || result->x < (double)-1)
 		return (-1);
 	result->y = ft_atof(*(tokens + 1));
-	if (errno || result->y > (FLOAT)1 || result->y < (FLOAT)-1)
+	if (errno || result->y > (double)1 || result->y < (double)-1)
 		return (-1);
 	result->z = ft_atof(*(tokens + 2));
-	if (errno || result->z > (FLOAT)1 || result->z < (FLOAT)-1)
+	if (errno || result->z > (double)1 || result->z < (double)-1)
 		return (-1);
 	return (0);
 }

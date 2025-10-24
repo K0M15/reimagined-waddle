@@ -1,15 +1,13 @@
 #include <errno.h>
 #include <stdio.h>
-#include "minirt.h"
+#include "miniRT.h"
 #include "libft.h"
-#include "settings.h"
 #include "elements.h"
 #include "parser.h"
-#include "ft_ll.h"
 #include "hitable.h"
 
 /*TODO: have the possibility to add more materials to the sphere*/
-static int	add_sphere(t_vec3 *loc, FLOAT *diameter, t_vec3 *color, t_app *app)
+static int	add_sphere(t_vec3 *loc, double *diameter, t_vec3 *color, t_app *app)
 {
 	t_obj	sphere;
 
@@ -25,7 +23,7 @@ int	extract_sphere(const char *line, t_app *app)
 {
 	char	**tokens;
 	t_vec3	loc;
-	FLOAT	diameter;
+	double	diameter;
 	t_vec3	color;
 
 	tokens = ft_split(line, ' ');
@@ -45,7 +43,7 @@ int	extract_sphere(const char *line, t_app *app)
 	diameter = ft_atof(tokens[2]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (diameter < (FLOAT)0.0)
+	if (diameter < (double)0.0)
 		return (free_tokens(tokens), -1);
 	color = extract_color(tokens[3]);
 	if (errno)

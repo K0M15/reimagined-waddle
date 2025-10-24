@@ -1,11 +1,9 @@
 #include <errno.h>
 #include <stdio.h>
-#include "minirt.h"
+#include "miniRT.h"
 #include "libft.h"
-#include "settings.h"
 #include "elements.h"
 #include "parser.h"
-#include "ft_ll.h"
 
 static int	add_cylinder(t_props *input, t_app *app)
 {
@@ -43,10 +41,10 @@ int	extract_cylinder(const char *line, t_app *app)
 	if (errno)
 		return (free_tokens(tokens), -1);
 	temp.diameter = atof(tokens[3]);
-	if (errno || temp.diameter < (FLOAT)0)
+	if (errno || temp.diameter < (double)0)
 		return (free_tokens(tokens), -1);
 	temp.height = atof(tokens[4]);
-	if (errno || temp.height < (FLOAT)0)
+	if (errno || temp.height < (double)0)
 		return (free_tokens(tokens), -1);
 	temp.color = extract_color(tokens[5]);
 	if (errno)
