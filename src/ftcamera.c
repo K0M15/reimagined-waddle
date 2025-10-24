@@ -6,11 +6,11 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 09:51:15 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/23 11:27:44 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "miniRT.h"
 
 void	ft_camera_apply(t_camera *cam, t_vec3 apply)
 {

@@ -60,7 +60,7 @@ $(NAME): $(FILES:.c=.o)
 
 %.o: %.c
 	@echo "Building $@"
-	@$(CC) $(F_INC) $(FLAGS) -c -o $@ $^
+	@$(CC) -g $(F_INC) $(FLAGS) -c -o $@ $^
 
 $(LIBFT_NAME):
 	@$(MAKE) -C $(LIBFT_PATH) > /dev/null

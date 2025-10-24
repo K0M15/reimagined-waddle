@@ -11,19 +11,19 @@
 //TODO: Add the direct addition to app object
 int	add_camera(t_vec3 *loc, t_vec3 *normal, int *fov, t_app *app)
 {
-	t_camera_o	*a_camera;
-	
-	(void) app;
-	a_camera = (t_camera_o *)malloc(sizeof(t_camera));
-	if (!a_camera)
-	{
-		printf("Malloc failed!\n");
-		return (-1);
-	}
-	a_camera->fov = *fov;
-	cpy_loc(&a_camera->loc, loc);
-	cpy_normal(&a_camera->normal, normal);
-	add_ll_back_node(&(get_scene()->camera), a_camera);
+	app->active_camera->center = *loc;
+	app->active_camera->look_at = *normal;
+	app->active_camera->fov = (float)*fov;
+	ft_camera_init(app->active_camera, (t_camera_p){
+		app->active_camera->center,
+		app->active_camera->look_at,
+		app->active_camera->fov,
+		app->active_camera->image_height,
+		app->active_camera->image_width,
+		app->active_camera->samples_per_pixel,
+		app->active_camera->ambient,
+		app->active_camera->ambient_intensity
+	});
 	return (0);
 }
 

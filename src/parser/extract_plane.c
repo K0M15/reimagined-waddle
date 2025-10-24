@@ -15,7 +15,6 @@ static int	add_plane(t_vec3 *loc, t_vec3 *normal, t_vec3 *color, t_app *app)
 	cpy_rgb(&plane.props.color, color);
 	cpy_normal(&plane.props.rotation, normal);
 	plane.type = PLANE;
-	plane.mat = NULL;
 	return (dyn_add(&app->hitable, &plane));
 }
 

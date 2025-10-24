@@ -6,21 +6,20 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 13:35:49 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 09:59:26 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/24 11:02:08 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "dyn_arr.h"
 #include "libft.h"
 
-int32_t	dyn_init(t_dyn *array, uint8_t mem_size)
+int32_t	dyn_init(t_dyn *array)
 {
-	array->elem = malloc(DYN_INIT_S * mem_size);
+	array->elem = malloc(DYN_INIT_S * sizeof(t_obj));
 	if (array->elem == NULL)
 		return (1);
 	array->filled = 0;
 	array->alloc = DYN_INIT_S;
-	array->mem_size = mem_size;
 	return (0);
 }
 
@@ -31,7 +30,7 @@ int32_t	dyn_add(t_dyn *array, t_obj *element)
 		if (dyn_enhance(array))
 			return (1);
 	}
-	ft_memcpy(array->elem + array->filled, element, array->mem_size);
+	memcpy(array->elem + array->filled, element, sizeof(t_obj));
 	array->filled++;
 	return (0);
 }
@@ -40,10 +39,10 @@ int32_t	dyn_enhance(t_dyn *array)
 {
 	t_obj	*replace;
 
-	replace = malloc(array->alloc * 2 * array->mem_size);
+	replace = malloc(array->alloc * 2 * sizeof(t_obj));
 	if (replace == NULL)
 		return (1);
-	ft_memcpy(replace, array->elem, array->filled * array->mem_size);
+	memcpy(replace, array->elem, array->filled * sizeof(t_obj));
 	free(array->elem);
 	array->elem = replace;
 	array->alloc = array->alloc * 2;

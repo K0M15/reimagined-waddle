@@ -18,7 +18,6 @@ static int	add_sphere(t_vec3 *loc, FLOAT *diameter, t_vec3 *color, t_app *app)
 	cpy_loc(&(sphere.props.position), loc);
 	cpy_rgb(&sphere.props.color, color);
 	sphere.type = SPHERE;
-	sphere.mat = NULL;
 	return (dyn_add(&app->hitable, &sphere));
 }
 
