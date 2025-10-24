@@ -76,6 +76,7 @@ int pars(const char *path, t_app *app)
 			printf("Invalid file content!\n");
 			return (-1);
 		}
+		free(line);
 		line = get_next_line(fd);
 		hide_newline(line);
 	}
