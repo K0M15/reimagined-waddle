@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:08:01 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 09:00:25 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/24 07:44:05 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,5 @@ uint32_t	ft_sphere_hit(t_obj sphere, t_ray ray, t_hitrec *rec,
 	ft_hitr_set_face_normal(rec, ray, ftvec3_divide(ftvec3_minus(rec->hit,
 				sphere.props.position),
 			ftvec3(sphere.props.radius)));
-	return (true);
+	return (rec->uv = uv_sphere(sphere.props, rec->hit), true);
 }

@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/25 16:27:59 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/25 16:29:42 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,14 @@ void	ft_obj_dest(t_obj obj)
 
 void	assign_rayhit(t_hitrec *rec, t_hitrec src, t_material *material)
 {
-	rec->hit = src.hit;
-	rec->normal = src.normal;
-	rec->t = src.t;
-	rec->mat = material;
+	*rec = (t_hitrec){
+		.hit = src.hit,
+		.normal = src.normal,
+		.mat = material,
+		.t = src.t,
+		.front_face = src.front_face,
+		.uv = src.uv,
+	};
 }
 
 // TODO: work on nudge -> 
