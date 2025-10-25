@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 13:35:49 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/25 16:27:42 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/25 16:30:32 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int32_t	dyn_add(t_dyn *array, t_obj *element)
 		if (dyn_enhance(array))
 			return (1);
 	}
-	ft_memcpy(array->elem + array->filled, element, array->mem_size);
+	ft_memcpy(array->elem + array->filled, element, sizeof(t_obj));
 	array->filled++;
 	return (0);
 }
@@ -42,7 +42,7 @@ int32_t	dyn_enhance(t_dyn *array)
 	replace = malloc(array->alloc * 2 * sizeof(t_obj));
 	if (replace == NULL)
 		return (1);
-	ft_memcpy(replace, array->elem, array->filled * array->mem_size);
+	ft_memcpy(replace, array->elem, array->filled * sizeof(t_obj));
 	free(array->elem);
 	array->elem = replace;
 	array->alloc = array->alloc * 2;

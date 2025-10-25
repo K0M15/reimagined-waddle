@@ -1,7 +1,8 @@
 #ifndef OBJECT_H
 # define OBJECT_H
 
-#include "ftvec3.h"
+# include "ftvec3.h"
+# include "MLX42.h"
 
 enum e_obj_type{
     SPHERE,
@@ -13,10 +14,11 @@ enum e_obj_type{
 
 typedef struct s_material
 {
-    double  reflectivity;
-    double  scatter;
-    t_vec3          color;
-    bool    is_emitting;
+    double			reflectivity;
+    double			scatter;
+    t_vec3			color;
+    bool			is_emitting;
+    mlx_texture_t	*tex;
 }   t_material;
 
 /*TODO: Reorder the elements in order from largest to smallest*/

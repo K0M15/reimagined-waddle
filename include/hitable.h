@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/24 08:05:22 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/25 16:52:51 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,7 @@ t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
 t_uv		uv_sphere(t_props sphere, t_vec3 p);
 t_uv		uv_plane(t_props plane, t_vec3 p);
 t_uv		uv_cylside(t_vec3 axis, t_props cylinder, t_vec3 p);
+t_vec3		tex_sample(const mlx_texture_t *tex, t_uv uv);
+
 
 #endif /* HITABLE_H */
