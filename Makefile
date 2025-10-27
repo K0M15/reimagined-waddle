@@ -28,7 +28,8 @@ FILES+=src/ftvec3.c src/ftvec3_1.c src/ftvec3_2.c src/ftvec3_3.c	# VECTOR
 FILES+=src/ftcamera.c src/ftcamera_2.c								# CAMERA
 FILES+=src/ft_sphere.c src/ft_cylinder.c src/ft_plane.c src/hitable.c
 FILES+=src/ft_point_light.c	src/reflection.c	src/ft_cyl_caphit.c	# OBJECTS
-FILES+=src/main.c src/pseudo_random.c src/uv.c
+FILES+=src/main.c src/pseudo_random.c src/uv.c src/texture.c
+FILES+=src/bump.c
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Linux)
