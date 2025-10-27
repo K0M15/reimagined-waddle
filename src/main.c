@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/25 18:31:09 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/27 13:05:47 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,9 +215,12 @@ void add_material_to_objects(t_app *app)
 	uint32_t	iter;
 	t_obj		*ptr;
 	mlx_texture_t	*tex;
+	mlx_texture_t	*bump;
 
 	iter = 0;
 	tex = mlx_load_png("/home/alain/Documents/dev/miniRT/earthmap1k.png");
+	// bump = NULL;
+	bump = mlx_load_png("/home/alain/Documents/dev/miniRT/earthbump1k.png");
 	while (iter < app->hitable.filled)
 	{
 		ptr = app->hitable.elem + iter;
@@ -226,10 +229,12 @@ void add_material_to_objects(t_app *app)
 		ptr->mat.is_emitting = 0;
 		ptr->mat.scatter = .5;
 		ptr->mat.tex = tex;
+		ptr->mat.bump = bump;
 		if (ptr->type == POINT_LIGHT)
 		{
-			ptr->mat.is_emitting = 1;
-			ptr->mat.reflectivity = 0.0;
+			ptr->mat.tex = NULL;
+			// ptr->mat.is_emitting = 1;
+			// ptr->mat.reflectivity = 0.0;
 		}
 		iter++;
 	}

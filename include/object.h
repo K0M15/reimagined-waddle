@@ -19,6 +19,7 @@ typedef struct s_material
     t_vec3			color;
     bool			is_emitting;
     mlx_texture_t	*tex;
+    mlx_texture_t   *bump;
 }   t_material;
 
 /*TODO: Reorder the elements in order from largest to smallest*/
