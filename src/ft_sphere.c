@@ -6,14 +6,12 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:08:01 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/27 14:32:21 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/27 14:59:42 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hitable.h"
 #include "ftvec3.h"
-
-# define SPHERE_BUMP_STRENGTH 3.0f
 
 //t_obj	ft_sphere_create(t_sphere_p params, t_material *mat)
 //{

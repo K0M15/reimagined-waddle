@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:48:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/26 12:08:13 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/27 14:35:20 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,6 @@ void	ftref_lambert(struct s_ftray_color_props *p, t_props *pl,
 		matcolor = p->rec.mat->color;
 	ndotl = ftvec3_dot(p->rec.normal, ftvec3_unit(to_light));
 	if (ndotl > 0.0f)
-		// p->light_acc = ftcol_add(p->light_acc, ftcol_mult(ftcol_scale(
-		// 				pl->color, pl->brightness * ndotl * distance_col_scale(
-		// 					ftvec3_length(to_light))), p->rec.mat->color));
 		p->light_acc = ftcol_add(p->light_acc, ftcol_mult(ftcol_scale(
 						pl->color, pl->brightness * ndotl * distance_col_scale(
 							ftvec3_length(to_light))),

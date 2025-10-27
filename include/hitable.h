@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/27 13:58:15 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/27 14:59:51 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ typedef struct s_ray t_ray;
 # define MIN_DIST 0.001
 # define MAX_DIST 1000
 # define PI 3.14159265358979323846f
+# define SPHERE_BUMP_STRENGTH 3.0f
+
 
 // typedef struct s_sphere_p
 // {
@@ -111,6 +113,8 @@ t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
 			
 t_uv		uv_sphere(t_props sphere, t_vec3 p);
 t_uv		uv_plane(t_props plane, t_vec3 p);
+void		uv_ortho_basis(t_vec3 normal, t_vec3 base[3]);
+
 t_uv		uv_cylside(t_vec3 axis, t_props cylinder, t_vec3 p);
 
 t_vec3		tex_sample(const mlx_texture_t *tex, t_uv uv, uint32_t *checkerboard);
