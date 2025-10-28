@@ -43,12 +43,16 @@ t_uv	uv_sphere(t_props sphere, t_vec3 p)
 	float	uu;
 	float	vv;
 
-	//EDIT: The unit_vec is already calculated, because the length of the norm vec is sphere.radius
-	//normal = ftvec3_unit(ftvec3_divide(ftvec3_minus(p, sphere.position), ftvec3(sphere.radius)));
 	normal = ftvec3_divide(ftvec3_minus(p, sphere.position), ftvec3(sphere.radius));
 	uu = 0.5f + atan2f(normal.z, normal.x) / (2.f * PI);
-	vv = 0.5f - asinf(clamp(normal.y, -1.0f, 1.0f))   / PI;
-	return ((t_uv){uu - floorf(uu), clamp(vv, 0.f, 1.0f)});
+	vv = 0.5f - asinf(normal.y) / PI;
+	return ((t_uv){uu, vv});
+	//EDIT: The unit_vec is already calculated, because the length of the norm vec is sphere.radius
+	//normal = ftvec3_unit(ftvec3_divide(ftvec3_minus(p, sphere.position), ftvec3(sphere.radius)));
+	//EDIT: By definition normal can't exceed value of 1 in any direction. 
+	//vv = 0.5f - asinf(clamp(normal.y, -1.0f, 1.0f))   / PI;
+	//EDIT: The flourf(uu) can't be nothing else then 0.0f
+	//return ((t_uv){uu - floorf(uu), clamp(vv, 0.f, 1.0f)});
 }
 
 /*
