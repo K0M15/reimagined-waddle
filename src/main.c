@@ -76,18 +76,6 @@ void key_hook(mlx_key_data_t keydata, void *param)
 	}
 }
 
-#ifndef TEST
-void draw_loop(void *args)
-{
-	t_app *app;
-
-	app = (t_app *)args;
-	ft_camera_render(app, ft_put_pixel);
-	// ft_camera_render(app, ft_kumul_pixel);
-	printf("Cam: X%.2f Y%.2f Z%.2f, FOV%.2F\n", app->active_camera->look_at.x, app->active_camera->look_at.y, app->active_camera->look_at.z, app->active_camera->fov);
-}
-#endif
-
 int32_t setupWindow(t_app *app)
 {
 	if (!(app->mlx = mlx_init(app->width, app->height, "MLX42", true)))
@@ -129,6 +117,7 @@ int32_t pars_init(int argc, char **argv, t_app *app)
 	dyn_init(&app->hitable);
 	if (pars(argv[1], app) == -1)
 		return (-1);
+	ft_camera_calc(app->active_camera);
 	return (0);
 }
 
@@ -260,7 +249,17 @@ void	resize_hook(int32_t width, int32_t height, void* param)
 	ft_camera_calc(app->active_camera);
 }
 
-#ifndef TEST
+#ifdef PROD
+void draw_loop(void *args)
+{
+	t_app *app;
+
+	app = (t_app *)args;
+	ft_camera_render(app, ft_put_pixel);
+	// ft_camera_render(app, ft_kumul_pixel);
+	printf("Cam: X%.2f Y%.2f Z%.2f, FOV%.2F\n", app->active_camera->look_at.x, app->active_camera->look_at.y, app->active_camera->look_at.z, app->active_camera->fov);
+}
+
 int32_t	main(int argc, char *argv[])
 {
 	t_app app;
@@ -268,7 +267,6 @@ int32_t	main(int argc, char *argv[])
 
 	app.width = 120;
 	app.height = 80;
-	printf("This should not be called!");
 	ft_camera_init(
 		&camera, (t_camera_p){
 			ftvec3(0),
@@ -288,9 +286,7 @@ int32_t	main(int argc, char *argv[])
 	//!!!Pars init changes location, normal & FOV for camera + ambient + adds hitables
 	if (pars_init(argc, argv, &app) != 0)
 		return (-1);
-
 	//TODO: convert to the different structures for the exec
-
 	add_material_to_objects(&app);
 	print_internal_data(&app);
 	// TODO: Still cleanup to do

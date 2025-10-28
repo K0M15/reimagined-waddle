@@ -60,7 +60,7 @@ $(MLX):
 	cd MLX42 && cmake -B build && cmake --build build -j4
 
 $(NAME): $(FILES:.c=.o)
-	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
+	$(CC) $(F_INC) $(FILES:.c=.o) -D=PROD $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
 
 %.o: %.c
 	@echo "Building $@"
@@ -90,6 +90,7 @@ clean:
 	@echo "Clean libft objects"
 	@make -C $(LIBFT_PATH) clean > /dev/null
 	@make -C $(LIBGNL_PATH) clean > /dev/null
+	@rm -f tests/render_tests.o
 	@echo "Clean MLX42 prebuild files"
 	@rm -f MLX42/build/Makefile MLX42/build/mlx_frag_shader.c MLX42/build/mlx_vert_shader.c MLX42/build/CMakeCache.txt MLX42/build/cmake_install.cmake
 	@rm -rf MLX42/build/CMakeFiles/

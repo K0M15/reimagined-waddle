@@ -3,26 +3,22 @@
 #include "libft.h"
 #include "miniRT.h"
 
-//TODO: Change based on input
-#define IMAGE_HEIGHT 300
-#define IMAGE_WIDTH 300
-
 void ft_put_pixel(mlx_image_t *image, int x, int y, uint32_t color);
 void add_material_to_objects(t_app *app);
 int32_t setupWindow(t_app *app);
 void key_hook(mlx_key_data_t keydata, void *param);
 void	resize_hook(int32_t width, int32_t height, void* param);
 //TODO: Add function that converts the height and widht from int to string
-void output_header(FILE *fptr)
+void output_header(FILE *fptr, int32_t img_height, int32_t img_width)
 {
 	char	*temp;
 
 	fputs("P3\n", fptr);
-	temp = ft_itoa(IMAGE_WIDTH);
+	temp = ft_itoa(img_width);
 	fputs(temp, fptr);
 	free(temp);
 	fputs(" ", fptr);
-	temp = ft_itoa(IMAGE_HEIGHT);
+	temp = ft_itoa(img_height);
 	fputs(temp, fptr);
 	free(temp);
 	fputs("\n255\n", fptr);
@@ -46,7 +42,7 @@ void	put_pixel(FILE *fptr, t_vec3 pixel)
 	free(temp);
 }
 
-int	write_pixels_to_file(FILE *fptr, mlx_image_t *img)
+int	write_pixels_to_file(FILE *fptr, mlx_image_t *img, int32_t img_height, int32_t img_width)
 {
 	int	x;
 	int	y;
@@ -55,13 +51,12 @@ int	write_pixels_to_file(FILE *fptr, mlx_image_t *img)
 	x = 0;
 	y = 0;
 	current_pixel = img->pixels;
-	output_header(fptr);
-	while (y < IMAGE_HEIGHT)
+	output_header(fptr, img_height, img_width);
+	while (y < img_height)
 	{
-		while (x < IMAGE_WIDTH)
+		while (x < img_width)
 		{
-			//TODO: Change to logic
-			put_pixel(fptr, (t_vec3){.x = *current_pixel, .y = *current_pixel + 1, .z = *current_pixel + 2});
+			put_pixel(fptr, (t_vec3){.x = *current_pixel, .y = *(current_pixel + 1), .z = *(current_pixel + 2)});
 			x++;
 			current_pixel += 4;
 		}
@@ -83,12 +78,12 @@ void draw_loop(void *args)
 	mlx_close_window(app->mlx);
 }
 
-void	run_mlx_loop(t_app *app, char *input_f)
+void	run_mlx_loop(t_app *app, char *input_f, int32_t img_height, int32_t img_width)
 {
 	t_camera camera;
 
-	app->width = 120;
-	app->height = 80;
+	app->width = img_width;
+	app->height = img_height;
 	ft_camera_init(
 		&camera, (t_camera_p){
 			ftvec3(0),
@@ -97,23 +92,16 @@ void	run_mlx_loop(t_app *app, char *input_f)
 			app->width,
 			app->height,
 			STAN_SAMPLES_PER_PIXEL,
-			// (t_vec3){0.5,0.9,1}
-			// (t_vec3){66.0/255.0,245.0/255.0,135.0/255.0}
 			(t_vec3){
 				1, 1, 1
 			},
 			.2
 		});
 	app->active_camera = &camera;
-	//!!!Pars init changes location, normal & FOV for camera + ambient + adds hitables
 	if (pars_init(2, (char*[]){"./miniRT", input_f, "\0"}, app) != 0)
 		return ;
-
-	//TODO: convert to the different structures for the exec
-
+	ft_camera_calc(app->active_camera);
 	add_material_to_objects(app);
-	//print_internal_data(app);
-	// TODO: Still cleanup to do
 	if (setupWindow(app) == EXIT_FAILURE)
 		return ;	
 	
@@ -122,19 +110,19 @@ void	run_mlx_loop(t_app *app, char *input_f)
   	mlx_resize_hook(app->mlx, resize_hook, (void *) app);
 	mlx_loop(app->mlx);
 }
-void	run_testfile(char* file, char* output_filename)
+void	run_testfile(char* file, char* output_filename, int32_t img_height, int32_t img_width)
 {
 	FILE	*fptr;
 	t_app	app;
 
-	run_mlx_loop(&app, file);
+	run_mlx_loop(&app, file, img_height, img_width);
 	fptr = fopen(output_filename, "w");
 	if (!fptr)
 	{
 		printf("File could not be opened!");
 		exit(1);
 	}
-	write_pixels_to_file(fptr, app.image);
+	write_pixels_to_file(fptr, app.image, app.height, app.width);
 	fclose(fptr);
 	mlx_delete_image(app.mlx, app.image);
 	mlx_terminate(app.mlx);
@@ -144,6 +132,9 @@ void	run_testfile(char* file, char* output_filename)
 
 int main(void)
 {
-	run_testfile("./tests/maps/example.rt", "example.ppm");
+	run_testfile("./tests/maps/example.rt", "example.ppm", 400, 400);
+	run_testfile("./tests/maps/complex.rt", "complex.ppm", 800, 800);
+	run_testfile("./tests/maps/cylinder/cylinders.rt", "cylinders.ppm", 400, 600);
+	run_testfile("./tests/maps/cylinder/cylinders_3light.rt", "cylinders_3light.ppm", 400, 600);
 }
 #endif
