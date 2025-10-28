@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/27 14:44:27 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/28 19:16:30 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,10 +252,11 @@ void	resize_hook(int32_t width, int32_t height, void* param)
 #ifdef PROD
 void draw_loop(void *args)
 {
-	t_app *app;
+	t_app			*app;
+	static uint32_t	lastPixl;
 
 	app = (t_app *)args;
-	ft_camera_render(app, ft_put_pixel);
+	lastPixl = ft_camera_render(app, ft_put_pixel, lastPixl, lastPixl + 1000 / STAN_SAMPLES_PER_PIXEL);
 	// ft_camera_render(app, ft_kumul_pixel);
 	printf("Cam: X%.2f Y%.2f Z%.2f, FOV%.2F\n", app->active_camera->look_at.x, app->active_camera->look_at.y, app->active_camera->look_at.z, app->active_camera->fov);
 }

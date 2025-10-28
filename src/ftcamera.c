@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 11:27:44 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/28 19:13:08 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,16 @@ static t_vec3	render_loop(t_app *app, t_vec3 pixel00_loc, float x, float y)
 }
 
 uint32_t	ft_camera_render(t_app *app,
-	void (*put_pixel)(mlx_image_t *image, int x, int y, uint32_t color))
+	void (*put_pixel)(mlx_image_t *image, int x, int y, uint32_t color),
+	uint32_t start, uint32_t end)
 {
 	t_vec3		pixel00_loc;
 	uint32_t	y;
 	uint32_t	x;
 	t_vec3		color;
 
-	y = 0;
-	x = 0;
+	y = start / app->image->width;
+	x = start % app->image->width;
 	pixel00_loc = ftvec3_plus(app->active_camera->vupper_left,
 			ftvec3_multiply(ftvec3_plus(app->active_camera->delta_u,
 					app->active_camera->delta_v), (t_vec3){0.5, 0.5, 0.5}));
@@ -84,6 +85,8 @@ uint32_t	ft_camera_render(t_app *app,
 			x++;
 		}
 		y++;
+		if (x*y > end)
+			break;
 	}
-	return (0);
+	return (x*y);
 }

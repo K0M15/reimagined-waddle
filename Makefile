@@ -47,6 +47,7 @@ LIBRARIES   = $(LIBGNL_NAME) $(LIBFT_NAME)
 
 # all: FLAGS+=-ffast-math
 # all: FLAGS+=-O3
+all: FLAGS+= -DPROD
 all: $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(NAME)
 
 debug: FLAGS+=-g
@@ -60,7 +61,7 @@ $(MLX):
 	cd MLX42 && cmake -B build && cmake --build build -j4
 
 $(NAME): $(FILES:.c=.o)
-	$(CC) $(F_INC) $(FILES:.c=.o) -D=PROD $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
+	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
 
 %.o: %.c
 	@echo "Building $@"
