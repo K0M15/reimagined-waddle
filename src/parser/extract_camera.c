@@ -16,12 +16,16 @@ int	add_camera(t_vec3 *loc, t_vec3 *normal, int *fov, t_app *app)
 		app->active_camera->center,
 		app->active_camera->look_at,
 		app->active_camera->fov,
-		app->active_camera->image_height,
-		app->active_camera->image_width,
+		//app->active_camera->image_height,
+		//app->active_camera->image_width,
+		app->width,
+		app->height,
 		app->active_camera->samples_per_pixel,
 		app->active_camera->ambient,
 		app->active_camera->ambient_intensity
 	});
+	app->active_camera->image_width = app->width;
+	app->active_camera->image_height = app->height;
 	return (0);
 }
 
