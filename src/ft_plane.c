@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:05:57 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/27 15:24:11 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/27 19:12:24 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void ft_plane_uvnormal(t_hitrec *rec, t_obj *plane)
 	t_vec3	ngeo[4];
 	t_uv	height;
 
-	uv_plane(plane->props, rec->hit);
+	rec->uv = uv_plane(plane->props, rec->hit);
 	if (!plane->mat.bump)
 		return;
 	uv_ortho_basis(plane->props.rotation, ngeo);
