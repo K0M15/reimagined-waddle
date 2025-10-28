@@ -218,9 +218,9 @@ void add_material_to_objects(t_app *app)
 	mlx_texture_t	*bump;
 
 	iter = 0;
-	tex = mlx_load_png("/home/alain/Documents/dev/miniRT/earthmap1k.png");
+	tex = mlx_load_png("./earthmap1k.png");
 	// bump = NULL;
-	bump = mlx_load_png("/home/alain/Documents/dev/miniRT/earthbump1k.png");
+	bump = mlx_load_png("./earthbump1k.png");
 	while (iter < app->hitable.filled)
 	{
 		ptr = app->hitable.elem + iter;
