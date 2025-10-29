@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 15:37:19 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 17:55:56 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,14 @@ void key_hook(mlx_key_data_t keydata, void *param)
 	{
 		((t_obj *)app->hitable.elem)->mat.reflectivity += .1;
 	}
-
 	if (keydata.key == MLX_KEY_G)
 	{
 		((t_obj *)app->hitable.elem)->mat.reflectivity -= .1;
 	}
+	if (keydata.key == MLX_KEY_0)
+		checker_enable(3);
+	if (keydata.key == MLX_KEY_1)
+		checker_enable(1);
 }
 
 int32_t setupWindow(t_app *app)
