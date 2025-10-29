@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 15:38:24 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 19:09:56 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ typedef struct s_camera
 	t_vec3		vupper_left;
 	t_vec3		viewport_u;
 	t_vec3		viewport_v;
-	t_vec3		u;			// Right vector
-	t_vec3		v;			// Up vector
-	t_vec3		w;			// reverse direction
-	t_vec3		delta_u;	// Horizontal vector
-	t_vec3		delta_v;	// Vertical vector
+	t_vec3		u;
+	t_vec3		v;
+	t_vec3		w;
+	t_vec3		delta_u;
+	t_vec3		delta_v;
 	uint32_t	samples_per_pixel;
 	t_vec3		vec_up;
 	t_vec3		ambient;
@@ -103,4 +103,5 @@ void		ftref_lambert(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
 void		ftref_phong(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
+uint32_t	checker_enable(uint32_t val);
 #endif /* MINIRT_H */
