@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 17:21:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 09:06:55 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/27 19:22:47 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static int	check_hit(t_vec3 p, t_props *c, t_vec3 ci, t_vec3 axis)
 		<= c->radius * c->radius + 1e-6f);
 }
 
+// TOCHECK: Somehow i am not using the inverse of the surface normal of the caps
 t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
 	t_ray ray, struct s_lpair limit)
 {
@@ -42,7 +43,7 @@ t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
 	int			ci;
 
 	ci = fillvars(cap, c, axis);
-	result = (t_hitrec){ftvec3(0), ftvec3(0), NULL, INFINITY, 0};
+	result = (t_hitrec){ftvec3(0), ftvec3(0), NULL, INFINITY, 0, {.0f, .0f}};
 	while (++ci < 2)
 	{
 		if (fabs(ftvec3_dot(axis, ray.direction)) < FLOAT_NEAR_ZERO)
@@ -54,8 +55,19 @@ t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
 		cap[4] = ftray_at(ray, tcap);
 		if (check_hit(cap[4], c, cap[ci], axis))
 			if (tcap < result.t)
+			{
 				result = (t_hitrec){cap[4], cap[ci + 2],
-					NULL, tcap, false};
+					NULL, tcap, false, {.0f, .0f}};
+				result.uv = uv_plane((t_props){
+					.position = cap[ci+2],
+					.rotation = cap[4],
+					.brightness = 0,
+					.color = ftvec3(0),
+					.diameter = 0,
+					.height = 0,
+					.radius = 0
+				}, result.hit);
+			}
 	}
 	return (result);
 }

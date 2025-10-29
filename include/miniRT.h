@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/24 12:17:25 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/28 14:40:09 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ typedef struct s_app
 	t_dyn		hitable;
 }	t_app;
 
-int32_t pars_init(int argc, char **argv, t_app *app);
+int32_t		pars_init(int argc, char **argv, t_app *app);
 t_vec3		ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect);
 uint32_t	ft_camera_init(t_camera *camera, t_camera_p props);
 void		ft_camera_calc(t_camera *camera);
