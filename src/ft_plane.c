@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:05:57 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 11:27:01 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/28 14:41:25 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,28 @@
 // 	return (plane);
 // }
 
+static void ft_plane_uvnormal(t_hitrec *rec, t_obj *plane)
+{
+	t_vec3	ngeo[4];
+	t_uv	height;
+
+	rec->uv = uv_plane(plane->props, rec->hit);
+	if (!plane->mat.bump)
+		return;
+	uv_ortho_basis(plane->props.rotation, ngeo);
+	height = interpolate_height(plane->mat.bump, rec->uv);
+	ngeo[3] = (t_vec3){height.u * ngeo[0].x + height.v * ngeo[1].x,
+		height.u * ngeo[0].y + height.v * ngeo[1].y,
+		height.u * ngeo[0].z + height.v * ngeo[1].z};
+	rec->normal = ftvec3_unit((t_vec3){ngeo[2].x - SPHERE_BUMP_STRENGTH * ngeo[3].x,
+            ngeo[2].y - SPHERE_BUMP_STRENGTH * ngeo[3].y,
+            ngeo[2].z - SPHERE_BUMP_STRENGTH * ngeo[3].z
+        });
+	if (!rec->front_face)
+		rec->normal = ftvec3_multiply(rec->normal, ftvec3(-1));
+		
+}
+
 uint32_t	ft_plane_hit(t_obj plane, t_ray ray, t_hitrec *rec,
 	struct s_lpair limit)
 {
@@ -46,5 +68,6 @@ uint32_t	ft_plane_hit(t_obj plane, t_ray ray, t_hitrec *rec,
 	rec->hit = ftray_at(ray, denom);
 	rec->mat = &plane.mat;
 	ft_hitr_set_face_normal(rec, ray, ftvec3_unit(props->rotation));
+	ft_plane_uvnormal(rec, &plane);
 	return (true);
 }

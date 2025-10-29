@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hitable.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 13:08:38 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 15:38:35 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 typedef struct s_ray	t_ray;
 # define MIN_DIST 0.001
 # define MAX_DIST 1000
+# define PI 3.14159265358979323846f
+# define SPHERE_BUMP_STRENGTH 3.0f
 
 // typedef struct s_sphere_p
 // {
@@ -51,6 +53,12 @@ typedef struct s_ray	t_ray;
 // 	t_vec3	color;
 // }	t_point_light_p;
 
+typedef struct s_uv
+{
+	float	u;
+	float	v;
+}	t_uv;
+
 typedef struct s_hitrec
 {
 	t_vec3		hit;
@@ -58,6 +66,7 @@ typedef struct s_hitrec
 	t_material	*mat;
 	double		t;
 	bool		front_face;
+	t_uv		uv;
 }	t_hitrec;
 
 struct s_world_hit_props
@@ -98,5 +107,15 @@ void		ft_hitr_set_face_normal(t_hitrec *rec, t_ray ray,
 void		assign_rayhit(t_hitrec *rec, t_hitrec src, t_material *material);
 t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
 				t_ray ray, struct s_lpair limit);
+
+t_uv		uv_sphere(t_props sphere, t_vec3 p);
+t_uv		uv_plane(t_props plane, t_vec3 p);
+void		uv_ortho_basis(t_vec3 normal, t_vec3 base[3]);
+
+t_uv		uv_cylside(t_vec3 axis, t_props cylinder, t_vec3 p);
+
+t_vec3		tex_sample(const mlx_texture_t *tex, t_uv uv,
+				uint32_t *checkerboard);
+t_uv		interpolate_height(mlx_texture_t *bump, t_uv uv);
 
 #endif /* HITABLE_H */

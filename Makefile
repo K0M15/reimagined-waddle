@@ -28,7 +28,8 @@ FILES+=src/ftvec3.c src/ftvec3_1.c src/ftvec3_2.c src/ftvec3_3.c	# VECTOR
 FILES+=src/ftcamera.c src/ftcamera_2.c								# CAMERA
 FILES+=src/ft_sphere.c src/ft_cylinder.c src/ft_plane.c src/hitable.c
 FILES+=src/ft_point_light.c	src/reflection.c	src/ft_cyl_caphit.c	# OBJECTS
-FILES+=src/main.c src/pseudo_random.c
+FILES+=src/main.c src/pseudo_random.c src/uv.c src/texture.c
+FILES+=src/bump.c
 TEST_FILES=tests/render_tests.c
 FILES_WITH_TESTS+=$(FILES) $(TEST_FILES)
 
@@ -50,12 +51,10 @@ LIBRARIES   = $(LIBGNL_NAME) $(LIBFT_NAME)
 all: FLAGS+= -DPROD
 all: $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(NAME)
 
-debug: FLAGS+=-g
-debug: re
-
-
-test: $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(FILES_WITH_TESTS:.c=.o)
-	$(CC) $(F_INC) $(FILES_WITH_TESTS:.c=.o) -DTEST $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
+test: FLAGS+= -DTEST
+test: fclean $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(FILES_WITH_TESTS:.c=.o)
+	@$(CC) $(F_INC) $(FILES_WITH_TESTS:.c=.o) -DTEST $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME) && ./miniRT && make . fclean > /dev/null
+test: fclean
 
 $(MLX):
 	cd MLX42 && cmake -B build && cmake --build build -j4
@@ -65,7 +64,7 @@ $(NAME): $(FILES:.c=.o)
 
 %.o: %.c
 	@echo "Building $@"
-	@$(CC) -g -DTEST $(F_INC) $(FLAGS) -c -o $@ $^
+	@$(CC) -g $(F_INC) $(FLAGS) -c -o $@ $^
 
 
 

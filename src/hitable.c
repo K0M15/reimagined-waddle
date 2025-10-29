@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hitable.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 13:08:45 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 15:37:55 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,14 @@ void	ft_hitr_set_face_normal(t_hitrec *rec, t_ray ray, t_vec3 outwar_norm)
 
 void	assign_rayhit(t_hitrec *rec, t_hitrec src, t_material *material)
 {
-	rec->hit = src.hit;
-	rec->normal = src.normal;
-	rec->t = src.t;
-	rec->mat = material;
+	*rec = (t_hitrec){
+		.hit = src.hit,
+		.normal = src.normal,
+		.mat = material,
+		.t = src.t,
+		.front_face = src.front_face,
+		.uv = src.uv,
+	};
 }
 
 // TODO: work on nudge -> 
