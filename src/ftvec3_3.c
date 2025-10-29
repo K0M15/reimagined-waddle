@@ -6,11 +6,12 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 13:10:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/16 13:11:04 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 13:09:46 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftvec3.h"
+#include "ftcolor.h"
 
 t_vec3	ftvec3_rclamped(double min, double max)
 {
@@ -57,4 +58,12 @@ t_vec3	ftvec3_plus(t_vec3 op1, t_vec3 op2)
 	result.y = op1.y + op2.y;
 	result.z = op1.z + op2.z;
 	return (result);
+}
+
+// Rotation: v' = v*c + cross(k,v)*s + k*dot(k,v)*(1-c)
+t_vec3	rotate_axis(t_vec3 v, t_vec3 axis, float angle)
+{
+	return (ftvec3_plus(ftvec3_plus(ftcol_scale(v, cosf(angle)),
+				ftcol_scale(ftvec3_cross(axis, v), sinf(angle))),
+			ftcol_scale(axis, (1.0f - cosf(angle)) * ftvec3_dot(axis, v))));
 }

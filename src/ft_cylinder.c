@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:07:04 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 11:35:31 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/29 13:10:39 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 // 	cyl.type = CYLINDER;
 // 	cyl.mat = mat;
 // 	memcpy(cyl.props, &params, sizeof(s_props));
-// 	((s_props*) cyl.props)->rotation = ftvec3_unit(((s_props*) cyl.props)->rotation);
+// 	((s_props*) cyl.props)->rotation = ftvec3_unit(((s_props*)
+// 			cyl.props)->rotation);
 // 	return (cyl);
 // }
 

@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/28 19:13:08 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 13:12:38 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,20 @@
 
 void	ft_camera_apply(t_camera *cam, t_vec3 apply)
 {
-	cam->look_at = ftvec3_plus(cam->look_at, apply);
+	t_vec3	dir;
+	t_vec3	right;
+
+	dir = ftvec3_unit(ftvec3_minus(cam->look_at, cam->center));
+	if (ftvec3_length(dir) <= FLOAT_NEAR_ZERO)
+		return ;
+	if (apply.x != 0.0f)
+		dir = ftvec3_unit(rotate_axis(dir, cam->vec_up, apply.x));
+	right = ftvec3_unit(ftvec3_cross(cam->vec_up, dir));
+	if (apply.y != 0.0f && fabsf(ftvec3_dot(ftvec3_unit(rotate_axis(dir,
+						right, -apply.y)), cam->vec_up)) < 0.995f)
+		dir = ftvec3_unit(rotate_axis(dir, right, -apply.y));
+	cam->look_at = ftvec3_plus(cam->center,
+			ftcol_scale(dir, ftvec3_length(dir)));
 	ft_camera_calc(cam);
 }
 
@@ -85,8 +98,8 @@ uint32_t	ft_camera_render(t_app *app,
 			x++;
 		}
 		y++;
-		if (x*y > end)
-			break;
+		if (x * y > end)
+			break ;
 	}
-	return (x*y);
+	return (x * y);
 }

@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/28 19:30:59 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 13:05:39 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,14 @@ typedef struct s_app
 	t_dyn		hitable;
 }	t_app;
 
-int32_t pars_init(int argc, char **argv, t_app *app);
+int32_t		pars_init(int argc, char **argv, t_app *app);
 t_vec3		ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect);
 uint32_t	ft_camera_init(t_camera *camera, t_camera_p props);
 void		ft_camera_calc(t_camera *camera);
 void		ft_camera_apply(t_camera *cam, t_vec3 apply);
 uint32_t	ft_camera_render(t_app *app, void (*put_pixel)(mlx_image_t *image,
-					int x, int y, uint32_t color), uint32_t start, uint32_t end);
+					int x, int y, uint32_t color),
+				uint32_t start, uint32_t end);
 void		ftref_lambert(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
 void		ftref_phong(struct s_ftray_color_props *p, t_props *pl,
