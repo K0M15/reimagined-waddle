@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:51:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 19:16:18 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 19:26:18 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_uv	uv_sphere(t_props sphere, t_vec3 p)
 				ftvec3(sphere.radius)));
 	uu = 0.5f + atan2f(normal.z, normal.x) / (2.f * PI);
 	vv = 0.5f - asinf(clamp(normal.y, -1.0f, 1.0f)) / PI;
-	return ((t_uv){uu - floorf(uu), clamp(vv, 0.f, 1.0f)});
+	return ((t_uv){uu - floorf(uu), clamp(vv, 0.f, 1.0f) * -1});
 }
 
 /*
