@@ -30,6 +30,9 @@ FILES+=src/ft_sphere.c src/ft_cylinder.c src/ft_plane.c src/hitable.c
 FILES+=src/ft_point_light.c	src/reflection.c	src/ft_cyl_caphit.c	# OBJECTS
 FILES+=src/main.c src/pseudo_random.c src/uv.c src/texture.c
 FILES+=src/bump.c
+FILES+=src/main.c src/pseudo_random.c
+TEST_FILES=tests/render_tests.cmainmain
+FILES_WITH_TESTS+=$(FILES) $(TEST_FILES)
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Linux)
@@ -51,15 +54,21 @@ all: $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(NAME)
 debug: FLAGS+=-g
 debug: re
 
+
+test: $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(FILES_WITH_TESTS:.c=.o)
+	$(CC) $(F_INC) $(FILES_WITH_TESTS:.c=.o) -DTEST $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
+
 $(MLX):
 	cd MLX42 && cmake -B build && cmake --build build -j4
 
 $(NAME): $(FILES:.c=.o)
-	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
+	$(CC) $(F_INC) $(FILES:.c=.o) -D=PROD $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
 
 %.o: %.c
 	@echo "Building $@"
-	@$(CC) -g $(F_INC) $(FLAGS) -c -o $@ $^
+	@$(CC) -g -DTEST $(F_INC) $(FLAGS) -c -o $@ $^
+
+
 
 $(LIBFT_NAME):
 	@$(MAKE) -C $(LIBFT_PATH) > /dev/null
@@ -83,6 +92,7 @@ clean:
 	@echo "Clean libft objects"
 	@make -C $(LIBFT_PATH) clean > /dev/null
 	@make -C $(LIBGNL_PATH) clean > /dev/null
+	@rm -f tests/render_tests.o
 	@echo "Clean MLX42 prebuild files"
 	@rm -f MLX42/build/Makefile MLX42/build/mlx_frag_shader.c MLX42/build/mlx_vert_shader.c MLX42/build/CMakeCache.txt MLX42/build/cmake_install.cmake
 	@rm -rf MLX42/build/CMakeFiles/
