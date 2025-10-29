@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 09:05:26 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 13:08:38 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include "ftvec3.h"
 # include "object.h"
 
-typedef struct s_ray t_ray;
+typedef struct s_ray	t_ray;
 # define MIN_DIST 0.001
 # define MAX_DIST 1000
 
@@ -72,7 +72,7 @@ struct s_world_hit_props
 struct s_cylfuncp
 {
 	t_props	*c;
-	t_vec3			axis;
+	t_vec3	axis;
 };
 
 struct s_lpair
@@ -91,7 +91,6 @@ uint32_t	ft_cylinder_hit(t_obj cyl, t_ray ray, t_hitrec *rec,
 uint32_t	ft_plane_hit(t_obj plane, t_ray ray, t_hitrec *rec,
 				struct s_lpair limit);
 // t_obj		ft_light_create(t_point_light_p props);
-void		ft_obj_dest(t_obj sphere);
 uint32_t	world_hit(t_dyn *world, t_ray ray, t_hitrec *rec,
 				struct s_lpair limit);
 void		ft_hitr_set_face_normal(t_hitrec *rec, t_ray ray,

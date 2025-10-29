@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/23 15:55:41 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 13:08:45 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@ void	ft_hitr_set_face_normal(t_hitrec *rec, t_ray ray, t_vec3 outwar_norm)
 		rec->normal = outwar_norm;
 	else
 		rec->normal = ftvec3_multiply(outwar_norm, ftvec3(-1));
-}
-
-void	ft_obj_dest(t_obj obj)
-{
-	// we dont destroy
-	(void) obj;
 }
 
 void	assign_rayhit(t_hitrec *rec, t_hitrec src, t_material *material)
