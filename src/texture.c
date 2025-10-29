@@ -33,6 +33,6 @@ t_vec3 tex_sample(const mlx_texture_t *tex, t_uv uv, uint32_t *checkerboard)
     if (id > tex->width * tex->height)
         id = 0;
     px = tex->pixels + id * tex->bytes_per_pixel;
-    return (t_vec3){px[0]/255.0f, px[1]/255.0f, px[3]/255.0f};
+    return (t_vec3){px[0]/255.0f, px[1]/255.0f, px[2]/255.0f};
 }
 

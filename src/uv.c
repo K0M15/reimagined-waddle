@@ -67,8 +67,8 @@ t_uv	uv_plane(t_props plane, t_vec3 p)
 	float	vv;
 
 	uv_ortho_basis(ftvec3_unit(plane.rotation), basis);
-	uu = ftvec3_dot(ftvec3_minus(p, plane.position), basis[0]) / 1; // TODO: REPLACE 1 with TextureScale
-	vv = ftvec3_dot(ftvec3_minus(p, plane.position), basis[1]) / 1; // TODO: REPLACE 1 with TextureScale
+	uu = ftvec3_dot(ftvec3_minus(p, plane.position), basis[0]) / 10; // TODO: REPLACE 1 with TextureScale
+	vv = ftvec3_dot(ftvec3_minus(p, plane.position), basis[1]) / 10; // TODO: REPLACE 1 with TextureScale
 	return ((t_uv){uu - floorf(uu), vv - floorf(vv)});
 }
 

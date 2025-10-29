@@ -218,9 +218,9 @@ void add_material_to_objects(t_app *app)
 	mlx_texture_t	*bump;
 
 	iter = 0;
-	tex = mlx_load_png("./earthmap1k.png");
+	tex = mlx_load_png("./oak.png");
 	// bump = NULL;
-	bump = mlx_load_png("./earthbump1k.png");
+	bump = mlx_load_png("./oak_rough.png");
 	while (iter < app->hitable.filled)
 	{
 		ptr = app->hitable.elem + iter;
@@ -291,7 +291,7 @@ int32_t	main(int argc, char *argv[])
 	app.active_camera = &camera;
 	//!!!Pars init changes location, normal & FOV for camera + ambient + adds hitables
 	if (pars_init(argc, argv, &app) != 0)
-		return (-1);
+		return (dyn_free(&app.hitable), -1);
 
 	// Pars terminal and file inputs
 	//TODO: convert to the different structures for the exec
