@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:08:01 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/27 14:59:42 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/30 09:14:38 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static	void ft_sphere_uvnormal(t_hitrec *rec, t_obj *sphere)
 		ftvec3_minus(rec->hit, sphere->props.position),
 		ftvec3(sphere->props.radius));
 	sphere_uv_tangent_basis(ngeo[0], &ngeo[1], &ngeo[2]); //T, B
-	height = interpolate_height(sphere->mat.bump, rec->uv);
+	height = interpolate_height(sphere->mat.bump, (t_uv){rec->uv.u, rec->uv.v*-1});
 	ngeo[3] = (t_vec3){height.u * ngeo[1].x + height.v * ngeo[2].x,
 		height.u * ngeo[1].y + height.v * ngeo[2].y,
 		height.u * ngeo[1].z + height.v * ngeo[2].z};
