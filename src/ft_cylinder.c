@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cylinder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:07:04 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/28 14:41:12 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 15:38:18 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 // 	cyl.type = CYLINDER;
 // 	cyl.mat = mat;
 // 	memcpy(cyl.props, &params, sizeof(s_props));
-// 	((s_props*) cyl.props)->rotation = ftvec3_unit(((s_props*) cyl.props)->rotation);
+// 	((s_props*) cyl.props)->rotation = ftvec3_unit(((s_props*)
+// 			cyl.props)->rotation);
 // 	return (cyl);
 // }
 

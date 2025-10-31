@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 11:11:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/27 15:23:17 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 19:14:02 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 #include "hitable.h"
 
-t_vec3 tex_sample(const mlx_texture_t *tex, t_uv uv, uint32_t *checkerboard)
+//The old calculation:
+//if ((int)(uv.u * 10.0f) % 2 == (int)(uv.v * 10.0f) % 2)
+t_vec3	tex_sample(const mlx_texture_t *tex, t_uv uv, uint32_t *checkerboard)
 {
     uint32_t pos[2];
     uint32_t id;
@@ -35,4 +37,3 @@ t_vec3 tex_sample(const mlx_texture_t *tex, t_uv uv, uint32_t *checkerboard)
     px = tex->pixels + id * tex->bytes_per_pixel;
     return (t_vec3){px[0]/255.0f, px[1]/255.0f, px[2]/255.0f};
 }
-

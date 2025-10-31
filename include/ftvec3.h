@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:05:58 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/21 18:06:05 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 13:03:17 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ t_vec3		ftvec3_lin_gamma(t_vec3 color);
 double		clamp(double f, double min, double max);
 /* Returns a (t_vec3){f,f,f} */
 t_vec3		ftvec3(float f);
+t_vec3		rotate_axis(t_vec3 v, t_vec3 axis, float angle);
 
 #endif /* FTVEC3_H */

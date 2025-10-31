@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/28 14:42:48 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 19:21:59 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,21 +69,14 @@ void key_hook(mlx_key_data_t keydata, void *param)
 	{
 		((t_obj *)app->hitable.elem)->mat.reflectivity += .1;
 	}
-
 	if (keydata.key == MLX_KEY_G)
 	{
 		((t_obj *)app->hitable.elem)->mat.reflectivity -= .1;
 	}
-}
-
-void draw_loop(void *args)
-{
-	t_app *app;
-
-	app = (t_app *)args;
-	ft_camera_render(app, ft_put_pixel);
-	// ft_camera_render(app, ft_kumul_pixel);
-	printf("Cam: X%.2f Y%.2f Z%.2f, FOV%.2F\n", app->active_camera->look_at.x, app->active_camera->look_at.y, app->active_camera->look_at.z, app->active_camera->fov);
+	if (keydata.key == MLX_KEY_0)
+		checker_enable(3);
+	if (keydata.key == MLX_KEY_1)
+		checker_enable(1);
 }
 
 int32_t setupWindow(t_app *app)
@@ -124,9 +117,11 @@ int32_t pars_init(int argc, char **argv, t_app *app)
 		print_instructions();
 		return (-1);
 	}
-	dyn_init(&app->hitable);
-	if (pars(argv[1], app) == -1)
+	if (dyn_init(&app->hitable))
 		return (-1);
+	if (pars(argv[1], app) == -1)
+		return (dyn_free(&app->hitable), -1);
+	ft_camera_calc(app->active_camera);
 	return (0);
 }
 
@@ -231,11 +226,7 @@ void add_material_to_objects(t_app *app)
 		ptr->mat.tex = tex;
 		ptr->mat.bump = bump;
 		if (ptr->type == POINT_LIGHT)
-		{
 			ptr->mat.tex = NULL;
-			// ptr->mat.is_emitting = 1;
-			// ptr->mat.reflectivity = 0.0;
-		}
 		iter++;
 	}
 }
@@ -266,6 +257,18 @@ void	resize_hook(int32_t width, int32_t height, void* param)
 	ft_camera_calc(app->active_camera);
 }
 
+#ifdef PROD
+void draw_loop(void *args)
+{
+	t_app			*app;
+	static uint32_t	lastPixl;
+
+	app = (t_app *)args;
+	lastPixl = ft_camera_render(app, ft_put_pixel, lastPixl, lastPixl + 1000 / STAN_SAMPLES_PER_PIXEL);
+	// ft_camera_render(app, ft_kumul_pixel);
+	printf("Cam: X%.2f Y%.2f Z%.2f, FOV%.2F\n", app->active_camera->look_at.x, app->active_camera->look_at.y, app->active_camera->look_at.z, app->active_camera->fov);
+}
+
 int32_t	main(int argc, char *argv[])
 {
 	t_app app;
@@ -289,36 +292,15 @@ int32_t	main(int argc, char *argv[])
 			.2
 		});
 	app.active_camera = &camera;
+	//GOover: There is no allocation for the camera
 	//!!!Pars init changes location, normal & FOV for camera + ambient + adds hitables
 	if (pars_init(argc, argv, &app) != 0)
 		return (dyn_free(&app.hitable), -1);
 
 	// Pars terminal and file inputs
 	//TODO: convert to the different structures for the exec
-
 	add_material_to_objects(&app);
 	print_internal_data(&app);
-	//t_obj sphere = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-4}}, &material);
-	//t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){-3,5,-5}}, &material);
-	// t_obj sphere1 = ft_sphere_create((t_sphere_p){1,(t_vec3){2,2,-10}}, &material);
-	// t_obj sphere2 = ft_sphere_create((t_sphere_p){.5,(t_vec3){-1,-1,-2}}, &material);
-	// t_obj sphere3 = ft_sphere_create((t_sphere_p){.1,(t_vec3){0,40,30}}, &mat_l);
-	// t_obj sphere4 = ft_sphere_create((t_sphere_p){20,(t_vec3){0,10,30}}, &mat_l);
-	//t_obj plane1 = ft_plane_create((t_plane_p){(t_vec3){0,-3,-10}, (t_vec3){0,1,0}}, &material2);
-	// t_obj plane2 = ft_plane_create((t_plane_p){(t_vec3){0,-3,-10}, (t_vec3){0,0,1}}, &material2);
-	// t_obj cyl1 = ft_cylinder_create((t_cylinder_p){10.0, 100.0, {0, 10, 10}, (t_vec3){1,0,0}}, &material);
-	//t_obj lightsource = ft_light_create((t_point_light_p){(t_vec3){-3,8,-2}, .7f, (t_vec3){1, 1, 1}});
-	// t_obj lightsource2 = ft_light_create((t_point_light_p){(t_vec3){1,0,-2}, 1.0f, (t_vec3){1, 1, 1}});
-//	dyn_add(&app.hitable, &sphere);
-//	dyn_add(&app.hitable, &sphere1);
-	// dyn_add(&app.hitable, &sphere2);
-	// dyn_add(&app.hitable, &sphere3);
-//	dyn_add(&app.hitable, &plane1);
-	//dyn_add(&app.hitable, &lightsource);
-	// dyn_add(&app.hitable, &lightsource2);
-	// dyn_add(&app.hitable, &plane2);
-	// dyn_add(&app.hitable, &sphere4);
-	// dyn_add(&app.hitable, &cyl1);
 	// TODO: Still cleanup to do
 	if (setupWindow(&app) == EXIT_FAILURE)
 		return (EXIT_FAILURE);	
@@ -332,4 +314,4 @@ int32_t	main(int argc, char *argv[])
 	dyn_free(&app.hitable);
 	return (EXIT_SUCCESS);
 }
-
+#endif

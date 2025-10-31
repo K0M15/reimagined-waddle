@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/28 14:40:09 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 19:09:56 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ typedef struct s_camera
 	t_vec3		vupper_left;
 	t_vec3		viewport_u;
 	t_vec3		viewport_v;
-	t_vec3		u;			// Right vector
-	t_vec3		v;			// Up vector
-	t_vec3		w;			// reverse direction
-	t_vec3		delta_u;	// Horizontal vector
-	t_vec3		delta_v;	// Vertical vector
+	t_vec3		u;
+	t_vec3		v;
+	t_vec3		w;
+	t_vec3		delta_u;
+	t_vec3		delta_v;
 	uint32_t	samples_per_pixel;
 	t_vec3		vec_up;
 	t_vec3		ambient;
@@ -81,6 +81,7 @@ typedef struct s_ray_props
 	t_vec3	origin;
 }	t_ray_props;
 
+//Remember: the camera is static
 typedef struct s_app
 {
 	mlx_t		*mlx;
@@ -97,9 +98,11 @@ uint32_t	ft_camera_init(t_camera *camera, t_camera_p props);
 void		ft_camera_calc(t_camera *camera);
 void		ft_camera_apply(t_camera *cam, t_vec3 apply);
 uint32_t	ft_camera_render(t_app *app, void (*put_pixel)(mlx_image_t *image,
-					int x, int y, uint32_t color));
+					int x, int y, uint32_t color),
+				uint32_t start, uint32_t end);
 void		ftref_lambert(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
 void		ftref_phong(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
+uint32_t	checker_enable(uint32_t val);
 #endif /* MINIRT_H */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hitable.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/28 14:42:07 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/29 15:37:55 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@ void	ft_hitr_set_face_normal(t_hitrec *rec, t_ray ray, t_vec3 outwar_norm)
 		rec->normal = outwar_norm;
 	else
 		rec->normal = ftvec3_multiply(outwar_norm, ftvec3(-1));
-}
-
-void	ft_obj_dest(t_obj obj)
-{
-	// we dont destroy
-	(void) obj;
 }
 
 void	assign_rayhit(t_hitrec *rec, t_hitrec src, t_material *material)

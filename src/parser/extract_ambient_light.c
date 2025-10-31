@@ -32,7 +32,7 @@ int	extract_ambient_light(const char *line, t_app *app)
 	light_ratio = ft_atof(tokens[1]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (light_ratio > (double)1.0 && light_ratio < (double)0.0)
+	if (light_ratio > (double)1.0 || light_ratio < (double)0.0)
 		return (free_tokens(tokens), -1);
 	color = extract_color(tokens[2]);
 	if (errno)
