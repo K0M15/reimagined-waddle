@@ -29,6 +29,8 @@ static int	extract_line_data(const char *line, t_app *app, int *has_cam_and_amb)
 		ret = extract_cylinder(line, app);
 	else if (*line == '\n')
 		ret = 0;
+	else if (*line == '#')
+		ret = 0;
 	else
 		return (-1);
 	return (ret);
