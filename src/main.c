@@ -117,9 +117,10 @@ int32_t pars_init(int argc, char **argv, t_app *app)
 		print_instructions();
 		return (-1);
 	}
-	dyn_init(&app->hitable);
-	if (pars(argv[1], app) == -1)
+	if (dyn_init(&app->hitable))
 		return (-1);
+	if (pars(argv[1], app) == -1)
+		return (dyn_free(&app->hitable), -1);
 	ft_camera_calc(app->active_camera);
 	return (0);
 }
@@ -213,7 +214,7 @@ void add_material_to_objects(t_app *app)
 
 	iter = 0;
 	tex = mlx_load_png("earthmap1k.png");
-	// bump = NULL;
+	//bump = NULL;
 	bump = mlx_load_png("earthbump1k.png");
 	while (iter < app->hitable.filled)
 	{
@@ -291,6 +292,7 @@ int32_t	main(int argc, char *argv[])
 			.2
 		});
 	app.active_camera = &camera;
+	//GOover: There is no allocation for the camera
 	//!!!Pars init changes location, normal & FOV for camera + ambient + adds hitables
 	if (pars_init(argc, argv, &app) != 0)
 		return (-1);

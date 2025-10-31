@@ -73,14 +73,13 @@ int pars(const char *path, t_app *app)
 				line = get_next_line(fd);
 				free(line);
 			}
-			printf("Invalid file content!\n");
 			return (-1);
 		}
 		free(line);
 		line = get_next_line(fd);
 		hide_newline(line);
 	}
-	if (camera_and_ambient[0] != 1 && camera_and_ambient[1] != 1)
+	if (camera_and_ambient[0] != 1 || camera_and_ambient[1] != 1)
 	{
 		printf("Camera and/or ambient light missing!\n");
 		return (-1);
