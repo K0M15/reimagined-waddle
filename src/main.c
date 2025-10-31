@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 19:21:59 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/31 20:15:51 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,7 +303,7 @@ int32_t	main(int argc, char *argv[])
 	print_internal_data(&app);
 	// TODO: Still cleanup to do
 	if (setupWindow(&app) == EXIT_FAILURE)
-		return (EXIT_FAILURE);	
+		return (dyn_free(&app.hitable), EXIT_FAILURE);	
 	
 	mlx_key_hook(app.mlx, key_hook, (void *) &app);
 	mlx_loop_hook(app.mlx, draw_loop, (void *) &app);
