@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 13:57:14 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/27 14:24:37 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/01 13:52:28 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ t_uv	interpolate_height(mlx_texture_t *bump, t_uv uv)
 				(uint32_t *)&height[4]));
 	height[3] = luminance(tex_sample(bump, (t_uv){uv.u, uv.v - step.v},
 				(uint32_t *)&height[4]));
-	return ((t_uv){0.5f * (height[0] - height[2]), 0.5f * (height[1] - height[3])});
+	return ((t_uv){0.5f * (height[0] - height[2]), -(0.5f * (height[1] - height[3]))});
 }
