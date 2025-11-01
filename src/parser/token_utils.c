@@ -73,3 +73,13 @@ double	ft_atof(const char *input)
 		errno = EINVAL;
 	return (sign * result);
 }
+
+int	init_material(t_obj *obj)
+{
+	obj->mat.reflectivity = 0.2;
+	obj->mat.scatter = 0.2;
+	obj->mat.is_emitting = 0;
+	obj->mat.tex = NULL;
+	obj->mat.bump = NULL;
+	return (0);
+}
