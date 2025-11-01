@@ -44,12 +44,11 @@ t_uv	uv_sphere(t_props sphere, t_vec3 p)
 	float	uu;
 	float	vv;
 
-	normal = ftvec3_unit(ftvec3_divide(
-				ftvec3_minus(p, sphere.position),
-				ftvec3(sphere.radius)));
+	normal = ftvec3_divide(ftvec3_minus(p, sphere.position), ftvec3(sphere.radius));
 	uu = 0.5f + atan2f(normal.z, normal.x) / (2.f * PI);
-	vv = 0.5f - asinf(clamp(normal.y, -1.0f, 1.0f)) / PI;
-	return ((t_uv){uu - floorf(uu), clamp(vv, 0.f, 1.0f) * -1});
+	vv = 0.5f - asinf(normal.y) / PI;
+	return ((t_uv){uu, vv * -1});
+  //The old: return ((t_uv){uu, vv});
 }
 
 /*
@@ -65,8 +64,8 @@ t_uv	uv_plane(t_props plane, t_vec3 p)
 	float	vv;
 
 	uv_ortho_basis(ftvec3_unit(plane.rotation), basis);
-	uu = ftvec3_dot(ftvec3_minus(p, plane.position), basis[0]) / 10;
-	vv = ftvec3_dot(ftvec3_minus(p, plane.position), basis[1]) / 10;
+	uu = ftvec3_dot(ftvec3_minus(p, plane.position), basis[0]) / 10; // TODO: REPLACE 1 with TextureScale
+	vv = ftvec3_dot(ftvec3_minus(p, plane.position), basis[1]) / 10; // TODO: REPLACE 1 with TextureScale
 	return ((t_uv){uu - floorf(uu), vv - floorf(vv)});
 }
 

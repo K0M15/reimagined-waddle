@@ -12,7 +12,6 @@ static int	add_sphere(t_vec3 *loc, double *diameter, t_vec3 *color, t_app *app)
 	t_obj	sphere;
 
 	sphere.props.radius = *diameter / 2.0;
-	//sphere->diameter = *diameter;
 	cpy_loc(&(sphere.props.position), loc);
 	cpy_rgb(&sphere.props.color, color);
 	sphere.type = SPHERE;
@@ -43,7 +42,7 @@ int	extract_sphere(const char *line, t_app *app)
 	diameter = ft_atof(tokens[2]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (diameter < (double)0.0)
+	if (diameter <= (double)0.0)
 		return (free_tokens(tokens), -1);
 	color = extract_color(tokens[3]);
 	if (errno)

@@ -3,6 +3,7 @@
 #include "elements.h"
 #include "libft.h"
 #include "parser.h"
+#include "ftvec3.h"
 
 void	cpy_normal(t_vec3 *dst, t_vec3 *src)
 {
@@ -50,5 +51,6 @@ t_vec3	extract_normal(const char *input)
 		errno = EINVAL;
 		return (free_tokens(tokens), normal);
 	}
+	normal = ftvec3_normalize(normal);
 	return (free_tokens(tokens), normal);
 }

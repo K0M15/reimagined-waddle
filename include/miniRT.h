@@ -81,6 +81,7 @@ typedef struct s_ray_props
 	t_vec3	origin;
 }	t_ray_props;
 
+//Remember: the camera is static
 typedef struct s_app
 {
 	mlx_t		*mlx;

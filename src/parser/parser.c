@@ -29,6 +29,8 @@ static int	extract_line_data(const char *line, t_app *app, int *has_cam_and_amb)
 		ret = extract_cylinder(line, app);
 	else if (*line == '\n')
 		ret = 0;
+	else if (*line == '#')
+		ret = 0;
 	else
 		return (-1);
 	return (ret);
@@ -73,14 +75,13 @@ int pars(const char *path, t_app *app)
 				line = get_next_line(fd);
 				free(line);
 			}
-			printf("Invalid file content!\n");
 			return (-1);
 		}
 		free(line);
 		line = get_next_line(fd);
 		hide_newline(line);
 	}
-	if (camera_and_ambient[0] != 1 && camera_and_ambient[1] != 1)
+	if (camera_and_ambient[0] != 1 || camera_and_ambient[1] != 1)
 	{
 		printf("Camera and/or ambient light missing!\n");
 		return (-1);

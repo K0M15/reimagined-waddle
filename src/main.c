@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 19:21:59 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/31 20:15:51 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,10 @@ int32_t pars_init(int argc, char **argv, t_app *app)
 		print_instructions();
 		return (-1);
 	}
-	dyn_init(&app->hitable);
-	if (pars(argv[1], app) == -1)
+	if (dyn_init(&app->hitable))
 		return (-1);
+	if (pars(argv[1], app) == -1)
+		return (dyn_free(&app->hitable), -1);
 	ft_camera_calc(app->active_camera);
 	return (0);
 }
@@ -212,9 +213,9 @@ void add_material_to_objects(t_app *app)
 	mlx_texture_t	*bump;
 
 	iter = 0;
-	tex = mlx_load_png("earthmap1k.png");
+	tex = mlx_load_png("./oak.png");
 	// bump = NULL;
-	bump = mlx_load_png("earthbump1k.png");
+	bump = mlx_load_png("./oak_rough.png");
 	while (iter < app->hitable.filled)
 	{
 		ptr = app->hitable.elem + iter;
@@ -291,15 +292,18 @@ int32_t	main(int argc, char *argv[])
 			.2
 		});
 	app.active_camera = &camera;
+	//GOover: There is no allocation for the camera
 	//!!!Pars init changes location, normal & FOV for camera + ambient + adds hitables
 	if (pars_init(argc, argv, &app) != 0)
-		return (-1);
+		return (dyn_free(&app.hitable), -1);
+
+	// Pars terminal and file inputs
 	//TODO: convert to the different structures for the exec
 	add_material_to_objects(&app);
 	print_internal_data(&app);
 	// TODO: Still cleanup to do
 	if (setupWindow(&app) == EXIT_FAILURE)
-		return (EXIT_FAILURE);	
+		return (dyn_free(&app.hitable), EXIT_FAILURE);	
 	
 	mlx_key_hook(app.mlx, key_hook, (void *) &app);
 	mlx_loop_hook(app.mlx, draw_loop, (void *) &app);

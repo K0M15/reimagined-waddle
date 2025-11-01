@@ -6,13 +6,15 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 11:11:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/30 09:33:08 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/01 15:02:52 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 #include "hitable.h"
 
+//The old calculation:
+//if ((int)(uv.u * 10.0f) % 2 == (int)(uv.v * 10.0f) % 2)
 t_vec3	tex_sample(const mlx_texture_t *tex, t_uv uv, uint32_t *checkerboard)
 {
 	uint32_t	pos[2];
