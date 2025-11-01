@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 11:11:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 19:14:02 by afelger          ###   ########.fr       */
+/*   Updated: 2025/10/30 09:33:08 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ t_vec3	tex_sample(const mlx_texture_t *tex, t_uv uv, uint32_t *checkerboard)
 
 	if (!tex)
 	{
-		if ((int)(uv.u * 10.0f) % 2 == (int)(uv.v * 10.0f) % 2)
+		if ((((int)floorf((fmodf((uv.u), 1.f)) * 10.f)
+					+ (int)floorf((fmodf((uv.v), 1.f)) * 10.f)) & 1) == 0)
 			return (*checkerboard = true, ftvec3(0));
-		else
-			return (*checkerboard = true, ftvec3(1));
+		return (*checkerboard = true, ftvec3(1));
 	}
 	*checkerboard = false;
 	pos[0] = (uint32_t)fmodf(floorf(uv.u * tex->width), (float)tex->width);
