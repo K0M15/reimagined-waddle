@@ -54,14 +54,14 @@ all: $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(NAME)
 
 test: FLAGS+= -DTEST
 test: fclean $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(FILES_WITH_TESTS:.c=.o)
-	@$(CC) $(F_INC) $(FILES_WITH_TESTS:.c=.o) -DTEST $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME) && ./miniRT && make . fclean > /dev/null
+	@$(CC) $(F_INC) $(FILES_WITH_TESTS:.c=.o) -DTEST $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_OS) -o $(NAME) && ./miniRT && make . fclean > /dev/null
 test: fclean
 
 $(MLX):
 	cd MLX42 && cmake -B build && cmake --build build -j4
 
 $(NAME): $(FILES:.c=.o)
-	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
+	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_OS) -o $(NAME)
 
 %.o: %.c
 	@echo "Building $@"
