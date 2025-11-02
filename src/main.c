@@ -55,6 +55,15 @@ void key_hook(mlx_key_data_t keydata, void *param)
 		ft_camera_apply(app->active_camera, (t_vec3){MOV_SPEED, 0, 0});
 	if (keydata.key == MLX_KEY_D)
 		ft_camera_apply(app->active_camera, (t_vec3){-MOV_SPEED, 0, 0});
+//TODO: The ft_camera_move should still have to get implemented
+//	if (keydata.key == MLX_KEY_DOWN)
+//		ft_camera_move(app->active_camera, (t_vec3){0, 0, -MOV_SPEED});
+//	if (keydata.key == MLX_KEY_UP)
+//		ft_camera_move(app->active_camera, (t_vec3){0, 0, MOV_SPEED});
+//	if (keydata.key == MLX_KEY_LEFT)
+//		ft_camera_move(app->active_camera, (t_vec3){-MOV_SPEED, 0, 0});
+//	if (keydata.key == MLX_KEY_RIGHT)
+//		ft_camera_move(app->active_camera, (t_vec3){MOV_SPEED, 0, 0});
 	if (keydata.key == MLX_KEY_Q)
 	{
 		app->active_camera->fov *= 1.1;

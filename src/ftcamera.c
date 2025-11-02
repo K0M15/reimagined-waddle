@@ -12,6 +12,16 @@
 
 #include "miniRT.h"
 
+//The movements have to get corrected base on the current camera vector rotation
+void	ft_camera_move(t_camera *cam, t_vec3 loc)
+{
+	return ;
+	cam->center = ftvec3_plus(cam->center, loc);
+	cam->look_at = ftvec3_plus(cam->look_at, loc);
+	cam->vec_up = ftvec3_plus(cam->vec_up, loc);
+	ft_camera_calc(cam);
+}
+
 void	ft_camera_apply(t_camera *cam, t_vec3 apply)
 {
 	t_vec3	dir;
