@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:48:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/02 14:38:42 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/02 17:30:04 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ float	distance_col_scale(float distance)
 	if (distance < FLOAT_NEAR_ZERO)
 		distance = FLOAT_NEAR_ZERO;
 	att = 1.0f / (1.0f + 0.1f * distance + 0.032f * distance * distance);
-	att *= 6.0f * 200.0f;
+	att *= 6.0f * 2.0f;
 	return (att);
 }
 
