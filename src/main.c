@@ -213,9 +213,11 @@ void add_material_to_objects(t_app *app)
 	mlx_texture_t	*bump;
 
 	iter = 0;
-	tex = mlx_load_png("./oak.png");
-	// bump = NULL;
-	bump = mlx_load_png("./oak_rough.png");
+	//tex = mlx_load_png("./oak.png");
+	tex = NULL;
+	 bump = NULL;
+	//bump = mlx_load_png("./oak_rough.png");
+printf("This is it\n");
 	while (iter < app->hitable.filled)
 	{
 		ptr = app->hitable.elem + iter;
@@ -228,7 +230,6 @@ void add_material_to_objects(t_app *app)
 			ptr->mat.tex = tex;
 			ptr->mat.bump = bump;
 		}
-		if (ptr->type != SPHERE)
 		if (ptr->type == POINT_LIGHT)
 			ptr->mat.tex = NULL;
 		iter++;

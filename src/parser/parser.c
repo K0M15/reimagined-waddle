@@ -40,7 +40,9 @@ void	hide_newline(char *line)
 {
 	if (!line)
 		return ;
-	while(*line != '\n')
+	if (*line == '\0')
+		return ;
+	while(*line != '\n' && *line != '\0')
 		line++;
 	if (*line == '\n')
 		*line = 0;

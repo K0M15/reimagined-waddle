@@ -2,7 +2,7 @@
 NAME=miniRT
 CC=cc
 FLAGS=-Wall -Wextra -Werror
-FLAGS_MAC= -framework Cocoa -framework OpenGL -framework IOKit -lglfw
+FLAGS_MAC= -framework Cocoa -framework OpenGL -framework IOKit -lglfw -fsanitize=address
 FLAGS_LINUX= -ldl -lglfw -lpthread -lm 
 F_INC=-Iinclude
 MLX=MLX42/build/libmlx42.a
