@@ -27,6 +27,8 @@ static int	extract_line_data(const char *line, t_app *app, int *has_cam_and_amb)
 		ret = extract_plane(line, app);
 	else if (ft_strncmp(line, "cy", 2) == 0)
 		ret = extract_cylinder(line, app);
+	else if (ft_strncmp(line, "tr", 2) == 0)
+		ret = extract_triangle(line, app);
 	else if (*line == '\n')
 		ret = 0;
 	else if (*line == '#')
@@ -40,9 +42,9 @@ void	hide_newline(char *line)
 {
 	if (!line)
 		return ;
-	while(*line != '\n')
+	while(*line && *line != '\n')
 		line++;
-	if (*line == '\n')
+	if (*line && *line == '\n')
 		*line = 0;
 }
 

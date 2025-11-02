@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/31 20:15:51 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/01 16:49:37 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,11 +170,19 @@ void	print_point_light(t_obj *app)
 	print_vec3(&app->props.color);
 }
 
+void	print_triangle(t_obj *obj)
+{
+	t_vec3 vert3 = (t_vec3){obj->props.radius, obj->props.diameter, obj->props.height};
+	print_vec3(&obj->props.position);
+	print_vec3(&obj->props.rotation);
+	print_vec3(&vert3);
+}
+
 void	print_element(int iter, t_app *app)
 {
 	t_obj		*ptr;
-	const char	*types[] = {"SPHERE", "CYLINDER", "PLANE", "POINT_LIGHT"};
-	void	(*func[])(t_obj*)= {print_sphere, print_cylinder, print_plane, print_point_light};
+	const char	*types[] = {"SPHERE", "CYLINDER", "PLANE", "POINT_LIGHT", "TRIANGLE"};
+	void	(*func[])(t_obj*)= {print_sphere, print_cylinder, print_plane, print_point_light, print_triangle};
 
 	ptr = app->hitable.elem + iter;
 	if (ptr->type == 0xFFFF)

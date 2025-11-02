@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hitable.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 15:37:55 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/01 16:07:55 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ uint32_t	world_hit(t_dyn *world, t_ray ray,
 			p.hit = ft_plane_hit(*p.obj, ray, &p.temp, limit);
 		else if (p.obj->type == CYLINDER)
 			p.hit = ft_cylinder_hit(*p.obj, ray, &p.temp, limit);
+		else if (p.obj->type == TRIANGLE)
+			p.hit = ft_tri_hit(*p.obj, ray, &p.temp, limit);
 		if (p.hit && p.temp.t < p.closest)
 		{
 			p.closest = p.temp.t;
