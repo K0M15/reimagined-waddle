@@ -6,16 +6,8 @@
 #include "parser.h"
 #include "hitable.h"
 
-/*TODO: have the possibility to add more materials to the sphere*/
-//static int	add_sphere(t_vec3 *loc, double *diameter, t_vec3 *color, t_app *app)
 static int	add_sphere(t_obj *sphere, t_app *app)
 {
-	//t_obj	sphere;
-
-	//sphere.props.radius = *diameter / 2.0;
-	//cpy_loc(&(sphere.props.position), loc);
-	//cpy_rgb(&sphere.props.color, color);
-	//sphere.type = SPHERE;
 	sphere->type = SPHERE;
 	return (dyn_add(&app->hitable, sphere));
 }
@@ -23,9 +15,6 @@ static int	add_sphere(t_obj *sphere, t_app *app)
 int	extract_sphere(const char *line, t_app *app)
 {
 	char	**tokens;
-//	t_vec3	loc;
-//	double	diameter;
-//	t_vec3	color;
 	t_obj	sphere;
 
 	tokens = ft_split(line, ' ');
@@ -48,10 +37,9 @@ int	extract_sphere(const char *line, t_app *app)
 		return (free_tokens(tokens), -1);
 	if (sphere.props.radius <= (double)0.0)
 		return (free_tokens(tokens), -1);
-	sphere.props.color = extract_color(tokens[3]);
+	sphere.mat.color = extract_color(tokens[3]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	//TODO:This should be redone
 	if (token_ammount(tokens) == 10 && pars_bonus_tokens(3, tokens, &sphere) == -1)
 		return (free_tokens(tokens), -1);
 	if (add_sphere(&sphere, app))
