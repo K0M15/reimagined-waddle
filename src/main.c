@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/02 15:58:57 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/02 15:04:49 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	print_sphere(t_obj *app)
 	printf("\t");
 	printf("%f", app->props.radius);
 	printf("\t");
-	print_vec3(&app->mat.color);
+	print_vec3(&app->props.color);
 }
 
 void	print_cylinder(t_obj *app)
@@ -149,7 +149,7 @@ void	print_cylinder(t_obj *app)
 	printf("\t");
 	printf("%f", app->props.height);
 	printf("\t");
-	print_vec3(&app->mat.color);
+	print_vec3(&app->props.color);
 }
 
 void	print_plane(t_obj *app)
@@ -158,7 +158,7 @@ void	print_plane(t_obj *app)
 	printf("\t");
 	print_vec3(&app->props.rotation);
 	printf("\t");
-	print_vec3(&app->mat.color);
+	print_vec3(&app->props.color);
 }
 
 void	print_point_light(t_obj *app)
@@ -167,7 +167,7 @@ void	print_point_light(t_obj *app)
 	printf("\t");
 	printf("%f", app->props.brightness);
 	printf("\t");
-	print_vec3(&app->mat.color);
+	print_vec3(&app->props.color);
 }
 
 void	print_element(int iter, t_app *app)
@@ -183,7 +183,6 @@ void	print_element(int iter, t_app *app)
 		return ;
 	}
 	printf("==========\n");
-	//It is segfaulting here
 	printf("The type: %s\n", types[ptr->type]);
 	func[ptr->type](ptr);
 	printf("\n");
@@ -222,7 +221,7 @@ void add_material_to_objects(t_app *app)
 		ptr = app->hitable.elem + iter;
 		if (ptr->type != SPHERE)
 		{
-			//ptr->mat.color = ptr->props.color;
+			ptr->mat.color = ptr->props.color;
 			ptr->mat.reflectivity = 0.1;
 			ptr->mat.is_emitting = 0;
 			ptr->mat.scatter = .5;

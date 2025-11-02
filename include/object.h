@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 14:34:15 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/02 15:51:52 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/10/28 14:40:28 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_material
 
 typedef struct s_props
 {
-	//t_vec3	color;
+	t_vec3	color;
 	t_vec3	position;
 	t_vec3	rotation;
 	float	radius;
