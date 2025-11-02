@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/31 20:15:51 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/02 15:04:49 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int32_t pars_init(int argc, char **argv, t_app *app)
 	if (dyn_init(&app->hitable))
 		return (-1);
 	if (pars(argv[1], app) == -1)
-		return (dyn_free(&app->hitable), -1);
+		return (-1);
 	ft_camera_calc(app->active_camera);
 	return (0);
 }
@@ -219,12 +219,16 @@ void add_material_to_objects(t_app *app)
 	while (iter < app->hitable.filled)
 	{
 		ptr = app->hitable.elem + iter;
-		ptr->mat.color = ptr->props.color;
-		ptr->mat.reflectivity = 0.1;
-		ptr->mat.is_emitting = 0;
-		ptr->mat.scatter = .5;
-		ptr->mat.tex = tex;
-		ptr->mat.bump = bump;
+		if (ptr->type != SPHERE)
+		{
+			ptr->mat.color = ptr->props.color;
+			ptr->mat.reflectivity = 0.1;
+			ptr->mat.is_emitting = 0;
+			ptr->mat.scatter = .5;
+			ptr->mat.tex = tex;
+			ptr->mat.bump = bump;
+		}
+		if (ptr->type != SPHERE)
 		if (ptr->type == POINT_LIGHT)
 			ptr->mat.tex = NULL;
 		iter++;

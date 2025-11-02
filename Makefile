@@ -22,7 +22,8 @@ PARSER_FILES 	=	extract_ambient_light.c \
 			extract_rgb.c \
 			extract_sphere.c \
 			parser.c \
-			token_utils.c
+			token_utils.c \
+			token_bonus.c
 FILES=src/ftray.c src/ftcolor.c src/dyn.c
 FILES+=src/ftvec3.c src/ftvec3_1.c src/ftvec3_2.c src/ftvec3_3.c	# VECTOR
 FILES+=src/ftcamera.c src/ftcamera_2.c								# CAMERA

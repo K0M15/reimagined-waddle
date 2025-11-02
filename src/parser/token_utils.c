@@ -2,6 +2,7 @@
 #include <errno.h>
 #include "libft.h"
 #include <stdio.h>
+#include "object.h"
 
 void	free_tokens(char **tokens)
 {

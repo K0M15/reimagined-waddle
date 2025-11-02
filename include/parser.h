@@ -2,6 +2,7 @@
 # define PARSER_H
 #include "elements.h"
 #include "miniRT.h"
+#include "object.h"
 
 //parser.c
 int	pars(const char *path, t_app *app);
@@ -26,9 +27,13 @@ t_point	extract_loc(const char *input);
 void	cpy_normal(t_vec3 *dst, t_vec3 *src);
 t_vec3	extract_normal(const char *input);
 
-//free_tokens.c
+//token_utils.c
 void	free_tokens(char **tokens);
 int	token_ammount(char **tokens);
 double	ft_atof(const char *input);
+int	init_material(t_obj *obj);
+
+//token_bonus.c
+int pars_bonus_tokens(int last_mand_token, char **tokens, t_obj *sphere);
 
 #endif

@@ -16,6 +16,7 @@ static int	add_sphere(t_obj *sphere, t_app *app)
 	//cpy_loc(&(sphere.props.position), loc);
 	//cpy_rgb(&sphere.props.color, color);
 	//sphere.type = SPHERE;
+	sphere->type = SPHERE;
 	return (dyn_add(&app->hitable, sphere));
 }
 
@@ -33,7 +34,7 @@ int	extract_sphere(const char *line, t_app *app)
 		printf("Could not split the tokens or malloc failed!\n");
 		return (-1);
 	}
-	if (token_ammount(tokens) != 4 || token_ammount(tokens) != 9)
+	if (token_ammount(tokens) != 4 && token_ammount(tokens) != 10)
 		return (free_tokens(tokens), -1);
 	if (ft_strncmp(tokens[0], "sp", 10) != 0)
 		return (free_tokens(tokens), -1);
@@ -50,7 +51,8 @@ int	extract_sphere(const char *line, t_app *app)
 	sphere.props.color = extract_color(tokens[3]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (token_ammount(tokens) == 9 && pars_bonus_tokens(3, tokens, &sphere) == -1)
+	//TODO:This should be redone
+	if (token_ammount(tokens) == 10 && pars_bonus_tokens(3, tokens, &sphere) == -1)
 		return (free_tokens(tokens), -1);
 	if (add_sphere(&sphere, app))
 		return (free_tokens(tokens), -1);
