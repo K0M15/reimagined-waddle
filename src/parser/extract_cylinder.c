@@ -28,6 +28,7 @@ int	extract_cylinder(const char *line, t_app *app)
 	if (ft_strncmp(tokens[0], "cy", 10) != 0)
 		return (free_tokens(tokens), -1);
 	errno = 0;
+	init_material(&cyl);
 	cyl.props.position = extract_loc(tokens[1]);
 	if (errno)
 		return (free_tokens(tokens), -1);

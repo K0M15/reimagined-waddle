@@ -221,7 +221,7 @@ printf("This is it\n");
 	while (iter < app->hitable.filled)
 	{
 		ptr = app->hitable.elem + iter;
-		if (ptr->type != SPHERE)
+		if (!ptr->mat.tex || ptr->type == PLANE)
 		{
 			ptr->mat.color = ptr->props.color;
 			ptr->mat.reflectivity = 0.1;
