@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cylinder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:07:04 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 15:38:18 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/02 17:42:31 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_vec3	fillabc(t_vec3 axis, t_props *c, t_vec3 ro_base, t_ray ray)
 	return (abc);
 }
 
-t_hitrec	find_root_hit(float drr[3], t_ray ray,
+static t_hitrec	find_root_hit(float drr[3], t_ray ray,
 	struct s_lpair limit, t_props *c)
 {
 	t_vec3		p;
@@ -107,7 +107,7 @@ void ft_cyl_uvnormal(t_hitrec *rec, t_vec3 axis, t_obj *cyl)
 }
 
 //drr: 0 = disk, 1,2 = roots
-t_hitrec	find_best_hit(t_vec3 axis, t_props *c,
+static t_hitrec	find_best_hit(t_vec3 axis, t_props *c,
 	t_ray ray, struct s_lpair limit)
 {
 	t_vec3		ro_base;
