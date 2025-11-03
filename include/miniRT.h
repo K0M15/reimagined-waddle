@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 19:09:56 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 15:40:08 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ struct s_ftray_color_props
 	t_vec3		next_color;
 	t_vec3		view_dir;
 	t_vec3		local_color;
+	t_vec3		emitted;
 	t_vec3		light_acc;
 	t_obj		*obj;
 };

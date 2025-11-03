@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftcamera.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 15:38:10 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 16:00:59 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,17 @@
 //+x = right
 void	ft_camera_move(t_camera *cam, t_vec3 move)
 {
-	t_vec3	move_vec;
+	t_vec3	delta;
 
-	if (move.z)
-		move_vec = ftvec3_multiply(cam->look_at, ftvec3(move.z));
-	if (move.x)
-		move_vec = ftvec3_multiply(cam->u, ftvec3(move.x));
-	move_vec.z = 0;
-	printf("---------\n");
-	//printf("The camera cam->u: X%f Y%f Z%f\n", cam->u.x, cam->u.y, cam->u.z);
-	//printf("The move move: X%f Y%f Z%f\n", move.x, move.y, move.z);
-	printf("The camera_center(before): X%f Y%f Z%f\n", cam->center.x, cam->center.y, cam->center.z);
-	//cam->center = ftvec3_plus(cam->center,move_vec);
-	cam->center = ftvec3_plusp(cam->center, move_vec);
-	//cam->center.z -= move_vec.z;
-	printf("The camera_center: X%f Y%f Z%f\n", cam->center.x, cam->center.y, cam->center.z);
-	printf("---------\n");
-	cam->look_at = ftvec3_unit(ftvec3_plus(cam->look_at, move_vec));
-	//cam->vec_up = ftvec3_plus(cam->vec_up, move_vec);
+	delta = ftvec3_plus(
+		ftvec3_plus(
+			ftvec3_multiply(ftvec3_multiply(cam->u, ftvec3(-1)), ftvec3(move.x)),
+			ftvec3_multiply(cam->v, ftvec3(move.y))
+		),
+		ftvec3_multiply(ftvec3_multiply(cam->w, ftvec3(-1)), ftvec3(move.z))
+	);
+	cam->center = ftvec3_plus(cam->center, delta);
+	cam->look_at = ftvec3_plus(cam->look_at, delta);
 	ft_camera_calc(cam);
 }
 
