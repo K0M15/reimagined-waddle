@@ -96,6 +96,7 @@ int32_t		pars_init(int argc, char **argv, t_app *app);
 t_vec3		ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect);
 uint32_t	ft_camera_init(t_camera *camera, t_camera_p props);
 void		ft_camera_calc(t_camera *camera);
+void		ft_camera_move(t_camera *cam, t_vec3 move);
 void		ft_camera_apply(t_camera *cam, t_vec3 apply);
 uint32_t	ft_camera_render(t_app *app, void (*put_pixel)(mlx_image_t *image,
 					int x, int y, uint32_t color),
