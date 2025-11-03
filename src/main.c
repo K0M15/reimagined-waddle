@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/02 15:04:49 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/03 22:35:44 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,37 +214,6 @@ void print_internal_data(t_app *app)
 	return ;
 }
 
-void add_material_to_objects(t_app *app)
-{
-	uint32_t	iter;
-	t_obj		*ptr;
-	mlx_texture_t	*tex;
-	mlx_texture_t	*bump;
-
-	iter = 0;
-	//tex = mlx_load_png("./oak.png");
-	tex = NULL;
-	 bump = NULL;
-	//bump = mlx_load_png("./oak_rough.png");
-printf("This is it\n");
-	while (iter < app->hitable.filled)
-	{
-		ptr = app->hitable.elem + iter;
-		if (!ptr->mat.tex || ptr->type == PLANE)
-		{
-			ptr->mat.color = ptr->props.color;
-			ptr->mat.reflectivity = 0.1;
-			ptr->mat.is_emitting = 0;
-			ptr->mat.scatter = .5;
-			ptr->mat.tex = tex;
-			ptr->mat.bump = bump;
-		}
-		if (ptr->type == POINT_LIGHT)
-			ptr->mat.tex = NULL;
-		iter++;
-	}
-}
-
 void	resize_hook(int32_t width, int32_t height, void* param)
 {
 	t_app *app;
@@ -299,7 +268,7 @@ int32_t	main(int argc, char *argv[])
 			app.height,
 			STAN_SAMPLES_PER_PIXEL,
 			// (t_vec3){0.5,0.9,1}
-			// (t_vec3){66.0/255.0,245.0/255.0,135.0/255.0}
+			// (t_vec3){66.255.0,245.0/255.0,135.0/255.0}
 			(t_vec3){
 				1, 1, 1
 			},
@@ -313,7 +282,6 @@ int32_t	main(int argc, char *argv[])
 
 	// Pars terminal and file inputs
 	//TODO: convert to the different structures for the exec
-	add_material_to_objects(&app);
 	print_internal_data(&app);
 	// TODO: Still cleanup to do
 	if (setupWindow(&app) == EXIT_FAILURE)
