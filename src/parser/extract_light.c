@@ -1,17 +1,19 @@
+#include "elements.h"
+#include "libft.h"
+#include "miniRT.h"
+#include "parser.h"
 #include <errno.h>
 #include <stdio.h>
-#include "miniRT.h"
-#include "libft.h"
-#include "elements.h"
-#include "parser.h"
 
-static int	add_light(t_vec3 *loc, double *brightness, t_vec3 *color, t_app *app)
+static int	add_light(t_vec3 *loc, double *brightness, t_vec3 *color,
+		t_app *app)
 {
 	t_obj	light;
 
 	light.props.brightness = *brightness;
 	cpy_loc(&(light.props.position), loc);
 	cpy_rgb(&light.props.color, color);
+	light.mat.color = light.props.color;
 	light.type = POINT_LIGHT;
 	return (dyn_add(&app->hitable, &light));
 }
@@ -45,6 +47,8 @@ int	extract_light(const char *line, t_app *app)
 	color = extract_color(tokens[3]);
 	if (errno)
 		return (free_tokens(tokens), -1);
+	printf("The clors extracted: %f %f %f\n", color.x, color.y, color.z);
+
 	if (add_light(&loc, &brightness, &color, app))
 		return (free_tokens(tokens), -1);
 	return (free_tokens(tokens), 0);

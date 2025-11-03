@@ -1,8 +1,20 @@
-#include <stdio.h>
-#include <errno.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   extract_cordinates.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/03 20:58:15 by kzarins           #+#    #+#             */
+/*   Updated: 2025/11/03 20:58:16 by kzarins          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "elements.h"
 #include "libft.h"
 #include "parser.h"
+#include <errno.h>
+#include <stdio.h>
 
 void	cpy_loc(t_vec3 *dst, t_vec3 *src)
 {

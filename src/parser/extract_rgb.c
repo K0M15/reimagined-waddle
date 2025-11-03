@@ -1,8 +1,20 @@
-#include <stdio.h>
-#include <errno.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   extract_rgb.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/03 20:56:58 by kzarins           #+#    #+#             */
+/*   Updated: 2025/11/03 20:57:03 by kzarins          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "elements.h"
 #include "libft.h"
 #include "parser.h"
+#include <errno.h>
+#include <stdio.h>
 
 void	cpy_rgb(t_vec3 *dst, t_vec3 *src)
 {
@@ -13,9 +25,9 @@ void	cpy_rgb(t_vec3 *dst, t_vec3 *src)
 
 static int	validate_rgb_tokens(char **tokens)
 {
-	char		**temp;
-	int			token_count;
-	int			len;
+	char	**temp;
+	int		token_count;
+	int		len;
 
 	token_count = 0;
 	temp = tokens;
@@ -41,6 +53,8 @@ static int	tokens_to_rgb(char **tokens, t_vec3 *result)
 	result->y = ft_atoi(*(tokens + 1));
 	result->z = ft_atoi(*(tokens + 2));
 	if (result->x > 255 || result->y > 255 || result->z > 255)
+		return (-1);
+	if (result->x < 0 || result->y < 0 || result->z < 0)
 		return (-1);
 	result->x /= 255;
 	result->y /= 255;

@@ -1,9 +1,21 @@
-#include <stdio.h>
-#include <errno.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   extract_normal.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/03 20:57:46 by kzarins           #+#    #+#             */
+/*   Updated: 2025/11/03 20:57:47 by kzarins          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "elements.h"
+#include "ftvec3.h"
 #include "libft.h"
 #include "parser.h"
-#include "ftvec3.h"
+#include <errno.h>
+#include <stdio.h>
 
 void	cpy_normal(t_vec3 *dst, t_vec3 *src)
 {
@@ -35,7 +47,7 @@ static void	init_normal(t_vec3 *normal)
 
 t_vec3	extract_normal(const char *input)
 {
-	char		**tokens;
+	char	**tokens;
 	t_vec3	normal;
 
 	init_normal(&normal);

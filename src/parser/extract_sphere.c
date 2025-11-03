@@ -1,10 +1,10 @@
+#include "elements.h"
+#include "hitable.h"
+#include "libft.h"
+#include "miniRT.h"
+#include "parser.h"
 #include <errno.h>
 #include <stdio.h>
-#include "miniRT.h"
-#include "libft.h"
-#include "elements.h"
-#include "parser.h"
-#include "hitable.h"
 
 static int	add_sphere(t_obj *sphere, t_app *app)
 {
@@ -33,7 +33,7 @@ int	extract_sphere(const char *line, t_app *app)
 	sphere.props.position = extract_loc(tokens[1]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	sphere.props.radius = ft_atof(tokens[2])/2;
+	sphere.props.radius = ft_atof(tokens[2]) / 2;
 	if (errno)
 		return (free_tokens(tokens), -1);
 	if (sphere.props.radius <= (double)0.0)
@@ -41,7 +41,8 @@ int	extract_sphere(const char *line, t_app *app)
 	sphere.props.color = extract_color(tokens[3]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (token_ammount(tokens) == 10 && pars_bonus_tokens(3, tokens, &sphere) == -1)
+	if (token_ammount(tokens) == 10 && pars_bonus_tokens(3, tokens, &sphere) ==
+		-1)
 		return (free_tokens(tokens), -1);
 	if (add_sphere(&sphere, app))
 		return (free_tokens(tokens), -1);

@@ -1,35 +1,58 @@
-#include <fcntl.h>
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/03 20:56:21 by kzarins           #+#    #+#             */
+/*   Updated: 2025/11/03 20:56:23 by kzarins          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
 #include "libft.h"
 #include "parser.h"
-#include "get_next_line.h"
+#include <fcntl.h>
+#include <stdio.h>
 
-static int	extract_line_data(const char *line, t_app *app, int *has_cam_and_amb)
+#define CAMERA 0
+#define AMBIENT 1
+
+static int	extract_objects(const char *line, t_app *app, int *ret)
 {
-	int ret;
+	if (ft_strncmp(line, "sp", 2) == 0)
+		*ret = extract_sphere(line, app);
+	else if (ft_strncmp(line, "pl", 2) == 0)
+		*ret = extract_plane(line, app);
+	else if (ft_strncmp(line, "cy", 2) == 0)
+		*ret = extract_cylinder(line, app);
+	else
+		return (1);
+	return (*ret);
+}
+
+static int	extract_line_data(const char *line, t_app *app,
+		int *has_cam_and_amb)
+{
+	int	ret;
 
 	ret = 0;
 	if (*line == 'A')
 	{
 		ret = extract_ambient_light(line, app);
-		has_cam_and_amb[1] = 1;
+		has_cam_and_amb[AMBIENT] = 1;
 	}
 	else if (*line == 'C')
 	{
 		ret = extract_camera(line, app);
-		has_cam_and_amb[0] = 1;
+		has_cam_and_amb[CAMERA] = 1;
 	}
 	else if (*line == 'L')
 		ret = extract_light(line, app);
-	else if (ft_strncmp(line, "sp", 2) == 0)
-		ret = extract_sphere(line, app);
-	else if (ft_strncmp(line, "pl", 2) == 0)
-		ret = extract_plane(line, app);
-	else if (ft_strncmp(line, "cy", 2) == 0)
-		ret = extract_cylinder(line, app);
-	else if (*line == '\n')
-		ret = 0;
-	else if (*line == '#')
+	else if (extract_objects(line, app, &ret) < 1)
+		return (ret);
+	else if (*line == '\n' || *line == '#')
 		ret = 0;
 	else
 		return (-1);
@@ -42,37 +65,27 @@ void	hide_newline(char *line)
 		return ;
 	if (*line == '\0')
 		return ;
-	while(*line != '\n' && *line != '\0')
+	while (*line != '\n' && *line != '\0')
 		line++;
 	if (*line == '\n')
 		*line = 0;
 }
 
-int pars(const char *path, t_app *app)
+int	extract_all_lines(int fd, int camera_and_ambient[], t_app *app)
 {
-	int	fd;
 	char	*line;
-	int	ret;
-	int camera_and_ambient[2];
+	int		ret;
 
-	camera_and_ambient[0] = 0;
-	camera_and_ambient[1] = 0;
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-	{
-		printf("Could no open the file!");
-		return (-1);
-	}
 	line = get_next_line(fd);
 	hide_newline(line);
 	ret = 0;
-	while(line)
+	while (line)
 	{
 		ret = extract_line_data(line, app, camera_and_ambient);
 		if (ret == -1)
 		{
 			printf("Invalid line: %s\n", line);
-			while(line) 
+			while (line)
 			{
 				line = get_next_line(fd);
 				free(line);
@@ -83,10 +96,22 @@ int pars(const char *path, t_app *app)
 		line = get_next_line(fd);
 		hide_newline(line);
 	}
-	if (camera_and_ambient[0] != 1 || camera_and_ambient[1] != 1)
-	{
-		printf("Camera and/or ambient light missing!\n");
+	return (0);
+}
+
+int	pars(const char *path, t_app *app)
+{
+	int	fd;
+	int	camera_and_ambient[2];
+
+	camera_and_ambient[CAMERA] = 0;
+	camera_and_ambient[AMBIENT] = 0;
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return (printf("Could no open the file!"), -1);
+	if (extract_all_lines(fd, camera_and_ambient, app) == -1)
 		return (-1);
-	}
+	if (camera_and_ambient[CAMERA] != 1 || camera_and_ambient[AMBIENT] != 1)
+		return (printf("Camera and/or ambient light missing!\n"), -1);
 	return (0);
 }

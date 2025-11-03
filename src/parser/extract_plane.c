@@ -1,9 +1,9 @@
+#include "elements.h"
+#include "libft.h"
+#include "miniRT.h"
+#include "parser.h"
 #include <errno.h>
 #include <stdio.h>
-#include "miniRT.h"
-#include "libft.h"
-#include "elements.h"
-#include "parser.h"
 
 static int	add_plane(t_vec3 *loc, t_vec3 *normal, t_vec3 *color, t_app *app)
 {
@@ -19,9 +19,9 @@ static int	add_plane(t_vec3 *loc, t_vec3 *normal, t_vec3 *color, t_app *app)
 int	extract_plane(const char *line, t_app *app)
 {
 	char	**tokens;
-	t_vec3		loc;
+	t_vec3	loc;
 	t_vec3	normal;
-	t_vec3		color;
+	t_vec3	color;
 
 	tokens = ft_split(line, ' ');
 	if (!tokens)

@@ -1,9 +1,9 @@
+#include "elements.h"
+#include "libft.h"
+#include "miniRT.h"
+#include "parser.h"
 #include <errno.h>
 #include <stdio.h>
-#include "miniRT.h"
-#include "libft.h"
-#include "elements.h"
-#include "parser.h"
 
 static int	add_cylinder(t_obj *input, t_app *app)
 {
@@ -14,7 +14,7 @@ static int	add_cylinder(t_obj *input, t_app *app)
 
 int	extract_cylinder(const char *line, t_app *app)
 {
-	char		**tokens;
+	char	**tokens;
 	t_obj	cyl;
 
 	tokens = ft_split(line, ' ');
