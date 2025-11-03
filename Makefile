@@ -1,4 +1,5 @@
 .PHONY: all fractol fclean clean re MLX42
+export LIBRARY_PATH:=$(LIBRARY_PATH):/opt/homebrew/lib
 NAME=miniRT
 CC=cc
 FLAGS=-Wall -Wextra -Werror
