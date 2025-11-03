@@ -36,7 +36,7 @@ int	extract_cylinder(const char *line, t_app *app)
 	if (errno)
 		return (free_tokens(tokens), -1);
 	cyl.props.radius = atof(tokens[3]) / 2.0;
-	if (errno || cyl.props.diameter <= (double)0)
+	if (errno || cyl.props.radius <= (double)0)
 		return (free_tokens(tokens), -1);
 	cyl.props.height = atof(tokens[4]);
 	if (errno || cyl.props.height <= (double)0)
