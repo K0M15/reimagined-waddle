@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hitable.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 15:38:35 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 14:48:49 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,6 @@ t_uv		uv_cylside(t_vec3 axis, t_props cylinder, t_vec3 p);
 t_vec3		tex_sample(const mlx_texture_t *tex, t_uv uv,
 				uint32_t *checkerboard);
 t_uv		interpolate_height(mlx_texture_t *bump, t_uv uv);
+float		distance_col_scale(float distance);
 
 #endif /* HITABLE_H */
