@@ -6,26 +6,22 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/03 16:00:59 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 19:34:44 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-//The movements have to get corrected base on the current camera vector rotation
-//+z = forward
-//+x = right
 void	ft_camera_move(t_camera *cam, t_vec3 move)
 {
 	t_vec3	delta;
 
-	delta = ftvec3_plus(
-		ftvec3_plus(
-			ftvec3_multiply(ftvec3_multiply(cam->u, ftvec3(-1)), ftvec3(move.x)),
-			ftvec3_multiply(cam->v, ftvec3(move.y))
-		),
-		ftvec3_multiply(ftvec3_multiply(cam->w, ftvec3(-1)), ftvec3(move.z))
-	);
+	delta = ftvec3_plus(ftvec3_plus(
+				ftvec3_multiply(ftvec3_multiply(cam->u, ftvec3(-1)),
+					ftvec3(move.x)),
+				ftvec3_multiply(cam->v, ftvec3(move.y))),
+			ftvec3_multiply(ftvec3_multiply(cam->w, ftvec3(-1)), ftvec3(move.z))
+			);
 	cam->center = ftvec3_plus(cam->center, delta);
 	cam->look_at = ftvec3_plus(cam->look_at, delta);
 	ft_camera_calc(cam);
@@ -50,17 +46,13 @@ void	ft_camera_apply(t_camera *cam, t_vec3 apply)
 	ft_camera_calc(cam);
 }
 
-static t_vec3	sample_square(void)
-{
-	return ((t_vec3){rand_double() - .5, rand_double() - .5, 0});
-}
-
 static t_ray	get_rand_ray(t_vec3 pixel_loc, t_vec3 origin, t_camera *cam)
 {
 	t_vec3	offset;
 	t_vec3	sample_pos;
 
-	offset = ftvec3_multiply(sample_square(),
+	offset = ftvec3_multiply(((t_vec3){rand_double() - .5,
+				rand_double() - .5, 0}),
 			ftvec3_plus(cam->delta_u, cam->delta_v));
 	sample_pos = ftvec3_plus(pixel_loc, offset);
 	return (ftray_create(cam->ambient, cam->ambient_intensity,

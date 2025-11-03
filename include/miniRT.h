@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/03 15:40:08 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 19:09:12 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-# define STAN_SAMPLES_PER_PIXEL 1
-# define MAX_DEPTH 3
+# define STAN_SAMPLES_PER_PIXEL 5
+# define MAX_DEPTH 5
 # define MOV_SPEED 0.1
 # define PHONG_SHININESS 32.0f
 # define MIN_REFLECTION_DROPOUT .05f
@@ -106,5 +106,6 @@ void		ftref_lambert(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
 void		ftref_phong(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
+void		calc_refl_emitt(struct s_ftray_color_props *p, t_hitrec rec, t_vec3 dir); 
 uint32_t	checker_enable(uint32_t val);
 #endif /* MINIRT_H */
