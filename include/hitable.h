@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/03 14:48:49 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 19:38:31 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ struct s_lpair
 uint32_t	ft_sphere_hit(t_obj sphere, t_ray ray, t_hitrec *rec,
 				struct s_lpair limit);
 // t_obj		ft_cylinder_create(t_cylinder_p params, t_material *mat);
+void		ft_cyl_basis(t_vec3 normal, t_vec3 axis, t_vec3 basis[3]);
 uint32_t	ft_cylinder_hit(t_obj cyl, t_ray ray, t_hitrec *rec,
 				struct s_lpair limit);
 // t_obj		ft_plane_create(t_plane_p params, t_material *mat);

@@ -6,12 +6,19 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 17:21:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/27 19:22:47 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 19:45:53 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hitable.h"
 #include "ftvec3.h"
+
+void	ft_cyl_basis(t_vec3 normal, t_vec3 axis, t_vec3 basis[3])
+{
+	basis[2] = ftvec3_unit(normal);
+	basis[1] = ftvec3_unit(axis);
+	basis[0] = ftvec3_unit(ftvec3_cross(basis[1], basis[2]));
+}
 
 static int	fillvars(t_vec3 *cap, t_props *c, t_vec3 axis)
 {
@@ -58,15 +65,8 @@ t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
 			{
 				result = (t_hitrec){cap[4], cap[ci + 2],
 					NULL, tcap, false, {.0f, .0f}};
-				result.uv = uv_plane((t_props){
-					.position = cap[ci+2],
-					.rotation = cap[4],
-					.brightness = 0,
-					.color = ftvec3(0),
-					.diameter = 0,
-					.height = 0,
-					.radius = 0
-				}, result.hit);
+				result.uv = uv_plane((t_props){ftvec3(0), cap[ci + 2],
+						cap[4], 0, 0, 0, 0}, result.hit);
 			}
 	}
 	return (result);

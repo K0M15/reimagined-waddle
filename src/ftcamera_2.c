@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:11:25 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/03 14:59:48 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 19:11:07 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	handle_pl(struct s_ftray_color_props *p, t_dyn *arr)
 	t_props		*pl;
 	t_vec3		to_light;
 	t_hitrec	temp;
-	uint32_t		i;
 
 	pl = &p->obj->props;
 	to_light = ftvec3_minus(pl->position, p->rec.hit);
@@ -32,14 +31,8 @@ static void	handle_pl(struct s_ftray_color_props *p, t_dyn *arr)
 		ftref_phong(p, pl, to_light);
 	}
 	else
-	{
 		if (temp.mat->is_emitting)
-		{
-			p->light_acc = tex_sample(temp.mat->tex, temp.uv, &i);
-			if (!checker_enable(0))
-				p->light_acc = ftcol_scale(temp.mat->color, distance_col_scale(temp.t));
-		}
-	}
+			calc_refl_emitt(p, temp, to_light);
 }
 
 static t_ray	ft_mat_scatter(t_ray inc, t_hitrec *rec)
