@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:08:01 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/01 13:54:16 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 16:17:41 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,20 @@ static	void ft_sphere_uvnormal(t_hitrec *rec, t_obj *sphere)
 		rec->normal = ftvec3_multiply(result, ftvec3(-1));
 }
 
+static float	ft_sphere_root(float discriminant, t_vec3 abc, struct s_lpair limit)
+{
+	float root1;
+	float root2;
+
+	root1 = (abc.y - discriminant) / abc.x;
+	root2 = (abc.y + discriminant) / abc.x;
+	if (root1 > limit.min && root1 < limit.max)
+		return (root1);
+	else if (root2 > limit.min && root2 < limit.max)
+		return (root2);
+	return (INFINITY);
+}
+
 uint32_t	ft_sphere_hit(t_obj sphere, t_ray ray, t_hitrec *rec,
 	struct s_lpair limit)
 {
@@ -88,10 +102,8 @@ uint32_t	ft_sphere_hit(t_obj sphere, t_ray ray, t_hitrec *rec,
 	if ((abc.y * abc.y - abc.x * abc.z) < 0)
 		return (false);
 	discriminant = sqrtf((abc.y * abc.y - abc.x * abc.z));
-	root = (abc.y - discriminant) / abc.x;
-	if ((root <= limit.min || limit.max <= root)
-		&& (((abc.y + discriminant) / abc.x) <= limit.min
-			|| limit.max <= ((abc.y + discriminant) / abc.x)))
+	root = ft_sphere_root(discriminant, abc, limit);
+	if (root == INFINITY)
 		return (false);
 	rec->t = root;
 	rec->hit = ftray_at(ray, root);
