@@ -1,8 +1,9 @@
 .PHONY: all fractol fclean clean re MLX42
+export LIBRARY_PATH:=$(LIBRARY_PATH):/opt/homebrew/lib
 NAME=miniRT
 CC=cc
 FLAGS=-Wall -Wextra -Werror
-FLAGS_MAC= -framework Cocoa -framework OpenGL -framework IOKit -lglfw
+FLAGS_MAC= -framework Cocoa -framework OpenGL -framework IOKit -lglfw -fsanitize=address
 FLAGS_LINUX= -ldl -lglfw -lpthread -lm 
 F_INC=-Iinclude
 MLX=MLX42/build/libmlx42.a
@@ -24,7 +25,8 @@ PARSER_FILES 	=	extract_ambient_light.c \
 			parser.c \
 			token_utils.c \
 			extract_triangle.c \
-			extract_cone.c
+			extract_cone.c \
+			token_bonus.c
 FILES=src/ftray.c src/ftcolor.c src/dyn.c
 FILES+=src/ftvec3.c src/ftvec3_1.c src/ftvec3_2.c src/ftvec3_3.c	# VECTOR
 FILES+=src/ftcamera.c src/ftcamera_2.c								# CAMERA
@@ -55,14 +57,14 @@ all: $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(NAME)
 
 test: FLAGS+= -DTEST
 test: fclean $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(FILES_WITH_TESTS:.c=.o)
-	@$(CC) $(F_INC) $(FILES_WITH_TESTS:.c=.o) -DTEST $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME) && ./miniRT && make . fclean > /dev/null
+	@$(CC) $(F_INC) $(FILES_WITH_TESTS:.c=.o) -DTEST $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_OS) -o $(NAME) && ./miniRT && make . fclean > /dev/null
 test: fclean
 
 $(MLX):
 	cd MLX42 && cmake -B build && cmake --build build -j4
 
 $(NAME): $(FILES:.c=.o)
-	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_LINUX) -o $(NAME)
+	$(CC) $(F_INC) $(FILES:.c=.o) $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_OS) -o $(NAME)
 
 %.o: %.c
 	@echo "Building $@"

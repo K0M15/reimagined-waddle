@@ -1,51 +1,55 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   extract_light.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/03 22:15:54 by kzarins           #+#    #+#             */
+/*   Updated: 2025/11/03 22:16:00 by kzarins          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "elements.h"
+#include "libft.h"
+#include "miniRT.h"
+#include "parser.h"
 #include <errno.h>
 #include <stdio.h>
-#include "miniRT.h"
-#include "libft.h"
-#include "elements.h"
-#include "parser.h"
 
-static int	add_light(t_vec3 *loc, double *brightness, t_vec3 *color, t_app *app)
+static int	add_light(t_obj *light, t_app *app)
 {
-	t_obj	light;
-
-	light.props.brightness = *brightness;
-	cpy_loc(&(light.props.position), loc);
-	cpy_rgb(&light.props.color, color);
-	light.type = POINT_LIGHT;
-	return (dyn_add(&app->hitable, &light));
+	light->mat.color = light->props.color;
+	light->mat.is_emitting = 1;
+	light->type = POINT_LIGHT;
+	return (dyn_add(&app->hitable, light));
 }
 
 int	extract_light(const char *line, t_app *app)
 {
 	char	**tokens;
-	t_vec3	loc;
+	t_obj	light;
 	double	brightness;
-	t_vec3	color;
 
 	tokens = ft_split(line, ' ');
 	if (!tokens)
-	{
-		printf("Could not split the tokens or malloc failed!\n");
-		return (-1);
-	}
+		return (printf("Could not split the tokens or malloc failed!\n"), -1);
 	if (token_ammount(tokens) != 4)
 		return (free_tokens(tokens), -1);
 	if (ft_strncmp(tokens[0], "L", 10) != 0)
 		return (free_tokens(tokens), -1);
 	errno = 0;
-	loc = extract_loc(tokens[1]);
+	light.props.position = extract_loc(tokens[1]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	brightness = ft_atof(tokens[2]);
+	light.props.brightness = ft_atof(tokens[2]);
+	brightness = light.props.brightness;
+	if (errno || brightness > (double)1.0 || brightness < (double)0.0)
+		return (free_tokens(tokens), -1);
+	light.props.color = extract_color(tokens[3]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	if (brightness > (double)1.0 || brightness < (double)0.0)
-		return (free_tokens(tokens), -1);
-	color = extract_color(tokens[3]);
-	if (errno)
-		return (free_tokens(tokens), -1);
-	if (add_light(&loc, &brightness, &color, app))
+	if (add_light(&light, app))
 		return (free_tokens(tokens), -1);
 	return (free_tokens(tokens), 0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 19:09:56 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 19:09:12 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-# define STAN_SAMPLES_PER_PIXEL 1
-# define MAX_DEPTH 3
+# define STAN_SAMPLES_PER_PIXEL 5
+# define MAX_DEPTH 5
 # define MOV_SPEED 0.1
 # define PHONG_SHININESS 32.0f
 # define MIN_REFLECTION_DROPOUT .05f
@@ -35,6 +35,7 @@ struct s_ftray_color_props
 	t_vec3		next_color;
 	t_vec3		view_dir;
 	t_vec3		local_color;
+	t_vec3		emitted;
 	t_vec3		light_acc;
 	t_obj		*obj;
 };
@@ -96,6 +97,7 @@ int32_t		pars_init(int argc, char **argv, t_app *app);
 t_vec3		ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect);
 uint32_t	ft_camera_init(t_camera *camera, t_camera_p props);
 void		ft_camera_calc(t_camera *camera);
+void		ft_camera_move(t_camera *cam, t_vec3 move);
 void		ft_camera_apply(t_camera *cam, t_vec3 apply);
 uint32_t	ft_camera_render(t_app *app, void (*put_pixel)(mlx_image_t *image,
 					int x, int y, uint32_t color),
@@ -104,5 +106,6 @@ void		ftref_lambert(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
 void		ftref_phong(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
+void		calc_refl_emitt(struct s_ftray_color_props *p, t_hitrec rec, t_vec3 dir); 
 uint32_t	checker_enable(uint32_t val);
 #endif /* MINIRT_H */

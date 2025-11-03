@@ -94,6 +94,7 @@ struct s_lpair
 uint32_t	ft_sphere_hit(t_obj sphere, t_ray ray, t_hitrec *rec,
 				struct s_lpair limit);
 // t_obj		ft_cylinder_create(t_cylinder_p params, t_material *mat);
+void		ft_cyl_basis(t_vec3 normal, t_vec3 axis, t_vec3 basis[3]);
 uint32_t	ft_cylinder_hit(t_obj cyl, t_ray ray, t_hitrec *rec,
 				struct s_lpair limit);
 // t_obj		ft_plane_create(t_plane_p params, t_material *mat);
@@ -125,5 +126,6 @@ t_uv		uv_cylside(t_vec3 axis, t_props cylinder, t_vec3 p);
 t_vec3		tex_sample(const mlx_texture_t *tex, t_uv uv,
 				uint32_t *checkerboard);
 t_uv		interpolate_height(mlx_texture_t *bump, t_uv uv);
+float		distance_col_scale(float distance);
 
 #endif /* HITABLE_H */

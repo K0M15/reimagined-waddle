@@ -35,6 +35,7 @@ t_vec3		ftvec3_runit(void);
 t_vec3		ftvec3_rclamped(double min, double max);
 t_vec3		ftvec3_ronhemi(t_vec3 normal);
 t_vec3		ftvec3_plus(t_vec3 op1, t_vec3 op2);
+t_vec3		ftvec3_plusp(t_vec3 op1, t_vec3 op2);
 t_vec3		ftvec3_minus(t_vec3 op1, t_vec3 op2);
 t_vec3		ftvec3_multiply(t_vec3 op1, t_vec3 op2);
 t_vec3		ftvec3_divide(t_vec3 op1, t_vec3 op2);
