@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:06 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/01 16:07:55 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 13:25:27 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ uint32_t	world_hit(t_dyn *world, t_ray ray,
 			p.hit = ft_cylinder_hit(*p.obj, ray, &p.temp, limit);
 		else if (p.obj->type == TRIANGLE)
 			p.hit = ft_tri_hit(*p.obj, ray, &p.temp, limit);
+		else if (p.obj->type == CONE)
+			p.hit = ft_cone_hit(*p.obj, ray, &p.temp, limit);
 		if (p.hit && p.temp.t < p.closest)
 		{
 			p.closest = p.temp.t;

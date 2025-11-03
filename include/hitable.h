@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/01 16:07:13 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 14:08:55 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,18 @@ uint32_t	ft_plane_hit(t_obj plane, t_ray ray, t_hitrec *rec,
 // t_obj		ft_light_create(t_point_light_p props);
 uint32_t 	ft_tri_hit(t_obj triangle, t_ray ray,
     			t_hitrec *rec, struct s_lpair limit);
+uint32_t	ft_cone_hit(t_obj cone, t_ray ray,
+				t_hitrec *rec, struct s_lpair limit);
 uint32_t	world_hit(t_dyn *world, t_ray ray, t_hitrec *rec,
 				struct s_lpair limit);
 void		ft_hitr_set_face_normal(t_hitrec *rec, t_ray ray,
 				t_vec3 outwar_norm);
 void		assign_rayhit(t_hitrec *rec, t_hitrec src, t_material *material);
 t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
+				t_ray ray, struct s_lpair limit);
+void		ft_cone_basis(t_vec3 normal, t_vec3 axis, t_vec3 basis[3]);
+t_vec3		cone_norm(t_vec3 p, const t_props *c, float proj, float k);
+t_hitrec	find_conecap_hit(t_vec3 axis, const t_props *c,
 				t_ray ray, struct s_lpair limit);
 
 t_uv		uv_sphere(t_props sphere, t_vec3 p);

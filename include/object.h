@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 14:34:15 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/01 16:47:01 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/02 17:36:15 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ enum e_obj_type
 	PLANE,
 	POINT_LIGHT,
 	TRIANGLE,
+	CONE,
 	ERROR = 0xFFFF
 };
 

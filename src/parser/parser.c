@@ -29,6 +29,8 @@ static int	extract_line_data(const char *line, t_app *app, int *has_cam_and_amb)
 		ret = extract_cylinder(line, app);
 	else if (ft_strncmp(line, "tr", 2) == 0)
 		ret = extract_triangle(line, app);
+	else if (ft_strncmp(line, "co", 2) == 0)
+		ret = extract_cone(line, app);
 	else if (*line == '\n')
 		ret = 0;
 	else if (*line == '#')

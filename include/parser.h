@@ -14,6 +14,7 @@ int	extract_sphere(const char *line, t_app *app);
 int	extract_plane(const char *line, t_app *app);
 int	extract_cylinder(const char *line, t_app *app);
 int	extract_triangle(const char *line, t_app *app);
+int	extract_cone(const char *line, t_app *app);
 
 //extract_rgb.c
 void	cpy_rgb(t_vec3 *dst, t_vec3 *src);
