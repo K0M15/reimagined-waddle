@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 20:56:21 by kzarins           #+#    #+#             */
-/*   Updated: 2025/11/03 20:56:23 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/03 23:58:38 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	hide_newline(char *line)
 {
 	if (!line)
 		return ;
-	while(*line && *line != '\n')
+	while (*line && *line != '\n')
 		line++;
 	if (*line && *line == '\n')
 		*line = 0;

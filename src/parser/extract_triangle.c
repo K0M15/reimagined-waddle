@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extract_triangle.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 16:53:05 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/01 17:53:24 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/04 00:02:33 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,31 @@
 #include "elements.h"
 #include "parser.h"
 
+static int	extract_default_props(t_obj *tri, char **tokens)
+{
+	t_vec3	vert3;
+
+	tri->props.position = extract_loc(tokens[1]);
+	if (errno)
+		return (free_tokens(tokens), -1);
+	tri->props.rotation = extract_loc(tokens[2]);
+	if (errno)
+		return (free_tokens(tokens), -1);
+	vert3 = extract_loc(tokens[3]);
+	if (errno)
+		return (free_tokens(tokens), -1);
+	tri->props.radius = vert3.x;
+	tri->props.diameter = vert3.y;
+	tri->props.height = vert3.z;
+	tri->props.color = extract_color(tokens[4]);
+	tri->type = TRIANGLE;
+	return (0);
+}
 
 int	extract_triangle(const char *line, t_app *app)
 {
-    char	**tokens;
-	t_obj	temp;
-	t_vec3	vert3;
+	char	**tokens;
+	t_obj	tri;
 
 	tokens = ft_split(line, ' ');
 	if (!tokens)
@@ -30,26 +49,17 @@ int	extract_triangle(const char *line, t_app *app)
 		printf("Could not split the tokens or malloc failed\n");
 		return (-1);
 	}
-	if (token_ammount(tokens) != 5)
+	if (token_ammount(tokens) != 5 && token_ammount(tokens) != 11)
 		return (free_tokens(tokens), -1);
 	if (ft_strncmp(tokens[0], "tr", 2) != 0)
 		return (free_tokens(tokens), -1);
 	errno = 0;
-	temp.props.position = extract_loc(tokens[1]);
-	if (errno)
+	init_material(&tri);
+	if (extract_default_props(&tri, tokens) == -1)
+		return (-1);
+	if (token_ammount(tokens) == 11 && pars_bonus_tokens(4, tokens, &tri) == -1)
 		return (free_tokens(tokens), -1);
-	temp.props.rotation = extract_loc(tokens[2]);
-	if (errno)
-		return (free_tokens(tokens), -1);
-	vert3 = extract_loc(tokens[3]);
-	if (errno)
-		return (free_tokens(tokens), -1);
-	temp.props.radius = vert3.x;
-	temp.props.diameter = vert3.y;
-	temp.props.height = vert3.z;
-	temp.props.color = extract_color(tokens[4]);
-	temp.type = TRIANGLE;
-	if (errno || dyn_add(&app->hitable, &temp))
+	if (errno || dyn_add(&app->hitable, &tri))
 		return (free_tokens(tokens), -1);
 	return (free_tokens(tokens), 0);
 }

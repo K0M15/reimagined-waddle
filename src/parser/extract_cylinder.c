@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 22:36:29 by kzarins           #+#    #+#             */
-/*   Updated: 2025/11/03 22:42:31 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/03 23:46:22 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ int	extract_cylinder(const char *line, t_app *app)
 		return (free_tokens(tokens), -1);
 	errno = 0;
 	init_material(&cyl);
-	extract_default_props(&cyl, tokens);
+	if (extract_default_props(&cyl, tokens) == -1)
+		return (-1);
 	if (token_ammount(tokens) == 12 && pars_bonus_tokens(5, tokens, &cyl) == -1)
 		return (free_tokens(tokens), -1);
 	if (add_cylinder(&cyl, app))
