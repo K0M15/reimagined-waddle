@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cylinder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:07:04 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 15:38:18 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 17:02:40 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static t_vec3	fillabc(t_vec3 axis, t_props *c, t_vec3 ro_base, t_ray ray)
 	return (abc);
 }
 
+// DRR contains Discriminant and root/root
 t_hitrec	find_root_hit(float drr[3], t_ray ray,
 	struct s_lpair limit, t_props *c)
 {
@@ -148,9 +149,9 @@ uint32_t	ft_cylinder_hit(t_obj cyl, t_ray ray,
 		return (false);
 	if (best_hit[1].t != INFINITY && best_hit[0].t > best_hit[1].t)
 		best_hit[0] = best_hit[1];
-	else
-		ft_cyl_uvnormal(&best_hit[0], axis, &cyl);
+	ft_hitr_set_face_normal(rec, ray, best_hit[0].normal);
 	assign_rayhit(rec, best_hit[0], &cyl.mat);
-	ft_hitr_set_face_normal(rec, ray, ftvec3_unit(best_hit[0].normal));
+	if (best_hit[0].t != best_hit[1].t)
+		ft_cyl_uvnormal(&best_hit[0], axis, &cyl);
 	return (true);
 }

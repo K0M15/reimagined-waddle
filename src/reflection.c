@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reflection.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:48:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/29 19:11:33 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/03 19:29:05 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,27 @@ void	ftref_phong(struct s_ftray_color_props *p, t_props *pl,
 				ftcol_scale(pl->color, pl->brightness * powf(
 						rdotv, PHONG_SHININESS) * p->rec.mat->reflectivity
 					* distance_col_scale(ftvec3_length(to_light))));
+}
+
+void	calc_refl_emitt(struct s_ftray_color_props *p, t_hitrec rec, t_vec3 dir)
+{
+	uint32_t	i;
+	uint32_t	j;
+	t_vec3		col[2];
+	float		vals[2];
+
+	col[0] = tex_sample(rec.mat->tex, rec.uv, &i);
+	col[1] = tex_sample(p->rec.mat->tex, p->rec.uv, &j);
+	if (!checker_enable(0))
+	{
+		col[0] = rec.mat->color;
+		col[1] = p->rec.mat->color;
+	}
+	vals[0] = ftvec3_dot(p->rec.normal, ftvec3_unit(dir));
+	vals[1] = ftvec3_dot(rec.normal, ftvec3_multiply(ftvec3_unit(dir),
+				ftvec3(-1)));
+	if (vals[0] > 0.0f && vals[1] > 0.0f)
+		p->light_acc = ftcol_add(p->light_acc, ftcol_scale(ftcol_mult(col[0],
+						col[1]), vals[0] * vals[1]
+					* distance_col_scale(ftvec3_length(dir)) / 5.0f));
 }
