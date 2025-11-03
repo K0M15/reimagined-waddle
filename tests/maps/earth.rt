@@ -1,7 +1,8 @@
 A 0.2 255,255,255
 C 0,0,0 0,0,-1 70
 L 0,2,-2 0.2 255,255,255
+L 0,2,2 0.2 255,255,255
 #sp loc diameter rgb reflectivity scatter is_emmiting brightness texture bump_maps
-sp 0,0,-5 3 255,0,0 0.4 0.2 0 0.8 ./earthmap1k.png ./earthbump1k.png
+sp 0,0,0 20 255,0,0 0.4 0.2 0 0.8 ./earthmap1k.png ./earthbump1k.png
 #sp 0,0,-5 3 255,0,0
-pl 0.0,0.0,-10.0 0.0,0.0,1.0 222,255,225
+# pl 0.0,0.0,-10.0 0.0,0.0,1.0 222,255,225
