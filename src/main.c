@@ -6,41 +6,13 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/03 22:35:44 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/04 20:55:47 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 #include <stdio.h>
 #include "parser.h"
-
-void ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color)
-{
-	uint8_t *pixel;
-
-	pixel = &image->pixels[(y * image->width + x) * 4];
-	*(pixel) = ((uint8_t)(color >> 24) + *pixel) / 2;
-	pixel++;
-	*(pixel) = ((uint8_t)(color >> 16) + *pixel) / 2;
-	pixel++;
-	*(pixel) = ((uint8_t)(color >> 8) + *pixel) / 2;
-	pixel++;
-	*(pixel) = ((uint8_t)(color & 0xFF) + *pixel) / 2;
-}	
-
-void ft_put_pixel(mlx_image_t *image, int x, int y, uint32_t color)
-{
-	uint8_t *pixel;
-
-	pixel = &image->pixels[(y * image->width + x) * 4];
-	*(pixel) = (uint8_t)(color >> 24);
-	pixel++;
-	*(pixel) = (uint8_t)(color >> 16);
-	pixel++;
-	*(pixel) = (uint8_t)(color >> 8);
-	pixel++;
-	*(pixel) = (uint8_t)(color & 0xFF);
-}
 
 void key_hook(mlx_key_data_t keydata, void *param)
 {
@@ -112,11 +84,6 @@ int32_t setupWindow(t_app *app)
 	return (EXIT_SUCCESS);
 }
 
-static void	print_instructions(void)
-{
-	printf("The program usage: ./miniRT [scene file]\n");
-}
-
 int32_t pars_init(int argc, char **argv, t_app *app)
 {
 	if (argc != 2)
@@ -127,85 +94,9 @@ int32_t pars_init(int argc, char **argv, t_app *app)
 	if (dyn_init(&app->hitable))
 		return (-1);
 	if (pars(argv[1], app) == -1)
-		return (-1);
+		return (dyn_free(&app->hitable), -1);
 	ft_camera_calc(&app->active_camera);
 	return (0);
-}
-
-void	print_vec3(t_vec3 *vec)
-{
-	printf("%f,%f,%f", vec->x, vec->y, vec->z);
-}
-
-void	print_sphere(t_obj *app)
-{
-	print_vec3(&app->props.position);
-	printf("\t");
-	printf("%f", app->props.radius);
-	printf("\t");
-	print_vec3(&app->props.color);
-}
-
-void	print_cylinder(t_obj *app)
-{
-	print_vec3(&app->props.position);
-	printf("\t");
-	print_vec3(&app->props.rotation);
-	printf("\t");
-	printf("%f", app->props.radius);
-	printf("\t");
-	printf("%f", app->props.height);
-	printf("\t");
-	print_vec3(&app->props.color);
-}
-
-void	print_plane(t_obj *app)
-{
-	print_vec3(&app->props.position);
-	printf("\t");
-	print_vec3(&app->props.rotation);
-	printf("\t");
-	print_vec3(&app->props.color);
-}
-
-void	print_point_light(t_obj *app)
-{
-	print_vec3(&app->props.position);
-	printf("\t");
-	printf("%f", app->props.brightness);
-	printf("\t");
-	print_vec3(&app->props.color);
-}
-
-void	print_triangle(t_obj *obj)
-{
-	t_vec3 vert3 = (t_vec3){obj->props.radius, obj->props.diameter, obj->props.height};
-	print_vec3(&obj->props.position);
-	print_vec3(&obj->props.rotation);
-	print_vec3(&vert3);
-}
-
-
-void	print_element(int iter, t_app *app)
-{
-	t_obj		*ptr;
-	const char	*types[] = {"SPHERE", "CYLINDER", "PLANE", "POINT_LIGHT", "TRIANGLE", "CONE"};
-	void	(*func[])(t_obj*)= {print_sphere, print_cylinder, print_plane, print_point_light, print_triangle, print_cylinder};
-
-	ptr = app->hitable.elem + iter;
-	if (ptr->type == 0xFFFF)
-	{
-		printf("There is an error type in the objects!!/n");
-		return ;
-	}
-	printf("==========\n");
-	printf("The type: %s\n", types[ptr->type]);
-	func[ptr->type](ptr);
-	printf("\n");
-	printf("The materials:\n color: %f, %f, %f; reflectivity: %f; is_emitting: %d; scatter: %f",\
-			ptr->mat.color.x, ptr->mat.color.y, ptr->mat.color.z, ptr->mat.reflectivity,\
-			ptr->mat.is_emitting, ptr->mat.scatter);
-	printf("\n==========\n");
 }
 
 void print_internal_data(t_app *app)
@@ -261,12 +152,8 @@ int32_t	main(int argc, char *argv[])
 	t_app app;
 	init_default_camera(&app);
 	if (pars_init(argc, argv, &app) != 0)
-		return (dyn_free(&app.hitable), -1);
-
-	// Pars terminal and file inputs
-	//TODO: convert to the different structures for the exec
+		return (-1);
 	print_internal_data(&app);
-	// TODO: Still cleanup to do
 	if (setupWindow(&app) == EXIT_FAILURE)
 		return (dyn_free(&app.hitable), EXIT_FAILURE);	
 	
