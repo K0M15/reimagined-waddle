@@ -29,9 +29,9 @@ PARSER_FILES 	=	extract_ambient_light.c \
 			token_bonus.c
 FILES=src/ftray.c src/ftcolor.c src/dyn.c
 FILES+=src/ftvec3.c src/ftvec3_1.c src/ftvec3_2.c src/ftvec3_3.c	# VECTOR
-FILES+=src/ftcamera.c src/ftcamera_2.c								# CAMERA
+FILES+=src/ftcamera.c src/ftcamera_2.c src/ftcamera_3.c							# CAMERA
 FILES+=src/ft_sphere.c src/ft_cylinder.c src/ft_plane.c src/hitable.c
-FILES+=src/ft_point_light.c	src/reflection.c	src/ft_cyl_caphit.c	# OBJECTS
+FILES+=src/reflection.c	src/ft_cyl_caphit.c	# OBJECTS
 FILES+=src/main.c src/pseudo_random.c src/uv.c src/texture.c
 FILES+=src/bump.c src/ft_triangle.c src/ft_cone.c src/ft_cone_cap.c
 TEST_FILES=tests/render_tests.c

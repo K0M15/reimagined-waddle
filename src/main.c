@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "miniRT.h"
+#include <stdio.h>
+#include "parser.h"
 
 void ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color)
 {
@@ -55,7 +57,6 @@ void key_hook(mlx_key_data_t keydata, void *param)
 		ft_camera_apply(&app->active_camera, (t_vec3){MOV_SPEED, 0, 0});
 	if (keydata.key == MLX_KEY_D)
 		ft_camera_apply(&app->active_camera, (t_vec3){-MOV_SPEED, 0, 0});
-//TODO: The ft_camera_move should still have to get implemented
 	if (keydata.key == MLX_KEY_DOWN)
 		ft_camera_move(&app->active_camera, (t_vec3){0, 0, -MOV_SPEED});
 	if (keydata.key == MLX_KEY_UP)
@@ -110,9 +111,6 @@ int32_t setupWindow(t_app *app)
 	}
 	return (EXIT_SUCCESS);
 }
-
-#include <stdio.h>
-#include "parser.h"
 
 static void	print_instructions(void)
 {
@@ -235,7 +233,6 @@ void	resize_hook(int32_t width, int32_t height, void* param)
 	app->active_camera.image_height = height;
 	printf("The height: %d, the width: %d\n", app->mlx->height, app->mlx->width);
 	mlx_delete_image(app->mlx, app->image);
-	//TODO: in case of falure all the allocations should be freed
 	if (!(app->image = mlx_new_image(app->mlx, app->width, app->height)))
 	{
 		mlx_close_window(app->mlx);
@@ -257,8 +254,6 @@ void draw_loop(void *args)
 
 	app = (t_app *)args;
 	lastPixl = ft_camera_render(app, ft_put_pixel, lastPixl, lastPixl + 1000 / STAN_SAMPLES_PER_PIXEL);
-	// ft_camera_render(app, ft_kumul_pixel);
-	//printf("Cam: X%.2f Y%.2f Z%.2f, FOV%.2F\n", app->active_camera.look_at.x, app->active_camera.look_at.y, app->active_camera.look_at.z, app->active_camera.fov);
 }
 
 int32_t	main(int argc, char *argv[])

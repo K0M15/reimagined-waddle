@@ -26,7 +26,7 @@ mlx_texture_t	*add_texture(char *src)
 	return (texture);
 }
 
-int	extract_map_and_texture(int *iter, char **tokens,\
+int	extract_map_and_texture(int *iter, char **tokens,
 	t_obj *sphere, int last_mand_token)
 {
 	sphere->mat.tex = add_texture(tokens[*iter + last_mand_token]);

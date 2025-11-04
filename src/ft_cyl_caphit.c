@@ -37,10 +37,9 @@ static int	check_hit(t_vec3 p, t_props *c, t_vec3 ci, t_vec3 axis)
 			ftvec3_minus(ftvec3_minus(p, ci),
 				ftvec3_multiply(axis, ftvec3(ftvec3_dot(ftvec3_minus(
 								p, ci), axis)))))
-		<= c->radius * c->radius + 1e-6f);
+		<= c->radius * c->radius + 0.000001);
 }
 
-// TOCHECK: Somehow i am not using the inverse of the surface normal of the caps
 t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
 	t_ray ray, struct s_lpair limit)
 {
@@ -60,14 +59,13 @@ t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
 		if (!(tcap > limit.min && tcap < limit.max))
 			continue ;
 		cap[4] = ftray_at(ray, tcap);
-		if (check_hit(cap[4], c, cap[ci], axis))
-			if (tcap < result.t)
-			{
-				result = (t_hitrec){cap[4], cap[ci + 2],
-					NULL, tcap, false, {.0f, .0f}};
-				result.uv = uv_plane((t_props){ftvec3(0), cap[ci + 2],
-						cap[4], 0, 0, 0, 0}, result.hit);
-			}
+		if (check_hit(cap[4], c, cap[ci], axis) && tcap < result.t)
+		{
+			result = (t_hitrec){cap[4], cap[ci + 2],
+				NULL, tcap, false, {.0f, .0f}};
+			result.uv = uv_plane((t_props){ftvec3(0), cap[ci + 2],
+					cap[4], 0, 0, 0, 0}, result.hit);
+		}
 	}
 	return (result);
 }

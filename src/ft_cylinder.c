@@ -13,21 +13,6 @@
 #include "hitable.h"
 #include "ftvec3.h"
 
-// t_obj	ft_cylinder_create(s_props params, t_material *mat)
-// {
-// 	t_obj	cyl;
-
-// 	cyl.type = ERROR;
-// 	if(!(cyl.props = malloc(sizeof(s_props))))
-// 		return cyl;
-// 	cyl.type = CYLINDER;
-// 	cyl.mat = mat;
-// 	memcpy(cyl.props, &params, sizeof(s_props));
-// 	((s_props*) cyl.props)->rotation = ftvec3_unit(((s_props*)
-// 			cyl.props)->rotation);
-// 	return (cyl);
-// }
-
 static t_vec3	fillabc(t_vec3 axis, t_props *c, t_vec3 ro_base, t_ray ray)
 {
 	t_vec3	abc;

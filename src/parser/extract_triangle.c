@@ -34,6 +34,7 @@ static int	extract_default_props(t_obj *tri, char **tokens)
 	tri->props.diameter = vert3.y;
 	tri->props.height = vert3.z;
 	tri->props.color = extract_color(tokens[4]);
+	tri->mat.color = tri->props.color;
 	tri->type = TRIANGLE;
 	return (0);
 }

@@ -50,19 +50,6 @@ t_vec3	ftvec3_ronhemi(t_vec3 normal)
 	return (ftvec3_multiply(on_hemi, ftvec3(-1)));
 }
 
-#include "stdio.h"
-t_vec3	ftvec3_plusp(t_vec3 op1, t_vec3 op2)
-{
-	t_vec3	result;
-
-	result.x = op1.x + op2.x;
-	result.y = op1.y + op2.y;
-	result.z = op1.z + op2.z;
-	printf("The x %f + %f = %f\n", op1.x, op2.x, result.x);
-	printf("The y %f + %f = %f\n", op1.y, op2.y, result.y);
-	printf("The z %f + %f = %f\n", op1.z, op2.z, result.z);
-	return (result);
-}
 t_vec3	ftvec3_plus(t_vec3 op1, t_vec3 op2)
 {
 	t_vec3	result;

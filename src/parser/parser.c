@@ -56,7 +56,7 @@ static int	extract_line_data(const char *line, t_app *app,
 		ret = extract_light(line, app);
 	else if (extract_objects(line, app, &ret) < 1)
 		return (ret);
-	else if (*line == '\n' || *line == '#')
+	else if (*line == '\0' || *line == '#')
 		ret = 0;
 	else
 		return (-1);
@@ -89,9 +89,10 @@ int	extract_all_lines(int fd, int camera_and_ambient[], t_app *app)
 			printf("Invalid line: %s\n", line);
 			while (line)
 			{
-				line = get_next_line(fd);
 				free(line);
+				line = get_next_line(fd);
 			}
+			free(line);
 			return (-1);
 		}
 		free(line);

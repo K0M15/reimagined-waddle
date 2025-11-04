@@ -27,7 +27,7 @@ static int	check_hit(t_vec3 p, const t_props *c, t_vec3 ci, t_vec3 axis)
 			ftvec3_minus(ftvec3_minus(p, ci),
 				ftvec3_multiply(axis, ftvec3(ftvec3_dot(ftvec3_minus(
 								p, ci), axis)))))
-		<= c->radius * c->radius + 1e-6f);
+		<= c->radius * c->radius + 0.000001);
 }
 
 t_hitrec	find_conecap_hit(t_vec3 axis, const t_props *c,

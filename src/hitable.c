@@ -33,6 +33,15 @@ void	assign_rayhit(t_hitrec *rec, t_hitrec src, t_material *material)
 	};
 }
 
+void	reasigne_closest(struct s_world_hit_props *p, t_hitrec *rec)
+{
+	if (p->hit && p->temp.t < p->closest)
+	{
+		p->closest = p->temp.t;
+		assign_rayhit(rec, p->temp, &p->obj->mat);
+	}
+}
+
 // TODO: work on nudge -> 
 // https://stackoverflow.com/questions/41211892/
 // ray-tracer-artifacts-with-reflection
@@ -58,11 +67,7 @@ uint32_t	world_hit(t_dyn *world, t_ray ray,
 			p.hit = ft_tri_hit(*p.obj, ray, &p.temp, limit);
 		else if (p.obj->type == CONE)
 			p.hit = ft_cone_hit(*p.obj, ray, &p.temp, limit);
-		if (p.hit && p.temp.t < p.closest)
-		{
-			p.closest = p.temp.t;
-			assign_rayhit(rec, p.temp, &p.obj->mat);
-		}
+		reasigne_closest(&p, rec);
 		p.ctr++;
 	}
 	return (p.closest != INFINITY);

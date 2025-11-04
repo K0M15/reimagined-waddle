@@ -14,7 +14,7 @@
 
 static inline float	luminance(t_vec3 c)
 {
-	return (c.x + c.y + c.z) * (1.0f / 3.0f);
+	return ((c.x + c.y + c.z) * (1.0f / 3.0f));
 }
 
 t_uv	interpolate_height(mlx_texture_t *bump, t_uv uv)
@@ -32,5 +32,6 @@ t_uv	interpolate_height(mlx_texture_t *bump, t_uv uv)
 				(uint32_t *)&height[4]));
 	height[3] = luminance(tex_sample(bump, (t_uv){uv.u, uv.v - step.v},
 				(uint32_t *)&height[4]));
-	return ((t_uv){0.5f * (height[0] - height[2]), -(0.5f * (height[1] - height[3]))});
+	return ((t_uv){0.5f * (height[0] - height[2]),
+		-(0.5f * (height[1] - height[3]))});
 }

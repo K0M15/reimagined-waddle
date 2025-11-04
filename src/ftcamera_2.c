@@ -50,6 +50,20 @@ static t_ray	ft_mat_scatter(t_ray inc, t_hitrec *rec)
 	return (out);
 }
 
+void	handle_all_pl(t_dyn *arr, struct s_ftray_color_props *p)
+{
+	uint32_t	i;
+
+	i = 0;
+	while (i < arr->filled)
+	{
+		p->obj = &arr->elem[i];
+		if (p->obj->type == POINT_LIGHT)
+			handle_pl(p, arr);
+		i++;
+	}
+}
+
 t_vec3	ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect)
 {
 	struct s_ftray_color_props	p;
@@ -60,27 +74,21 @@ t_vec3	ftray_color(t_ray ray, t_dyn *arr, int depth, float left_reflect)
 		return (ftcol_scale(ray.ambient, ray.ambient_intensity));
 	p.view_dir = ftvec3_unit(ftvec3_multiply(ray.direction, ftvec3(-1)));
 	p.emitted = ftvec3(0);
-    if (p.rec.mat && p.rec.mat->is_emitting)
-    {
-        p.emitted = tex_sample(p.rec.mat->tex, p.rec.uv, &i);
-        if (!checker_enable(0))
-            p.emitted = p.rec.mat->color;
-    }
+	if (p.rec.mat && p.rec.mat->is_emitting)
+	{
+		p.emitted = tex_sample(p.rec.mat->tex, p.rec.uv, &i);
+		if (!checker_enable(0))
+			p.emitted = p.rec.mat->color;
+	}
 	p.next_color = ftray_color(ft_mat_scatter(ray, &p.rec), arr, depth - 1,
 			left_reflect * p.rec.mat->reflectivity);
 	p.local_color = ftcol_scale(ray.ambient, ray.ambient_intensity);
 	p.light_acc = ftvec3(0);
-	i = 0;
-	while (i < arr->filled)
-	{
-		p.obj = &arr->elem[i];
-		if (p.obj->type == POINT_LIGHT)
-			handle_pl(&p, arr);
-		i++;
-	}
+	handle_all_pl(arr, &p);
 	return (ftcol_add(p.emitted, ftcol_add(ftcol_scale(
-		ftcol_add(p.local_color, p.light_acc), 1.0f - p.rec.mat->reflectivity),
-			ftcol_scale(p.next_color, p.rec.mat->reflectivity))));
+					ftcol_add(p.local_color, p.light_acc),
+					1.0f - p.rec.mat->reflectivity),
+				ftcol_scale(p.next_color, p.rec.mat->reflectivity))));
 }
 
 void	ft_camera_calc(t_camera *camera)
@@ -110,19 +118,4 @@ void	ft_camera_calc(t_camera *camera)
 			ftvec3_divide(camera->viewport_u, ftvec3(2)));
 	camera->vupper_left = ftvec3_minus(camera->vupper_left,
 			ftvec3_divide(camera->viewport_v, ftvec3(2)));
-}
-
-uint32_t	ft_camera_init(t_camera *camera, t_camera_p props)
-{
-	camera->vec_up = (t_vec3){0, 1, 0};
-	camera->center = props.center;
-	camera->look_at = props.look_at;
-	camera->fov = props.fov;
-	camera->image_width = props.image_width;
-	camera->image_height = props.image_height;
-	ft_camera_calc(camera);
-	camera->samples_per_pixel = props.samples_per_pixel;
-	camera->ambient = props.ambient;
-	camera->ambient_intensity = props.ambient_intensity;
-	return (0);
 }

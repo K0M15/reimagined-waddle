@@ -22,7 +22,8 @@ int	add_camera(t_app *app)
 	ft_camera_init(&app->active_camera, (t_camera_p){app->active_camera.center,
 		app->active_camera.look_at, app->active_camera.fov, app->width,
 		app->height, app->active_camera.samples_per_pixel,
-		app->active_camera.ambient, app->active_camera.ambient_intensity, MAX_DEPTH});
+		app->active_camera.ambient, app->active_camera.ambient_intensity,
+		MAX_DEPTH});
 	app->active_camera.image_width = app->width;
 	app->active_camera.image_height = app->height;
 	ft_camera_calc(&app->active_camera);
@@ -87,22 +88,18 @@ int	extract_camera(const char *line, t_app *app)
 
 void	init_default_camera(t_app *app)
 {
-
 	app->width = 120;
 	app->height = 80;
 	ft_camera_init(
 		&app->active_camera, (t_camera_p){
-			ftvec3(0),
-			(t_vec3){0,0, -1},
-			90,
-			app->width,
-			app->height,
-			STAN_SAMPLES_PER_PIXEL,
-			(t_vec3){
-				1, 1, 1
-			},
-			.2
-			,MAX_DEPTH
-		});
+		ftvec3(0),
+		(t_vec3){0, 0, -1},
+		90,
+		app->width,
+		app->height,
+		STAN_SAMPLES_PER_PIXEL,
+		(t_vec3){1, 1, 1},
+		.2,
+		MAX_DEPTH});
 	ft_camera_calc(&app->active_camera);
 }
