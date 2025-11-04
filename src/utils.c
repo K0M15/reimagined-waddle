@@ -59,7 +59,6 @@ void	print_element(int iter, t_app *app)
 		"POINT_LIGHT", "TRIANGLE", "CONE"};
 	void	(*const func[8])(t_obj*) = {print_sphere, print_cylinder,
 		print_plane, print_point_light, print_triangle, print_cylinder};
-
 	ptr = app->hitable.elem + iter;
 	if (ptr->type == 0xFFFF)
 	{
