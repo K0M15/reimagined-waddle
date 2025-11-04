@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/03 19:09:12 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/04 20:26:29 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void		ftref_lambert(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
 void		ftref_phong(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
-void		calc_refl_emitt(struct s_ftray_color_props *p, t_hitrec rec, t_vec3 dir); 
+void		calc_refl_emitt(struct s_ftray_color_props *p,
+				t_hitrec rec, t_vec3 dir);
 uint32_t	checker_enable(uint32_t val);
 #endif /* MINIRT_H */

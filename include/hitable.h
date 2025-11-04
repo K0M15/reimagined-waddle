@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hitable.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/03 14:08:55 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/04 20:26:49 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ uint32_t	ft_cylinder_hit(t_obj cyl, t_ray ray, t_hitrec *rec,
 uint32_t	ft_plane_hit(t_obj plane, t_ray ray, t_hitrec *rec,
 				struct s_lpair limit);
 // t_obj		ft_light_create(t_point_light_p props);
-uint32_t 	ft_tri_hit(t_obj triangle, t_ray ray,
-    			t_hitrec *rec, struct s_lpair limit);
+uint32_t	ft_tri_hit(t_obj triangle, t_ray ray,
+				t_hitrec *rec, struct s_lpair limit);
 uint32_t	ft_cone_hit(t_obj cone, t_ray ray,
 				t_hitrec *rec, struct s_lpair limit);
 uint32_t	world_hit(t_dyn *world, t_ray ray, t_hitrec *rec,
