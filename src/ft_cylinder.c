@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cylinder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:07:04 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/02 17:42:31 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/04 16:54:17 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static t_hitrec	find_root_hit(float drr[3], t_ray ray,
 	ri = 0;
 	hit = (t_hitrec){ftvec3(0), ftvec3(0), NULL,
 		INFINITY, 0, (t_uv){0.0f, 0.0f}};
-	while (++ri < 2)
+	while (++ri < 3)
 	{
 		if (!(drr[ri] > limit.min && drr[ri] < limit.max))
 			continue ;
@@ -143,6 +143,6 @@ uint32_t	ft_cylinder_hit(t_obj cyl, t_ray ray,
 	ft_hitr_set_face_normal(rec, ray, best_hit[0].normal);
 	assign_rayhit(rec, best_hit[0], &cyl.mat);
 	if (best_hit[0].t != best_hit[1].t)
-		ft_cyl_uvnormal(&best_hit[0], axis, &cyl);
+		ft_cyl_uvnormal(rec, axis, &cyl);
 	return (true);
 }
