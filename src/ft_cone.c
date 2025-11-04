@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cone.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 17:31:26 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/03 14:09:11 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/04 15:03:58 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static t_hitrec	find_root_hit(float drr[3], t_ray ray,
 	proj_k[1] = 0.0f;
 	if (c->height != 0.0f)
 		proj_k[1] = -c->radius / c->height;
-	while (++ri < 2)
+	while (++ri < 3)
 	{
 		if (!(drr[ri] > limit.min && drr[ri] < limit.max))
 			continue ;

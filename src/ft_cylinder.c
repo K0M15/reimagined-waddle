@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cylinder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:07:04 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/02 17:42:31 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/04 15:03:49 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static t_hitrec	find_root_hit(float drr[3], t_ray ray,
 	ri = 0;
 	hit = (t_hitrec){ftvec3(0), ftvec3(0), NULL,
 		INFINITY, 0, (t_uv){0.0f, 0.0f}};
-	while (++ri < 2)
+	while (++ri < 3)
 	{
 		if (!(drr[ri] > limit.min && drr[ri] < limit.max))
 			continue ;
