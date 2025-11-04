@@ -56,7 +56,9 @@ void	print_point_light(t_obj *app)
 
 void	print_triangle(t_obj *obj)
 {
-	t_vec3 vert3 = (t_vec3){obj->props.radius, obj->props.diameter, obj->props.height};
+	t_vec3	vert3;
+
+	vert3 = (t_vec3){obj->props.radius, obj->props.diameter, obj->props.height};
 	print_vec3(&obj->props.position);
 	print_vec3(&obj->props.rotation);
 	print_vec3(&vert3);
