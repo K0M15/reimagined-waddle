@@ -26,7 +26,7 @@ def scale(filename:str, scale:float, prec:bool):
                 print( f"Error on line {ctr} converting tr values" )
                 exit(1)
         else:
-            print(line)
+            print(line, end="")
     print()
                 
     
