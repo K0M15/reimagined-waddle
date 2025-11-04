@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftcamera_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:11:25 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/03 19:11:07 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/04 17:35:54 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ static void	handle_pl(struct s_ftray_color_props *p, t_dyn *arr)
 	pl = &p->obj->props;
 	to_light = ftvec3_minus(pl->position, p->rec.hit);
 	if (!world_hit(arr, (t_ray){ftvec3_plus(p->rec.hit, ftvec3_multiply(
-					p->rec.normal, ftvec3(FLOAT_NEAR_ZERO))),
+					p->rec.normal, ftvec3(.01))),
 			ftvec3_unit(to_light),
 			ftvec3(0),
 			0
-		}, &temp, (struct s_lpair){0.0001, ftvec3_length(to_light) - 1e-4}))
+		}, &temp, (struct s_lpair){FLOAT_NEAR_ZERO, ftvec3_length(to_light) - 1e-4}))
 	{
 		ftref_lambert(p, pl, to_light);
 		ftref_phong(p, pl, to_light);

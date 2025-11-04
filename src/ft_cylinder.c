@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 14:07:04 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/04 16:54:17 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/04 17:59:05 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,8 @@ uint32_t	ft_cylinder_hit(t_obj cyl, t_ray ray,
 		return (false);
 	if (best_hit[1].t != INFINITY && best_hit[0].t > best_hit[1].t)
 		best_hit[0] = best_hit[1];
-	ft_hitr_set_face_normal(rec, ray, best_hit[0].normal);
 	assign_rayhit(rec, best_hit[0], &cyl.mat);
+	ft_hitr_set_face_normal(rec, ray, best_hit[0].normal);
 	if (best_hit[0].t != best_hit[1].t)
 		ft_cyl_uvnormal(rec, axis, &cyl);
 	return (true);
