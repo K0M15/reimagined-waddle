@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cyl_caphit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 17:21:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/03 19:45:53 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/04 18:02:17 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,16 @@ static int	fillvars(t_vec3 *cap, t_props *c, t_vec3 axis)
 
 static int	check_hit(t_vec3 p, t_props *c, t_vec3 ci, t_vec3 axis)
 {
-	return (ftvec3_dot(ftvec3_minus(ftvec3_minus(p, ci),
-				ftvec3_multiply(axis, ftvec3(ftvec3_dot(ftvec3_minus(p, ci),
-							axis)))),
-			ftvec3_minus(ftvec3_minus(p, ci),
-				ftvec3_multiply(axis, ftvec3(ftvec3_dot(ftvec3_minus(
-								p, ci), axis)))))
-		<= c->radius * c->radius + 0.000001);
+	t_vec3	v;
+	t_vec3	radial;
+	float	h;
+	float	d2;
+
+	v = ftvec3_minus(p, ci);
+	h = ftvec3_dot(v, axis);
+	radial = ftvec3_minus(v, ftvec3_multiply(axis, ftvec3(h)));
+	d2 = ftvec3_dot(radial, radial);
+	return (d2 <= c->radius * c->radius + 0.000001);
 }
 
 t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
@@ -55,7 +58,7 @@ t_hitrec	find_cap_hit(t_vec3 axis, t_props *c,
 		if (fabs(ftvec3_dot(axis, ray.direction)) < FLOAT_NEAR_ZERO)
 			continue ;
 		tcap = ftvec3_dot(axis, ftvec3_minus(cap[ci], ray.origin))
-			/ ftvec3_dot(axis, ray.direction);
+			/ ftvec3_dot(axis, ray.direction) + FLOAT_NEAR_ZERO;
 		if (!(tcap > limit.min && tcap < limit.max))
 			continue ;
 		cap[4] = ftray_at(ray, tcap);
