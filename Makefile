@@ -34,6 +34,7 @@ FILES+=src/ft_sphere.c src/ft_cylinder.c src/ft_plane.c src/hitable.c
 FILES+=src/reflection.c	src/ft_cyl_caphit.c	# OBJECTS
 FILES+=src/main.c src/pseudo_random.c src/uv.c src/texture.c
 FILES+=src/bump.c src/ft_triangle.c src/ft_cone.c src/ft_cone_cap.c
+FILES+=src/logging.c src/utils.c
 TEST_FILES=tests/render_tests.c
 FILES_WITH_TESTS+=$(FILES) $(TEST_FILES)
 

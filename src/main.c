@@ -117,7 +117,6 @@ void	resize_hook(int32_t width, int32_t height, void* param)
 	t_app *app;
 
 	app = (t_app *) param;
-
 	app->width = width;
 	app->height = height;
 	app->active_camera.image_width = width;

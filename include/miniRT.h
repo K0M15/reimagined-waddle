@@ -110,4 +110,16 @@ void		ftref_phong(struct s_ftray_color_props *p, t_props *pl,
 				t_vec3 to_light);
 void		calc_refl_emitt(struct s_ftray_color_props *p, t_hitrec rec, t_vec3 dir); 
 uint32_t	checker_enable(uint32_t val);
+
+//Print and stuff
+void		print_sphere(t_obj *app);
+void		print_cylinder(t_obj *app);
+void		print_plane(t_obj *app);
+void		print_point_light(t_obj *app);
+void		print_triangle(t_obj *obj);
+void		print_vec3(t_vec3 *vec);
+void		print_instructions(void);
+void		ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color);
+void		ft_put_pixel(mlx_image_t *image, int x, int y, uint32_t color);
+void		print_element(int iter, t_app *app);
 #endif /* MINIRT_H */

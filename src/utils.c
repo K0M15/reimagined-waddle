@@ -19,7 +19,7 @@ void	print_vec3(t_vec3 *vec)
 	printf("%f,%f,%f", vec->x, vec->y, vec->z);
 }
 
-static void	print_instructions(void)
+void	print_instructions(void)
 {
 	printf("The program usage: ./miniRT [scene file]\n");
 }
@@ -57,7 +57,7 @@ void	print_element(int iter, t_app *app)
 	t_obj		*ptr;
 	const char	*types[] = {"SPHERE", "CYLINDER", "PLANE",
 		"POINT_LIGHT", "TRIANGLE", "CONE"};
-	const void	(*func[8])(t_obj*) = {print_sphere, print_cylinder,
+	void	(*const func[8])(t_obj*) = {print_sphere, print_cylinder,
 		print_plane, print_point_light, print_triangle, print_cylinder};
 
 	ptr = app->hitable.elem + iter;
@@ -70,7 +70,7 @@ void	print_element(int iter, t_app *app)
 	printf("The type: %s\n", types[ptr->type]);
 	func[ptr->type](ptr);
 	printf("\n");
-	printf("The materials:\n color: %f, %f, %f; reflectivity: %f;
+	printf("The materials:\n color: %f, %f, %f; reflectivity: %f;\
             is_emitting: %d; scatter: %f", ptr->mat.color.x,\
 		ptr->mat.color.y, ptr->mat.color.z, ptr->mat.reflectivity,\
 		ptr->mat.is_emitting, ptr->mat.scatter);
