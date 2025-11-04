@@ -38,4 +38,6 @@ int	init_material(t_obj *obj);
 //token_bonus.c
 int pars_bonus_tokens(int last_mand_token, char **tokens, t_obj *sphere);
 
+void	init_default_camera(t_app *app, t_camera *camera);
+
 #endif

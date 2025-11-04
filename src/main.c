@@ -266,26 +266,10 @@ int32_t	main(int argc, char *argv[])
 	t_app app;
 	t_camera camera;
 
-	app.width = 120;
-	app.height = 80;
-	ft_camera_init(
-		&camera, (t_camera_p){
-			ftvec3(0),
-			(t_vec3){0,0, -1},
-			90,
-			app.width,
-			app.height,
-			STAN_SAMPLES_PER_PIXEL,
-			// (t_vec3){0.5,0.9,1}
-			// (t_vec3){66.255.0,245.0/255.0,135.0/255.0}
-			(t_vec3){
-				1, 1, 1
-			},
-			.2
-		});
-	app.active_camera = &camera;
+
 	//GOover: There is no allocation for the camera
 	//!!!Pars init changes location, normal & FOV for camera + ambient + adds hitables
+	init_default_camera(&app, &camera);
 	if (pars_init(argc, argv, &app) != 0)
 		return (dyn_free(&app.hitable), -1);
 
