@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 20:22:08 by kzarins           #+#    #+#             */
-/*   Updated: 2025/11/03 20:22:13 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/04 14:23:20 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ int	extract_map_and_texture(int *iter, char **tokens,\
 	t_obj *sphere, int last_mand_token)
 {
 	sphere->mat.tex = add_texture(tokens[*iter + last_mand_token]);
-	if (!sphere->mat.tex)
+	if (!sphere->mat.tex && *tokens[*iter + last_mand_token] != '*')
 		return (errno = EINVAL, -1);
 	(*iter)++;
 	sphere->mat.bump = add_texture(tokens[*iter + last_mand_token]);
-	if (!sphere->mat.bump)
+	if (!sphere->mat.bump && *tokens[*iter + last_mand_token] != '*')
 		return (errno = EINVAL, -1);
 	return (0);
 }
