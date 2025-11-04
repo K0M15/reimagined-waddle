@@ -32,10 +32,10 @@ static int	extract_default_props(t_obj *cyl, char **tokens)
 	cyl->props.rotation = extract_normal(tokens[2]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	cyl->props.radius = atof(tokens[3]) / 2.0;
+	cyl->props.radius = ft_atof(tokens[3]) / 2.0;
 	if (errno || cyl->props.radius <= (double)0)
 		return (free_tokens(tokens), -1);
-	cyl->props.height = atof(tokens[4]);
+	cyl->props.height = ft_atof(tokens[4]);
 	if (errno || cyl->props.height <= (double)0)
 		return (free_tokens(tokens), -1);
 	cyl->props.color = extract_color(tokens[5]);

@@ -32,10 +32,10 @@ static int	extract_default_props(t_obj *cone, char **tokens)
 	cone->props.rotation = extract_normal(tokens[2]);
 	if (errno)
 		return (free_tokens(tokens), -1);
-	cone->props.radius = atof(tokens[3]) / 2;
+	cone->props.radius = ft_atof(tokens[3]) / 2;
 	if (errno || cone->props.radius <= (double)0)
 		return (free_tokens(tokens), -1);
-	cone->props.height = atof(tokens[4]);
+	cone->props.height = ft_atof(tokens[4]);
 	if (errno || cone->props.height <= (double)0)
 		return (free_tokens(tokens), -1);
 	cone->props.color = extract_color(tokens[5]);

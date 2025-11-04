@@ -44,15 +44,15 @@ int	pars_bonus_tokens(int last_mand_token, char **tokens, t_obj *sphere)
 	int	iter;
 
 	iter = 1;
-	sphere->mat.reflectivity = atof(tokens[iter + last_mand_token]);
+	sphere->mat.reflectivity = ft_atof(tokens[iter + last_mand_token]);
 	if (sphere->mat.reflectivity < 0 || sphere->mat.reflectivity > 1 || errno)
 		return (errno = EINVAL, -1);
 	iter++;
-	sphere->mat.scatter = atof(tokens[iter + last_mand_token]);
+	sphere->mat.scatter = ft_atof(tokens[iter + last_mand_token]);
 	if (sphere->mat.scatter < 0 || sphere->mat.scatter > 1 || errno)
 		return (errno = EINVAL, -1);
 	iter++;
-	sphere->mat.is_emitting = atof(tokens[iter + last_mand_token]);
+	sphere->mat.is_emitting = ft_atof(tokens[iter + last_mand_token]);
 	printf("%d\n", sphere->mat.is_emitting);
 	if (errno)
 		return (errno = EINVAL, -1);
