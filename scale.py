@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from sys import argv
 
-def scale(filename:str, scale:float):
+def scale(filename:str, scale:float, prec:bool):
     f = None
     try:
         f = open(filename, "r")
@@ -18,7 +18,10 @@ def scale(filename:str, scale:float):
             try:
                 vals = [part.split(',') for part in parts[1:4]]
                 conv = [[float(val)*scale for val in block] for block in vals]
-                print(f"tr {conv[0][0]},{conv[0][1]},{conv[0][2]} {conv[1][0]},{conv[1][1]},{conv[1][2]} {conv[1][0]},{conv[1][1]},{conv[1][2]} {parts[4]}", end="")
+                if prec:
+                    print(f"tr {conv[0][0]:.5f},{conv[0][1]:.5f},{conv[0][2]:.5f} {conv[1][0]:.5f},{conv[1][1]:.5f},{conv[1][2]:.5f} {conv[1][0]:.5f},{conv[1][1]:.5f},{conv[1][2]:.5f} {parts[4]}", end="")
+                else:
+                    print(f"tr {conv[0][0]:.0f},{conv[0][1]:.0f},{conv[0][2]:.0f} {conv[1][0]:.0f},{conv[1][1]:.0f},{conv[1][2]:.0f} {conv[1][0]:.0f},{conv[1][1]:.0f},{conv[1][2]:.0f} {parts[4]}", end="")
             except:
                 print( f"Error on line {ctr} converting tr values" )
                 exit(1)
@@ -33,7 +36,7 @@ def usage():
     exit(1)
 
 if __name__ == "__main__":
-    if not len(argv) == 3:
+    if not (len(argv) == 3 or len(argv) == 4):
         usage()
     newscale = None
     try:
@@ -41,4 +44,5 @@ if __name__ == "__main__":
     except ValueError:
         print("Wrong value for scale, must be convertable to float")
         usage()
-    scale(argv[1], newscale)
+    prec = True if "-prec" in argv else False
+    scale(argv[1], newscale, prec)
