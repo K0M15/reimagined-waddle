@@ -48,31 +48,31 @@ void key_hook(mlx_key_data_t keydata, void *param)
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_RELEASE)
 		mlx_close_window(app->mlx);
 	if (keydata.key == MLX_KEY_W)
-		ft_camera_apply(app->active_camera, (t_vec3){0, MOV_SPEED, 0});
+		ft_camera_apply(&app->active_camera, (t_vec3){0, MOV_SPEED, 0});
 	if (keydata.key == MLX_KEY_S)
-		ft_camera_apply(app->active_camera, (t_vec3){0, -MOV_SPEED, 0});
+		ft_camera_apply(&app->active_camera, (t_vec3){0, -MOV_SPEED, 0});
 	if (keydata.key == MLX_KEY_A)
-		ft_camera_apply(app->active_camera, (t_vec3){MOV_SPEED, 0, 0});
+		ft_camera_apply(&app->active_camera, (t_vec3){MOV_SPEED, 0, 0});
 	if (keydata.key == MLX_KEY_D)
-		ft_camera_apply(app->active_camera, (t_vec3){-MOV_SPEED, 0, 0});
+		ft_camera_apply(&app->active_camera, (t_vec3){-MOV_SPEED, 0, 0});
 //TODO: The ft_camera_move should still have to get implemented
 	if (keydata.key == MLX_KEY_DOWN)
-		ft_camera_move(app->active_camera, (t_vec3){0, 0, -MOV_SPEED});
+		ft_camera_move(&app->active_camera, (t_vec3){0, 0, -MOV_SPEED});
 	if (keydata.key == MLX_KEY_UP)
-		ft_camera_move(app->active_camera, (t_vec3){0, 0, MOV_SPEED});
+		ft_camera_move(&app->active_camera, (t_vec3){0, 0, MOV_SPEED});
 	if (keydata.key == MLX_KEY_LEFT)
-		ft_camera_move(app->active_camera, (t_vec3){-MOV_SPEED, 0, 0});
+		ft_camera_move(&app->active_camera, (t_vec3){-MOV_SPEED, 0, 0});
 	if (keydata.key == MLX_KEY_RIGHT)
-		ft_camera_move(app->active_camera, (t_vec3){MOV_SPEED, 0, 0});
+		ft_camera_move(&app->active_camera, (t_vec3){MOV_SPEED, 0, 0});
 	if (keydata.key == MLX_KEY_Q)
 	{
-		app->active_camera->fov *= 1.1;
-		ft_camera_calc(app->active_camera);
+		app->active_camera.fov *= 1.1;
+		ft_camera_calc(&app->active_camera);
 	}
 	if (keydata.key == MLX_KEY_E)
 	{
-		app->active_camera->fov *= 0.90909090909090909090;
-		ft_camera_calc(app->active_camera);
+		app->active_camera.fov *= 0.90909090909090909090;
+		ft_camera_calc(&app->active_camera);
 	}
 	if (keydata.key == MLX_KEY_T)
 	{
@@ -130,7 +130,7 @@ int32_t pars_init(int argc, char **argv, t_app *app)
 		return (-1);
 	if (pars(argv[1], app) == -1)
 		return (-1);
-	ft_camera_calc(app->active_camera);
+	ft_camera_calc(&app->active_camera);
 	return (0);
 }
 
@@ -231,8 +231,8 @@ void	resize_hook(int32_t width, int32_t height, void* param)
 
 	app->width = width;
 	app->height = height;
-	app->active_camera->image_width = width;
-	app->active_camera->image_height = height;
+	app->active_camera.image_width = width;
+	app->active_camera.image_height = height;
 	printf("The height: %d, the width: %d\n", app->mlx->height, app->mlx->width);
 	mlx_delete_image(app->mlx, app->image);
 	//TODO: in case of falure all the allocations should be freed
@@ -246,7 +246,7 @@ void	resize_hook(int32_t width, int32_t height, void* param)
 		mlx_close_window(app->mlx);
 		printf("%s\n", mlx_strerror(mlx_errno));
 	}
-	ft_camera_calc(app->active_camera);
+	ft_camera_calc(&app->active_camera);
 }
 
 #ifdef PROD
@@ -258,18 +258,13 @@ void draw_loop(void *args)
 	app = (t_app *)args;
 	lastPixl = ft_camera_render(app, ft_put_pixel, lastPixl, lastPixl + 1000 / STAN_SAMPLES_PER_PIXEL);
 	// ft_camera_render(app, ft_kumul_pixel);
-	//printf("Cam: X%.2f Y%.2f Z%.2f, FOV%.2F\n", app->active_camera->look_at.x, app->active_camera->look_at.y, app->active_camera->look_at.z, app->active_camera->fov);
+	//printf("Cam: X%.2f Y%.2f Z%.2f, FOV%.2F\n", app->active_camera.look_at.x, app->active_camera.look_at.y, app->active_camera.look_at.z, app->active_camera.fov);
 }
 
 int32_t	main(int argc, char *argv[])
 {
 	t_app app;
-	t_camera camera;
-
-
-	//GOover: There is no allocation for the camera
-	//!!!Pars init changes location, normal & FOV for camera + ambient + adds hitables
-	init_default_camera(&app, &camera);
+	init_default_camera(&app);
 	if (pars_init(argc, argv, &app) != 0)
 		return (dyn_free(&app.hitable), -1);
 

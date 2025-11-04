@@ -91,7 +91,7 @@ typedef struct s_app
 	mlx_image_t	*image;
 	int32_t		width;
 	int32_t		height;
-	t_camera	*active_camera;
+	t_camera	active_camera;
 	t_dyn		hitable;
 }	t_app;
 
