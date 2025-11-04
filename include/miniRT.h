@@ -62,6 +62,7 @@ typedef struct s_camera
 	t_vec3		vec_up;
 	t_vec3		ambient;
 	float		ambient_intensity;
+	uint32_t	maximum_ray_depth;
 }	t_camera;
 
 typedef struct s_camera_p
@@ -74,6 +75,7 @@ typedef struct s_camera_p
 	uint32_t	samples_per_pixel;
 	t_vec3		ambient;
 	float		ambient_intensity;
+	uint32_t	maximum_ray_depth;
 }	t_camera_p;
 
 typedef struct s_ray_props
@@ -89,7 +91,7 @@ typedef struct s_app
 	mlx_image_t	*image;
 	int32_t		width;
 	int32_t		height;
-	t_camera	*active_camera;
+	t_camera	active_camera;
 	t_dyn		hitable;
 }	t_app;
 

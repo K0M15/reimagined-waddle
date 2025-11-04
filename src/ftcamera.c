@@ -69,17 +69,17 @@ static t_vec3	render_loop(t_app *app, t_vec3 pixel00_loc, float x, float y)
 	color = ftvec3(0);
 	pixel_center = ftvec3_plus(pixel00_loc,
 			ftvec3_plus(
-				ftcol_scale(app->active_camera->delta_u, x),
-				ftcol_scale(app->active_camera->delta_v, y)));
+				ftcol_scale(app->active_camera.delta_u, x),
+				ftcol_scale(app->active_camera.delta_v, y)));
 	i = 0;
-	while (i < app->active_camera->samples_per_pixel)
+	while (i < app->active_camera.samples_per_pixel)
 	{
 		new_col = ftray_color(get_rand_ray(pixel_center,
-					app->active_camera->center, app->active_camera),
+					app->active_camera.center, &app->active_camera),
 				&app->hitable, MAX_DEPTH, 1);
 		color = ftvec3_plus(color, ftvec3_multiply(new_col,
 					ftvec3(1.0f
-						/ (float) app->active_camera->samples_per_pixel)));
+						/ (float) app->active_camera.samples_per_pixel)));
 		i++;
 	}
 	return (color);
@@ -96,9 +96,9 @@ uint32_t	ft_camera_render(t_app *app,
 
 	y = start / app->image->width;
 	x = start % app->image->width;
-	pixel00_loc = ftvec3_plus(app->active_camera->vupper_left,
-			ftvec3_multiply(ftvec3_plus(app->active_camera->delta_u,
-					app->active_camera->delta_v), (t_vec3){0.5, 0.5, 0.5}));
+	pixel00_loc = ftvec3_plus(app->active_camera.vupper_left,
+			ftvec3_multiply(ftvec3_plus(app->active_camera.delta_u,
+					app->active_camera.delta_v), (t_vec3){0.5, 0.5, 0.5}));
 	while (y < app->image->height)
 	{
 		x = 0;

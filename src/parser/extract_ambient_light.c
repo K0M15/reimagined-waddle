@@ -19,8 +19,8 @@
 
 static int	add_ambient_light(double *light_ratio, t_vec3 *color, t_app *app)
 {
-	app->active_camera->ambient_intensity = *light_ratio;
-	app->active_camera->ambient = *color;
+	app->active_camera.ambient_intensity = *light_ratio;
+	app->active_camera.ambient = *color;
 	return (0);
 }
 
