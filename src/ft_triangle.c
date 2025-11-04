@@ -3,44 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_triangle.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 15:06:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/02 17:11:22 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/04 17:09:26 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hitable.h"
 #include "ftvec3.h"
-
-// double	ft_triangle_hit(t_object *triangle, t_ray *ray)
-// {
-// 	t_vector3	h;
-// 	t_vector3	s;
-// 	t_vector3	q;
-// 	double		afuvt[5];
-
-// 	ft_v3_init(&h, ray->dir->x, ray->dir->y, ray->dir->z);
-// 	ft_v3_crossprod_ip(&h, &triangle->s_triangle.edge2);
-// 	afuvt[0] = ft_v3_dotprod(&triangle->s_triangle.edge1, &h);
-// 	if (afuvt[0] > -EPSILON && afuvt[0] < EPSILON)
-// 		return (INFINITY);
-// 	afuvt[1] = 1 / afuvt[0];
-// 	ft_v3_init(&s, ray->origin->x - triangle->s_triangle.points[0].x,
-// 		ray->origin->y - triangle->s_triangle.points[0].y, ray->origin->z
-// 		- triangle->s_triangle.points[0].z);
-// 	afuvt[2] = afuvt[1] * ft_v3_dotprod(&s, &h);
-// 	if (afuvt[2] < 0.0 || afuvt[2] > 1.0)
-// 		return (INFINITY);
-// 	ft_v3_init(&q, s.x, s.y, s.z);
-// 	ft_v3_crossprod_ip(&q, &triangle->s_triangle.edge1);
-// 	afuvt[3] = afuvt[1] * ft_v3_dotprod(ray->dir, &q);
-// 	if (afuvt[3] < 0.0 || afuvt[2] + afuvt[3] > 1.0)
-// 		return (INFINITY);
-// 	if (afuvt[1] * ft_v3_dotprod(&triangle->s_triangle.edge2, &q) > EPSILON)
-// 		return (afuvt[1] * ft_v3_dotprod(&triangle->s_triangle.edge2, &q));
-// 	return (INFINITY);
-// }
 
 struct s_tri_val{
 	t_vec3	h;

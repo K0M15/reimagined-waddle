@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   uv.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:51:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/03 19:30:40 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/04 16:29:11 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ t_uv	uv_cylside(t_vec3 axis, t_props cylinder, t_vec3 p)
 	t_vec3	uyv;
 	t_vec3	q;
 
-	axis = ftvec3_unit(axis);
 	uv_ortho_basis(axis, basis);
 	uyv.y = ftvec3_dot(ftvec3_minus(p, cylinder.position), axis);
 	q = ftvec3_minus(ftvec3_minus(p, cylinder.position),
