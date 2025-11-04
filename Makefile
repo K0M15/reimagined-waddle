@@ -52,7 +52,7 @@ LIBRARIES   = $(LIBGNL_NAME) $(LIBFT_NAME)
 
 # all: FLAGS+=-ffast-math
 # all: FLAGS+=-O3
-all: FLAGS+= -DPROD
+all: FLAGS+= -DPROD -DSTAN_SAMPLES_PER_PIXEL=5
 all: $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(NAME)
 
 test: FLAGS+= -DTEST

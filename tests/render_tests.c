@@ -74,7 +74,7 @@ void draw_loop(void *args)
 	t_app *app;
 
 	app = (t_app *)args;
-	ft_camera_render(app, ft_put_pixel);
+	ft_camera_render(app, ft_put_pixel, 0, app->width * app->height);
 	mlx_close_window(app->mlx);
 }
 
@@ -95,12 +95,13 @@ void	run_mlx_loop(t_app *app, char *input_f, int32_t img_height, int32_t img_wid
 			(t_vec3){
 				1, 1, 1
 			},
-			.2
+			.2,
+			1000.0f
 		});
-	app->active_camera = &camera;
+	app->active_camera = camera;
 	if (pars_init(2, (char*[]){"./miniRT", input_f, "\0"}, app) != 0)
 		return ;
-	ft_camera_calc(app->active_camera);
+	ft_camera_calc(&app->active_camera);
 	add_material_to_objects(app);
 	if (setupWindow(app) == EXIT_FAILURE)
 		return ;	
@@ -134,6 +135,13 @@ int main(void)
 {
 	run_testfile("./tests/maps/example.rt", "example.ppm", 400, 400);
 	run_testfile("./tests/maps/complex.rt", "complex.ppm", 800, 800);
+	run_testfile("./tests/maps/complex2.rt", "complex2.ppm", 800, 800);
+	run_testfile("./tests/maps/complex3.rt", "complex3.ppm", 800, 800);
+	run_testfile("./tests/maps/cone.rt", "cone.ppm", 800, 800);
+	run_testfile("./tests/maps/glow.rt", "glow.ppm", 800, 800);
+	run_testfile("./tests/maps/spheres.rt", "spheres.ppm", 800, 800);
+	run_testfile("./tests/maps/in_plane_cube.rt", "in_plane_cube.ppm", 800, 800);
+	run_testfile("./tests/maps/box.rt", "box.ppm", 800, 800);
 	run_testfile("./tests/maps/cylinder/cylinders.rt", "cylinders.ppm", 400, 600);
 	run_testfile("./tests/maps/cylinder/cylinders_3light.rt", "cylinders_3light.ppm", 400, 600);
 }

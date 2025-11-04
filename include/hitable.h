@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:43:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/04 20:26:49 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/04 20:48:41 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,35 +23,11 @@
 typedef struct s_ray	t_ray;
 # define MIN_DIST 0.001
 # define MAX_DIST 1000
+// # define PI 3.0f
 # define PI 3.14159265358979323846f
-# define SPHERE_BUMP_STRENGTH 3.0f
-
-// typedef struct s_sphere_p
-// {
-// 	float	radius;
-// 	t_vec3	position;
-// }	t_sphere_p;
-
-// typedef struct s_cylinder_p{
-//     float diameter;
-//     float height;
-//     t_vec3 position;
-//     t_vec3 rotation;
-// 	t_vec3	color;
-// }   t_cylinder_p;
-
-// typedef struct s_plane_p
-// {
-// 	t_vec3	position;
-// 	t_vec3	rotation;
-// }	t_plane_p;
-
-// typedef struct s_point_light_p
-// {
-// 	t_vec3	position;
-// 	float	brightness;
-// 	t_vec3	color;
-// }	t_point_light_p;
+# ifndef SPHERE_BUMP_STRENGTH
+#  define SPHERE_BUMP_STRENGTH 3.0f
+# endif /* SPHERE_BUMP_STRENGTH */
 
 typedef struct s_uv
 {
