@@ -57,7 +57,7 @@ all: $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(NAME)
 test: FLAGS += -DTEST -DLOCALPATH=\"$(shell pwd)\"
 test: fclean $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(FILES_WITH_TESTS:.c=.o)
 	@mkdir -p tests/output
-	@$(CC) $(F_INC) $(FILES_WITH_TESTS:.c=.o) -DTEST $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_OS) -o $(NAME) && ./miniRT && make . fclean > /dev/null
+	@$(CC) $(F_INC) $(FILES_WITH_TESTS:.c=.o) -DTEST $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_OS) -o $(NAME) && time ./miniRT && make . fclean > /dev/null
 
 # Build with movement controls enabled
 move: FLAGS += -DMOVE

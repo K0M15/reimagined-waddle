@@ -143,5 +143,6 @@ int main(void)
 	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders.rt", LOCALPATH"/tests/output/cylinders.ppm", 300, 300, false);
 	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders_3light.rt", LOCALPATH"/tests/output/cylinders_3light.ppm", 300, 300, false);
 	run_testfile(LOCALPATH"/tests/maps/earth.rt", LOCALPATH"/tests/output/earth.ppm", 300, 300, true);
+	run_testfile(LOCALPATH"/tests/maps/mirrorball.rt", LOCALPATH"/tests/output/mirrorball.ppm", 300, 300, true);
 }
 #endif
