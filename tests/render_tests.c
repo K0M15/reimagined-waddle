@@ -80,7 +80,7 @@ int	write_pixels_to_file(FILE *fptr, mlx_image_t *img, int32_t img_height, int32
 }
 
 //TODO: Check and implement the render function that is called
-// #ifdef TEST
+#ifdef TEST
 void draw_loop(void *args)
 {
 	t_app *app;
@@ -110,14 +110,15 @@ void	run_testfile(char* file, char* output_filename, int32_t img_height, int32_t
 	FILE	*fptr;
 	t_app	app;
 
-	run_mlx_loop(&app, file, img_height, img_width);
+
+	printf("Testing: %s, outputting to %s\n", file, output_filename);
+	run_mlx_loop(&app, file, img_height, img_width, 1);
 	fptr = fopen(output_filename, "w");
 	if (!fptr)
 	{
 		printf("File could not be opened!");
 		exit(1);
 	}
-	printf("Testing: %s, outputting to %s\n", file, output_filename);
 	write_pixels_to_file(fptr, app.image, app.height, app.width);
 	fclose(fptr);
 	mlx_delete_image(app.mlx, app.image);
@@ -139,5 +140,6 @@ int main(void)
 	run_testfile(LOCALPATH"/tests/maps/box.rt", LOCALPATH"/tests/output/box.ppm", 800, 800);
 	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders.rt", LOCALPATH"/tests/output/cylinders.ppm", 400, 600);
 	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders_3light.rt", LOCALPATH"/tests/output/cylinders_3light.ppm", 400, 600);
+	run_testfile(LOCALPATH"/tests/maps/earth.rt", LOCALPATH"/tests/output/earth.ppm", 400, 600);
 }
-// #endif
+#endif
