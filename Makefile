@@ -6,6 +6,7 @@ FLAGS=-Wall -Wextra -Werror
 FLAGS_MAC= -framework Cocoa -framework OpenGL -framework IOKit -lglfw -fsanitize=address
 FLAGS_LINUX= -ldl -lglfw -lpthread -lm -fsanitize=address
 F_INC=-Iinclude
+F_INC+=-IMLX42/include/MLX42
 MLX=MLX42/build/libmlx42.a
 PARSER_DIR	=	src/parser
 SCENE_DIR	=	src

@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:37:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/05 14:04:28 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/05 14:28:14 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ void	draw_loop(void *args)
 	static uint32_t	lastpixel;
 
 	app = (t_app *)args;
-	lastpixel = ft_camera_render(app, ft_put_pixel, lastPixl,
-			lastPixl + 1000 / STAN_SAMPLES_PER_PIXEL);
+	lastpixel = ft_camera_render(app, ft_put_pixel, lastpixel,
+			lastpixel + 1000 / STAN_SAMPLES_PER_PIXEL);
 }
 
 int32_t	main(int argc, char *argv[])
