@@ -34,7 +34,7 @@ FILES+=src/ft_sphere.c src/ft_cylinder.c src/ft_plane.c src/hitable.c
 FILES+=src/reflection.c	src/ft_cyl_caphit.c	# OBJECTS
 FILES+=src/main.c src/pseudo_random.c src/uv.c src/texture.c
 FILES+=src/bump.c src/ft_triangle.c src/ft_cone.c src/ft_cone_cap.c
-FILES+=src/logging.c src/utils.c
+FILES+=src/logging.c src/logging_2.c src/utils.c src/key_hooks.c
 TEST_FILES=tests/render_tests.c
 FILES_WITH_TESTS+=$(FILES) $(TEST_FILES)
 
@@ -60,6 +60,9 @@ test: FLAGS+= -DTEST
 test: fclean $(MLX) $(LIBGNL_NAME) $(LIBFT_NAME) $(FILES_WITH_TESTS:.c=.o)
 	@$(CC) $(F_INC) $(FILES_WITH_TESTS:.c=.o) -DTEST $(FLAGS) $(MLX) $(LIBRARIES) $(FLAGS_OS) -o $(NAME) && ./miniRT && make . fclean > /dev/null
 test: fclean
+
+move: FLAGS+= -DMOVE
+move: fclean all
 
 $(MLX):
 	cd MLX42 && cmake -B build && cmake --build build -j4
