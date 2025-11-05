@@ -112,7 +112,7 @@ void	run_testfile(char* file, char* output_filename, int32_t img_height, int32_t
 
 
 	printf("Testing: %s, outputting to %s\n", file, output_filename);
-	run_mlx_loop(&app, file, img_height, img_width, 1);
+	run_mlx_loop(&app, file, img_height, img_width);
 	fptr = fopen(output_filename, "w");
 	if (!fptr)
 	{
