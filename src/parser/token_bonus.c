@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 20:22:08 by kzarins           #+#    #+#             */
-/*   Updated: 2025/11/04 14:23:20 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/05 15:14:29 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,25 @@
 #include "parser.h"
 #include <errno.h>
 #include <stdio.h>
+#include "libft.h"
+
+#ifndef LOCALPATH
+# define LOCALPATH ""
+#endif /* LOCALPATH */
 
 mlx_texture_t	*add_texture(char *src)
 {
+	char			*path;
 	mlx_texture_t	*texture;
 
 	texture = mlx_load_png(src);
 	if (!texture)
+	{
 		printf("Texture: %s --- could not get loaded\n", src);
+		path = ft_strjoin(LOCALPATH, src);
+		texture = mlx_load_png(path);
+		free(path);
+	}
 	return (texture);
 }
 
