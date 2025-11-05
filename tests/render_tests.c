@@ -90,7 +90,7 @@ void draw_loop(void *args)
 	mlx_close_window(app->mlx);
 }
 
-void	run_mlx_loop(t_app *app, char *input_f, int32_t img_height, int32_t img_width)
+void	run_mlx_loop(t_app *app, char *input_f, int32_t img_height, int32_t img_width, bool with_textures)
 {
 	char *argv[2];
 
@@ -99,21 +99,24 @@ void	run_mlx_loop(t_app *app, char *input_f, int32_t img_height, int32_t img_wid
 	init_default_camera(app);
 	app->height = img_height;
 	app->width = img_width;
-	ft_camera_calc(app->camera);
+	ft_camera_calc(&app->active_camera);
 	assert(pars_init(2, argv, app) == 0 && "Failed on parsing the file");
-	// print_internal_data(app);
+	if (with_textures)
+		key_hook((mlx_key_data_t){MLX_KEY_0,0,0,0}, app);
+	if (!with_textures)
+		key_hook((mlx_key_data_t){MLX_KEY_1,0,0,0}, app);
 	assert(setupwindow(app) != EXIT_FAILURE && "Failed on setting up the render window");
 	mlx_loop_hook(app->mlx, draw_loop, (void *) app);
 	mlx_loop(app->mlx);
 }
-void	run_testfile(char* file, char* output_filename, int32_t img_height, int32_t img_width)
+void	run_testfile(char* file, char* output_filename, int32_t img_height, int32_t img_width, bool with_textures)
 {
 	FILE	*fptr;
 	t_app	app;
 
 
 	printf("Testing: %s, outputting to %s\n", file, output_filename);
-	run_mlx_loop(&app, file, img_height, img_width);
+	run_mlx_loop(&app, file, img_height, img_width, with_textures);
 	fptr = fopen(output_filename, "w");
 	if (!fptr)
 	{
@@ -130,15 +133,15 @@ void	run_testfile(char* file, char* output_filename, int32_t img_height, int32_t
 
 int main(void)
 {
-	run_testfile(LOCALPATH"/tests/maps/complex.rt", LOCALPATH"/tests/output/complex.ppm", 800, 800);
-	run_testfile(LOCALPATH"/tests/maps/complex2.rt", LOCALPATH"/tests/output/complex2.ppm", 800, 800);
-	run_testfile(LOCALPATH"/tests/maps/complex3.rt", LOCALPATH"/tests/output/complex3.ppm", 800, 800);
-	run_testfile(LOCALPATH"/tests/maps/cone.rt", LOCALPATH"/tests/output/cone.ppm", 800, 800);
-	run_testfile(LOCALPATH"/tests/maps/glow.rt", LOCALPATH"/tests/output/glow.ppm", 800, 800);
-	run_testfile(LOCALPATH"/tests/maps/spheres.rt", LOCALPATH"/tests/output/spheres.ppm", 800, 800);
-	run_testfile(LOCALPATH"/tests/maps/in_plane_cube.rt", LOCALPATH"/tests/output/in_plane_cube.ppm", 800, 800);
-	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders.rt", LOCALPATH"/tests/output/cylinders.ppm", 400, 600);
-	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders_3light.rt", LOCALPATH"/tests/output/cylinders_3light.ppm", 400, 600);
-	run_testfile(LOCALPATH"/tests/maps/earth.rt", LOCALPATH"/tests/output/earth.ppm", 400, 600);
+	run_testfile(LOCALPATH"/tests/maps/complex.rt", LOCALPATH"/tests/output/complex.ppm", 200, 200, true);
+	run_testfile(LOCALPATH"/tests/maps/complex2.rt", LOCALPATH"/tests/output/complex2.ppm", 200, 200, true);
+	run_testfile(LOCALPATH"/tests/maps/complex3.rt", LOCALPATH"/tests/output/complex3.ppm", 200, 200, true);
+	run_testfile(LOCALPATH"/tests/maps/cone.rt", LOCALPATH"/tests/output/cone.ppm", 200, 200, false);
+	run_testfile(LOCALPATH"/tests/maps/glow.rt", LOCALPATH"/tests/output/glow.ppm", 200, 200, false);
+	run_testfile(LOCALPATH"/tests/maps/spheres.rt", LOCALPATH"/tests/output/spheres.ppm", 200, 200, false);
+	run_testfile(LOCALPATH"/tests/maps/in_plane_cube.rt", LOCALPATH"/tests/output/in_plane_cube.ppm", 200, 200, false);
+	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders.rt", LOCALPATH"/tests/output/cylinders.ppm", 400, 600, false);
+	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders_3light.rt", LOCALPATH"/tests/output/cylinders_3light.ppm", 400, 600, false);
+	run_testfile(LOCALPATH"/tests/maps/earth.rt", LOCALPATH"/tests/output/earth.ppm", 400, 600, false);
 }
 #endif
