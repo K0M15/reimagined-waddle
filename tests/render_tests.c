@@ -133,15 +133,15 @@ void	run_testfile(char* file, char* output_filename, int32_t img_height, int32_t
 
 int main(void)
 {
-	run_testfile(LOCALPATH"/tests/maps/complex.rt", LOCALPATH"/tests/output/complex.ppm", 200, 200, true);
-	run_testfile(LOCALPATH"/tests/maps/complex2.rt", LOCALPATH"/tests/output/complex2.ppm", 200, 200, true);
-	run_testfile(LOCALPATH"/tests/maps/complex3.rt", LOCALPATH"/tests/output/complex3.ppm", 200, 200, true);
-	run_testfile(LOCALPATH"/tests/maps/cone.rt", LOCALPATH"/tests/output/cone.ppm", 200, 200, false);
-	run_testfile(LOCALPATH"/tests/maps/glow.rt", LOCALPATH"/tests/output/glow.ppm", 200, 200, false);
-	run_testfile(LOCALPATH"/tests/maps/spheres.rt", LOCALPATH"/tests/output/spheres.ppm", 200, 200, false);
-	run_testfile(LOCALPATH"/tests/maps/in_plane_cube.rt", LOCALPATH"/tests/output/in_plane_cube.ppm", 200, 200, false);
-	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders.rt", LOCALPATH"/tests/output/cylinders.ppm", 400, 600, false);
-	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders_3light.rt", LOCALPATH"/tests/output/cylinders_3light.ppm", 400, 600, false);
-	run_testfile(LOCALPATH"/tests/maps/earth.rt", LOCALPATH"/tests/output/earth.ppm", 400, 600, false);
+	run_testfile(LOCALPATH"/tests/maps/complex.rt", LOCALPATH"/tests/output/complex.ppm", 300, 300, true);
+	run_testfile(LOCALPATH"/tests/maps/complex2.rt", LOCALPATH"/tests/output/complex2.ppm", 300, 300, false);
+	run_testfile(LOCALPATH"/tests/maps/complex3.rt", LOCALPATH"/tests/output/complex3.ppm", 300, 300, true);
+	run_testfile(LOCALPATH"/tests/maps/cone.rt", LOCALPATH"/tests/output/cone.ppm", 300, 300, false);
+	run_testfile(LOCALPATH"/tests/maps/glow.rt", LOCALPATH"/tests/output/glow.ppm", 300, 300, true);
+	run_testfile(LOCALPATH"/tests/maps/spheres.rt", LOCALPATH"/tests/output/spheres.ppm", 300, 300, true);
+	run_testfile(LOCALPATH"/tests/maps/in_plane_cube.rt", LOCALPATH"/tests/output/in_plane_cube.ppm", 300, 300, false);
+	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders.rt", LOCALPATH"/tests/output/cylinders.ppm", 300, 300, false);
+	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders_3light.rt", LOCALPATH"/tests/output/cylinders_3light.ppm", 300, 300, false);
+	run_testfile(LOCALPATH"/tests/maps/earth.rt", LOCALPATH"/tests/output/earth.ppm", 300, 300, true);
 }
 #endif
