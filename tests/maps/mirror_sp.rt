@@ -2,7 +2,7 @@ A 0.2 255,255,255
 C 0,0,-3 0,0,-1 70
 L 0,4,0 0.6 255,255,255
 #sp loc diameter rgb reflectivity scatter is_emmiting brightness texture bump_maps
-# sp 0,0,0 10 0,0,0 0.0 0.1 0 0 /home/afelger/miniRT/42.png *
-sp 0,0,0 10 0,0,0 0.0 0.1 0 0 * *
-# sp 0,0,0 2 0,0,0 1.0 0.0 0 0 * *
-sp 0,0,0 2 0,0,0 0.1 0.2 0 0 oak.png oak_rough.png
+sp 0,0,0 10 0,0,0 0.0 0.1 0 0 42.png *
+#sp 0,0,0 10 0,0,0 0.0 0.1 0 0 * *
+sp 0,0,0 2 0,0,0 1.0 0.0 0 0 * *
+#sp 0,0,0 2 0,0,0 0.1 0.2 0 0 oak.png oak_rough.png

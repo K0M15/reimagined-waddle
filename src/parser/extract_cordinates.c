@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 20:58:15 by kzarins           #+#    #+#             */
-/*   Updated: 2025/11/03 20:58:16 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/05 15:56:04 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_vec3	extract_loc(const char *input)
 	char	**tokens;
 	t_vec3	location;
 
+	errno = 0;
 	init_loc(&location);
 	tokens = ft_split(input, ',');
 	if (!tokens)

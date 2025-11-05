@@ -6,7 +6,7 @@
 /*   By: afelger <alain.felger@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 13:35:49 by afelger           #+#    #+#             */
-/*   Updated: 2025/10/28 14:40:40 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/05 15:54:24 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,24 @@ int32_t	dyn_enhance(t_dyn *array)
 
 void	dyn_free(t_dyn *array)
 {
+	uint32_t	iter;
+
+	iter = 0;
 	if (array->elem)
+	{
+		while (iter < array->filled)
+		{
+			if ((array->elem + iter)->mat.tex)
+			{
+				mlx_delete_texture((array->elem + iter)->mat.tex);
+			}
+			if ((array->elem + iter)->mat.bump)
+			{
+				mlx_delete_texture((array->elem + iter)->mat.bump);
+			}
+			iter++;
+		}
 		free(array->elem);
+	}
 	return ;
 }
