@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/05 14:06:53 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/05 14:22:55 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,6 @@ void		print_instructions(void);
 void		ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color);
 void		ft_put_pixel(mlx_image_t *image, int x, int y, uint32_t color);
 void		print_element(int iter, t_app *app);
-void 		print_internal_data(t_app *app);
+void		print_internal_data(t_app *app);
 void		key_hook(mlx_key_data_t keydata, void *param);
 #endif /* MINIRT_H */

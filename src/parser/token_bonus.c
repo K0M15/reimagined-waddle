@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 20:22:08 by kzarins           #+#    #+#             */
-/*   Updated: 2025/11/05 15:14:29 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/05 16:08:22 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	pars_bonus_tokens(int last_mand_token, char **tokens, t_obj *sphere)
 		return (errno = EINVAL, -1);
 	iter++;
 	sphere->mat.is_emitting = ft_atof(tokens[iter + last_mand_token]);
-	printf("%d\n", sphere->mat.is_emitting);
 	if (errno)
 		return (errno = EINVAL, -1);
 	iter++;

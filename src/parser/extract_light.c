@@ -6,7 +6,7 @@
 /*   By: kzarins <kzarins@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 22:15:54 by kzarins           #+#    #+#             */
-/*   Updated: 2025/11/03 22:16:00 by kzarins          ###   ########.fr       */
+/*   Updated: 2025/11/05 15:56:13 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	extract_light(const char *line, t_app *app)
 		return (free_tokens(tokens), -1);
 	if (ft_strncmp(tokens[0], "L", 10) != 0)
 		return (free_tokens(tokens), -1);
-	errno = 0;
+	init_material(&light);
 	light.props.position = extract_loc(tokens[1]);
 	if (errno)
 		return (free_tokens(tokens), -1);
