@@ -129,7 +129,6 @@ void	run_testfile(char* file, char* output_filename, int32_t img_height, int32_t
 
 int main(void)
 {
-	run_testfile(LOCALPATH"/tests/maps/example.rt", LOCALPATH"/tests/output/example.ppm", 400, 400);
 	run_testfile(LOCALPATH"/tests/maps/complex.rt", LOCALPATH"/tests/output/complex.ppm", 800, 800);
 	run_testfile(LOCALPATH"/tests/maps/complex2.rt", LOCALPATH"/tests/output/complex2.ppm", 800, 800);
 	run_testfile(LOCALPATH"/tests/maps/complex3.rt", LOCALPATH"/tests/output/complex3.ppm", 800, 800);
@@ -137,7 +136,6 @@ int main(void)
 	run_testfile(LOCALPATH"/tests/maps/glow.rt", LOCALPATH"/tests/output/glow.ppm", 800, 800);
 	run_testfile(LOCALPATH"/tests/maps/spheres.rt", LOCALPATH"/tests/output/spheres.ppm", 800, 800);
 	run_testfile(LOCALPATH"/tests/maps/in_plane_cube.rt", LOCALPATH"/tests/output/in_plane_cube.ppm", 800, 800);
-	run_testfile(LOCALPATH"/tests/maps/box.rt", LOCALPATH"/tests/output/box.ppm", 800, 800);
 	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders.rt", LOCALPATH"/tests/output/cylinders.ppm", 400, 600);
 	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders_3light.rt", LOCALPATH"/tests/output/cylinders_3light.ppm", 400, 600);
 	run_testfile(LOCALPATH"/tests/maps/earth.rt", LOCALPATH"/tests/output/earth.ppm", 400, 600);

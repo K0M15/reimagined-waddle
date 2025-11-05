@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 20:22:08 by kzarins           #+#    #+#             */
-/*   Updated: 2025/11/05 16:08:22 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/05 16:13:24 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	extract_map_and_texture(int *iter, char **tokens,
 	(*iter)++;
 	sphere->mat.bump = add_texture(tokens[*iter + last_mand_token]);
 	if (!sphere->mat.bump && *tokens[*iter + last_mand_token] != '*')
-		return (errno = EINVAL, -1);
+		return (mlx_delete_texture(sphere->mat.tex), errno = EINVAL, -1);
 	return (0);
 }
 

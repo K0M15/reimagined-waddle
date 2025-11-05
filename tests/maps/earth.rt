@@ -1,8 +1,18 @@
 A 0.2 255,255,255
-C 0,0,0 0,0,-1 70
+C 2,0,2 -0.5,0,-0.5 70
 L 0,2,-2 0.2 255,255,255
 L 0,2,2 0.2 255,255,255
 #sp loc diameter rgb reflectivity scatter is_emmiting brightness texture bump_maps
-sp 0,0,-30 20 255,0,0 0.4 0.2 0 0.8 ./earthmap1k.png ./earthbump1k.png
+sp 0,0,-5 2 255,0,0 0.1 0.2 0 0.8 ./tests/textures/earthmap1k.png ./tests/textures/earthbump1k.png
+sp -6,0,-5 2 255,0,0 0.1 0.2 1 0.8 ./tests/textures/earthmap1k.png ./tests/textures/earthbump1k.png
+sp -12,0,-5 2 255,0,0 0.1 0.2 0 0.8 ./tests/textures/japanese_stone_wall_diff_1k.png ./tests/textures/container_side_disp_1k.png
+sp -18,0,-5 2 255,0,0 0.1 0.2 0 0.8 ./tests/textures/earthmap1k.png ./tests/textures/earthbump1k.png
+sp -24,0,-5 2 255,0,0 1 0.0 0 0.8 * *
+sp -30,0,-5 2 255,0,0 0.1 0.2 0 0.8 ./tests/textures/earthmap1k.png ./tests/textures/earthbump1k.png
+L -24,0,-2 0.4 0,0,255
+L -14,-3,-2 0.4 0,255,0
+L -6,4,-2 0.4 0,255,255
+L -16,0,-7 0.4 0,0,255
 #sp 0,0,-5 3 255,0,0
-# pl 0.0,0.0,-10.0 0.0,0.0,1.0 222,255,225
+pl 0.0,0.0,-10.0 0.0,0.0,1.0 222,255,225 0.1 0.2 0 0.8 ./tests/textures/moss.png ./tests/textures/moss_bump.png
+pl 0.0,0.0,2.5 0.0,0.0,1.0 222,255,225 0.1 0.2 0 0.8 ./tests/textures/oak.png ./tests/textures/oak_rough.png
