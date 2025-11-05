@@ -1,8 +1,16 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "libft.h"
 #include "miniRT.h"
+#include <stdio.h>
+#include "parser.h"
+#include "assert.h"
 
+#ifndef LOCALPATH
+# define LOCALPATH "."
+#endif /* LOCALPATH */
+
+
+int32_t	setupwindow(t_app *app);
 void ft_put_pixel(mlx_image_t *image, int x, int y, uint32_t color);
 void add_material_to_objects(t_app *app);
 int32_t setupWindow(t_app *app);
@@ -56,7 +64,11 @@ int	write_pixels_to_file(FILE *fptr, mlx_image_t *img, int32_t img_height, int32
 	{
 		while (x < img_width)
 		{
-			put_pixel(fptr, (t_vec3){.x = *current_pixel, .y = *(current_pixel + 1), .z = *(current_pixel + 2)});
+			put_pixel(fptr, (t_vec3){
+				.x = *current_pixel,
+				.y = *(current_pixel + 1),
+				.z = *(current_pixel + 2)
+			});
 			x++;
 			current_pixel += 4;
 		}
@@ -68,7 +80,7 @@ int	write_pixels_to_file(FILE *fptr, mlx_image_t *img, int32_t img_height, int32
 }
 
 //TODO: Check and implement the render function that is called
-#ifdef TEST
+// #ifdef TEST
 void draw_loop(void *args)
 {
 	t_app *app;
@@ -80,35 +92,17 @@ void draw_loop(void *args)
 
 void	run_mlx_loop(t_app *app, char *input_f, int32_t img_height, int32_t img_width)
 {
-	t_camera camera;
+	char *argv[2];
 
-	app->width = img_width;
+	argv[0] = NULL;
+	argv[1] = input_f;
 	app->height = img_height;
-	ft_camera_init(
-		&camera, (t_camera_p){
-			ftvec3(0),
-			(t_vec3){0,0, -1},
-			90,
-			app->width,
-			app->height,
-			STAN_SAMPLES_PER_PIXEL,
-			(t_vec3){
-				1, 1, 1
-			},
-			.2,
-			1000.0f
-		});
-	app->active_camera = camera;
-	if (pars_init(2, (char*[]){"./miniRT", input_f, "\0"}, app) != 0)
-		return ;
-	ft_camera_calc(&app->active_camera);
-	add_material_to_objects(app);
-	if (setupWindow(app) == EXIT_FAILURE)
-		return ;	
-	
-	mlx_key_hook(app->mlx, key_hook, (void *) app);
+	app->width = img_width;
+	init_default_camera(app);
+	assert(pars_init(2, argv, app) == 0 && "Failed on parsing the file");
+	// print_internal_data(app);
+	assert(setupwindow(app) != EXIT_FAILURE && "Failed on setting up the render window");
 	mlx_loop_hook(app->mlx, draw_loop, (void *) app);
-  	mlx_resize_hook(app->mlx, resize_hook, (void *) app);
 	mlx_loop(app->mlx);
 }
 void	run_testfile(char* file, char* output_filename, int32_t img_height, int32_t img_width)
@@ -123,6 +117,7 @@ void	run_testfile(char* file, char* output_filename, int32_t img_height, int32_t
 		printf("File could not be opened!");
 		exit(1);
 	}
+	printf("Testing: %s, outputting to %s\n", file, output_filename);
 	write_pixels_to_file(fptr, app.image, app.height, app.width);
 	fclose(fptr);
 	mlx_delete_image(app.mlx, app.image);
@@ -133,16 +128,16 @@ void	run_testfile(char* file, char* output_filename, int32_t img_height, int32_t
 
 int main(void)
 {
-	run_testfile("./tests/maps/example.rt", "example.ppm", 400, 400);
-	run_testfile("./tests/maps/complex.rt", "complex.ppm", 800, 800);
-	run_testfile("./tests/maps/complex2.rt", "complex2.ppm", 800, 800);
-	run_testfile("./tests/maps/complex3.rt", "complex3.ppm", 800, 800);
-	run_testfile("./tests/maps/cone.rt", "cone.ppm", 800, 800);
-	run_testfile("./tests/maps/glow.rt", "glow.ppm", 800, 800);
-	run_testfile("./tests/maps/spheres.rt", "spheres.ppm", 800, 800);
-	run_testfile("./tests/maps/in_plane_cube.rt", "in_plane_cube.ppm", 800, 800);
-	run_testfile("./tests/maps/box.rt", "box.ppm", 800, 800);
-	run_testfile("./tests/maps/cylinder/cylinders.rt", "cylinders.ppm", 400, 600);
-	run_testfile("./tests/maps/cylinder/cylinders_3light.rt", "cylinders_3light.ppm", 400, 600);
+	run_testfile(LOCALPATH"/tests/maps/example.rt", LOCALPATH"/tests/output/example.ppm", 400, 400);
+	run_testfile(LOCALPATH"/tests/maps/complex.rt", LOCALPATH"/tests/output/complex.ppm", 800, 800);
+	run_testfile(LOCALPATH"/tests/maps/complex2.rt", LOCALPATH"/tests/output/complex2.ppm", 800, 800);
+	run_testfile(LOCALPATH"/tests/maps/complex3.rt", LOCALPATH"/tests/output/complex3.ppm", 800, 800);
+	run_testfile(LOCALPATH"/tests/maps/cone.rt", LOCALPATH"/tests/output/cone.ppm", 800, 800);
+	run_testfile(LOCALPATH"/tests/maps/glow.rt", LOCALPATH"/tests/output/glow.ppm", 800, 800);
+	run_testfile(LOCALPATH"/tests/maps/spheres.rt", LOCALPATH"/tests/output/spheres.ppm", 800, 800);
+	run_testfile(LOCALPATH"/tests/maps/in_plane_cube.rt", LOCALPATH"/tests/output/in_plane_cube.ppm", 800, 800);
+	run_testfile(LOCALPATH"/tests/maps/box.rt", LOCALPATH"/tests/output/box.ppm", 800, 800);
+	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders.rt", LOCALPATH"/tests/output/cylinders.ppm", 400, 600);
+	run_testfile(LOCALPATH"/tests/maps/cylinder/cylinders_3light.rt", LOCALPATH"/tests/output/cylinders_3light.ppm", 400, 600);
 }
-#endif
+// #endif
