@@ -96,9 +96,10 @@ void	run_mlx_loop(t_app *app, char *input_f, int32_t img_height, int32_t img_wid
 
 	argv[0] = NULL;
 	argv[1] = input_f;
+	init_default_camera(app);
 	app->height = img_height;
 	app->width = img_width;
-	init_default_camera(app);
+	ft_camera_calc(app->camera);
 	assert(pars_init(2, argv, app) == 0 && "Failed on parsing the file");
 	// print_internal_data(app);
 	assert(setupwindow(app) != EXIT_FAILURE && "Failed on setting up the render window");
