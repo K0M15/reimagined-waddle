@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 10:14:42 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/04 20:48:55 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/05 14:06:53 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,4 +121,18 @@ void		ftref_phong(struct s_ftray_color_props *p, t_props *pl,
 void		calc_refl_emitt(struct s_ftray_color_props *p,
 				t_hitrec rec, t_vec3 dir);
 uint32_t	checker_enable(uint32_t val);
+
+//Print and stuff
+void		print_sphere(t_obj *app);
+void		print_cylinder(t_obj *app);
+void		print_plane(t_obj *app);
+void		print_point_light(t_obj *app);
+void		print_triangle(t_obj *obj);
+void		print_vec3(t_vec3 *vec);
+void		print_instructions(void);
+void		ft_kumul_pixel(mlx_image_t *image, int x, int y, uint32_t color);
+void		ft_put_pixel(mlx_image_t *image, int x, int y, uint32_t color);
+void		print_element(int iter, t_app *app);
+void 		print_internal_data(t_app *app);
+void		key_hook(mlx_key_data_t keydata, void *param);
 #endif /* MINIRT_H */

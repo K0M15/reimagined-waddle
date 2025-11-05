@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:11:25 by afelger           #+#    #+#             */
-/*   Updated: 2025/11/04 17:35:54 by afelger          ###   ########.fr       */
+/*   Updated: 2025/11/05 12:58:07 by kzarins          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static void	handle_pl(struct s_ftray_color_props *p, t_dyn *arr)
 			ftvec3_unit(to_light),
 			ftvec3(0),
 			0
-		}, &temp, (struct s_lpair){FLOAT_NEAR_ZERO, ftvec3_length(to_light) - 1e-4}))
+		}, &temp, (struct s_lpair){FLOAT_NEAR_ZERO,
+		ftvec3_length(to_light) - 1e-4}))
 	{
 		ftref_lambert(p, pl, to_light);
 		ftref_phong(p, pl, to_light);
